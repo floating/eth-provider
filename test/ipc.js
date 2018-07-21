@@ -1,0 +1,38 @@
+/* globals describe it */
+
+const assert = require('assert')
+const Web3 = require('web3')
+const provider = require('../')
+
+describe('IPC Provider', () => {
+  let ipcProvider = provider('direct')
+  let web3ipc = new Web3(ipcProvider)
+  describe('Subscribe via IPC (please wait for next block)', () => {
+    it('should subscribe to newBlockHeaders', done => {
+      let sub = web3ipc.eth.subscribe('newBlockHeaders', (err, result) => {
+        if (err) throw err
+        assert(result)
+        sub.unsubscribe((err, success) => {
+          if (err) throw err
+          assert(success)
+          done()
+        })
+      })
+    }).timeout(45 * 1000)
+  })
+  describe('Get accounts via IPC', () => {
+    it('should return array', done => {
+      web3ipc.eth.getAccounts().then(accounts => {
+        assert(Array.isArray(accounts))
+        ipcProvider.close()
+        done()
+      }).catch(err => { throw err })
+    })
+    it('should error due to being closed', done => {
+      web3ipc.eth.getAccounts().then().catch(err => {
+        assert(err.message === 'Not connected')
+        done()
+      })
+    })
+  })
+})

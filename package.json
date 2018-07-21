@@ -1,0 +1,42 @@
+{
+  "name": "eth-provider",
+  "version": "0.0.1",
+  "description": "A Universal Ethereum Provider",
+  "browser": "dist/browser.js",
+  "main": "dist/node.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "standard && npm run bundle && mocha test/main.js",
+    "test:frame": "standard && npm run bundle && mocha test/frame.js",
+    "test:ipc": "standard && npm run bundle && mocha test/ipc.js",
+    "test:all": "standard && npm run bundle && mocha",
+    "bundle:browser": "parcel build ./browser.js --out-file browser.js --no-minify --target browser",
+    "bundle:node": "parcel build ./node.js --out-file node.js --no-minify --target node",
+    "bundle": "npm run bundle:node && npm run bundle:browser",
+    "watch:browser": "parcel watch ./browser.js --out-file browser.js --target browser",
+    "watch:node": "parcel watch ./node.js --out-file node.js --target node",
+    "watch": "npm run watch:node & npm run watch:browser",
+    "prepublishOnly": "npm run test"
+  },
+  "author": {
+    "name": "Jordan Muir",
+    "email": "jordan@frame.sh",
+    "url": "https//frame.sh"
+  },
+  "license": "GPL-3.0",
+  "repository": "github:floating/frame",
+  "dependencies": {
+    "node-fetch": "2.1.2",
+    "oboe": "2.1.4",
+    "uuid": "3.3.2",
+    "ws": "5.2.2"
+  },
+  "devDependencies": {
+    "mocha": "5.2.0",
+    "parcel-bundler": "1.9.7",
+    "standard": "11.0.1",
+    "web3": "1.0.0-beta.34"
+  }
+}
