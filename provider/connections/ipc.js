@@ -49,6 +49,7 @@ class IPCConnection extends EventEmitter {
         this.connected = true
         this.emit('connect')
       })
+      this.socket.on('close', () => this.close())
     })
     this.socket.on('error', err => this.onError(err))
   }
@@ -87,7 +88,7 @@ class IPCConnection extends EventEmitter {
   close () {
     if (this.status === 'closed') return
     if (dev) console.log('Closing IPC connection')
-    this.socket.destroy()
+    if (this.socket) this.socket.destroy()
     this.socket = null
     this.connected = false
     this.status = 'closed'

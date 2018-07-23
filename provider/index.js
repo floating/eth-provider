@@ -17,10 +17,8 @@ class EthereumProvider extends EventEmitter {
     this.status = 'loading'
     this.name = options.name || 'default'
     this.inSetup = true
+    this.firstCycle = true
     this.connect()
-  }
-  summary () {
-    return {target: this.target, status: this.status, details: this.targets}
   }
   refresh (timeout = 5000) {
     if (dev) console.log(`Reconnect queued for ${(timeout / 1000).toFixed(2)}s in the future`)
@@ -31,8 +29,11 @@ class EthereumProvider extends EventEmitter {
     if (dev) console.warn('An error event: ', err.message)
     if (this.listenerCount('error')) this.emit('error', err)
   }
+  updateStatus (status) {
+    this.status = status
+    this.emit('status', status)
+  }
   connect (index = 0) {
-    if (this.status === 'disconnected') this.status = 'loading'
     if (dev && index === 0) console.log(`\n\n\n\nA connection cycle started for provider with name: ${this.name}`)
     if (this.connection && this.connection.status === 'connected' && index >= this.connection.index) {
       if (dev) console.log('Stopping connection cycle becasuse we\'re already connected to a higher priority provider')
@@ -44,10 +45,11 @@ class EthereumProvider extends EventEmitter {
         this.targets[index].status = err
         if (this.targets.length - 1 === index) {
           this.inSetup = false
-          this.status = 'disconnected'
           console.warn('eth-provider unable to connect to any targets')
           if (dev) console.log('Connection cycle summary:', this.targets)
-          this.refresh()
+          if (this.firstCycle) this.updateStatus('unsuccessful')
+          this.firstCycle = false
+          if (this.status !== 'unsuccessful') this.refresh()
         } else { // Not last target, move on the next connection option
           this.connect(++index)
         }
@@ -58,7 +60,7 @@ class EthereumProvider extends EventEmitter {
       })
       this.connection.on('close', (summary) => {
         this.connected = false
-        this.status = 'disconnected'
+        this.updateStatus('disconnected')
         if (this.connection) this.connection.close()
         this.connection.removeAllListeners()
         this.connection = null
@@ -71,7 +73,7 @@ class EthereumProvider extends EventEmitter {
         this.targets[index].status = this.connection.status
         this.connected = true
         this.inSetup = false
-        this.status = this.connection.status
+        this.updateStatus(this.connection.status)
         if (dev) console.log('Successfully connected to: ' + this.targets[index].location)
         this.emit('connect')
       })
