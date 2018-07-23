@@ -20,7 +20,7 @@ class EthereumProvider extends EventEmitter {
     this.firstCycle = true
     this.connect()
   }
-  refresh (timeout = 5000) {
+  refresh (timeout = 1000) {
     if (dev) console.log(`Reconnect queued for ${(timeout / 1000).toFixed(2)}s in the future`)
     clearTimeout(this.connectTimer)
     this.connectTimer = setTimeout(() => this.connect(), timeout)
@@ -45,11 +45,9 @@ class EthereumProvider extends EventEmitter {
         this.targets[index].status = err
         if (this.targets.length - 1 === index) {
           this.inSetup = false
-          console.warn('eth-provider unable to connect to any targets')
-          if (dev) console.log('Connection cycle summary:', this.targets)
-          if (this.firstCycle) this.updateStatus('unsuccessful')
-          this.firstCycle = false
-          if (this.status !== 'unsuccessful') this.refresh()
+          if (dev) console.warn('eth-provider unable to connect to any targets, view connection cycle summary: ', this.targets)
+          this.updateStatus('disconnected')
+          this.refresh()
         } else { // Not last target, move on the next connection option
           this.connect(++index)
         }
