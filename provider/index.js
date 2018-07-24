@@ -1,18 +1,12 @@
 const EventEmitter = require('events')
-const connections = require('./connections')
 
 const dev = process.env.NODE_ENV === 'development'
 
 class EthereumProvider extends EventEmitter {
-  constructor (targets, options) {
+  constructor (connections, targets, options) {
     super()
     this.targets = targets
-    this.connections = {
-      injected: connections['injected'](options.injected),
-      ipc: connections['ipc'](options.net),
-      ws: connections['ws'](options.ws),
-      http: connections['http'](options.fetch)
-    }
+    this.connections = connections
     this.connected = false
     this.status = 'loading'
     this.name = options.name || 'default'
@@ -94,8 +88,8 @@ class EthereumProvider extends EventEmitter {
   }
 }
 
-module.exports = (targets, options) => {
-  const provider = new EthereumProvider(targets, options)
+module.exports = (connections, targets, options) => {
+  const provider = new EthereumProvider(connections, targets, options)
   provider.setMaxListeners(128)
   return provider
 }

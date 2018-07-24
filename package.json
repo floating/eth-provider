@@ -28,10 +28,10 @@
   "license": "GPL-3.0",
   "repository": "github:floating/frame",
   "dependencies": {
-    "node-fetch": "2.2.0",
     "oboe": "2.1.4",
     "uuid": "3.3.2",
-    "ws": "6.0.0"
+    "ws": "6.0.0",
+    "xhr2-cookies": "^1.1.0"
   },
   "devDependencies": {
     "mocha": "5.2.0",
