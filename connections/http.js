@@ -3,21 +3,21 @@ const uuid = require('uuid/v4')
 
 const dev = process.env.NODE_ENV === 'development'
 
-let fetch
+let XHR
 
 class HTTPConnection extends EventEmitter {
-  constructor (_fetch, url, options) {
+  constructor (_XHR, url, options) {
     super()
-    fetch = _fetch
+    XHR = _XHR
     setTimeout(() => this.create(url, options), 0)
   }
   create (url, options) {
-    if (!fetch) return this.emit('error', new Error('No HTTP transport available'))
+    if (!XHR) return this.emit('error', new Error('No HTTP transport available'))
     this.connected = false
     this.ready = false
     this.subscriptions = false
     this.status = 'loading'
-    this.post = {method: 'POST', headers: {'Content-Type': 'application/json'}} // Headers from options
+    this.post = {method: 'POST', headers: {'Content-Type': 'application/json'}}
     this.url = url
     this.pollId = uuid()
     this.initStatus()
@@ -104,12 +104,18 @@ class HTTPConnection extends EventEmitter {
       }
     }
     try { this.post.body = JSON.stringify(payload) } catch (err) { return res(err) }
-    fetch(this.url, this.post)
-      .then(this.filterStatus)
-      .then(response => response.json())
-      .then(response => res(null, response))
-      .catch(err => res(err))
+    let xhr = new XHR()
+    xhr.open('POST', this.url, true)
+    xhr.timeout = 20000
+    xhr.ontimeout = () => {
+      let err = new Error('HTTP Timeout')
+      res(err)
+      this.emit('error', err)
+      this.close()
+    }
+    xhr.onreadystatechange = () => { if (xhr.readyState === 4) try { res(null, JSON.parse(xhr.responseText)) } catch (e) { res(new Error(e)) } }
+    xhr.send(JSON.stringify(payload))
   }
 }
 
-module.exports = (fetch) => (url, options) => new HTTPConnection(fetch, url, options)
+module.exports = (XHR) => (url, options) => new HTTPConnection(XHR, url, options)

@@ -1,11 +1,10 @@
-const net = require('net')
-const ws = require('ws')
-const fetch = require('node-fetch')
-const injected = null
-
 const resolve = require('./resolve')
 const provider = require('./provider')
 const presets = require('./presets')
+
+const net = require('net')
+const ws = require('ws')
+const XHR = require('xhr2-cookies').XMLHttpRequest
 
 const home = require('os').homedir()
 
@@ -19,6 +18,11 @@ if (process.platform === 'darwin') {
 }
 presets.direct = ipc.concat(presets.direct)
 
-module.exports = (targets = ['frame', 'direct'], options = {}) => {
-  return provider(resolve(targets, presets), Object.assign({net, ws, fetch, injected}, options))
+const connections = {
+  injected: require('./connections/unavailable')('Injected connections are unavliable in Node/Electron'),
+  ipc: require('./connections/ipc')(net),
+  ws: require('./connections/ws')(ws),
+  http: require('./connections/http')(XHR)
 }
+
+module.exports = (targets = ['injected', 'frame'], options = {}) => provider(connections, resolve(targets, presets), options)
