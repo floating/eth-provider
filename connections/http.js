@@ -113,7 +113,17 @@ class HTTPConnection extends EventEmitter {
       this.emit('error', err)
       this.close()
     }
-    xhr.onreadystatechange = () => { if (xhr.readyState === 4) try { res(null, JSON.parse(xhr.responseText)) } catch (e) { res(new Error(e)) } }
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === 4) {
+        try {
+          let response = JSON.parse(xhr.responseText)
+          if (response.error) return res(new Error(response.error))
+          res(null, response)
+        } catch (e) {
+          res(new Error(e))
+        }
+      }
+    }
     xhr.send(JSON.stringify(payload))
   }
 }
