@@ -11,15 +11,15 @@ class IPCConnection extends EventEmitter {
   constructor (_net, path, options) {
     super()
     net = _net
-    setTimeout(() => this.create(path, options), 0)
-  }
-  create (path, options) {
-    if (!net) return this.emit('error', new Error('No IPC transport'))
     this.count = 0
     this.connected = false
     this.ready = false
     this.status = 'loading'
     this.resCallbacks = {}
+    setTimeout(() => this.create(path, options), 0)
+  }
+  create (path, options) {
+    if (!net) return this.emit('error', new Error('No IPC transport'))
     this.socket = net.connect({path}, () => {
       if (net.constructor.name === 'Socket') {
         oboe(this.socket).done(payloads => this.parsePayloads(payloads))
