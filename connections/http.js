@@ -56,7 +56,7 @@ class HTTPConnection extends EventEmitter {
           if (!response || !response.result) {
             this.connected = true
             this.ready = true
-            this.status = 'ready'
+            this.status = 'connected'
             this.emitStatus()
           } else {
             this.statusTimer = setTimeout(this.pollStatus, 30 * 1000)
