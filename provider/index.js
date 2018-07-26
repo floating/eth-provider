@@ -31,6 +31,8 @@ class EthereumProvider extends EventEmitter {
     if (dev && index === 0) console.log(`\n\n\n\nA connection cycle started for provider with name: ${this.name}`)
     if (this.connection && this.connection.status === 'connected' && index >= this.connection.index) {
       if (dev) console.log('Stopping connection cycle becasuse we\'re already connected to a higher priority provider')
+    } else if (this.targets.length === 0) {
+      if (dev) console.log('No valid targets supplied')
     } else {
       if (dev) console.log('Trying to connect to: ' + this.targets[index].location)
       let {protocol, location} = this.targets[index]

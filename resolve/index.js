@@ -17,7 +17,7 @@ module.exports = (targets, presets) => {
     if (provider.protocol || provider.type === 'injected') {
       return true
     } else {
-      console.error('eth-provider | Invalid provider preset/location: "' + provider.location + '"')
+      console.log('eth-provider | Invalid provider preset/location: "' + provider.location + '"')
       return false
     }
   })

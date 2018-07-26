@@ -9,15 +9,15 @@ class HTTPConnection extends EventEmitter {
   constructor (_XHR, url, options) {
     super()
     XHR = _XHR
-    setTimeout(() => this.create(url, options), 0)
-  }
-  create (url, options) {
-    if (!XHR) return this.emit('error', new Error('No HTTP transport available'))
     this.connected = false
     this.ready = false
     this.subscriptions = false
     this.status = 'loading'
     this.post = {method: 'POST', headers: {'Content-Type': 'application/json'}}
+    setTimeout(() => this.create(url, options), 0)
+  }
+  create (url, options) {
+    if (!XHR) return this.emit('error', new Error('No HTTP transport available'))
     this.url = url
     this.pollId = uuid()
     this.initStatus()
@@ -56,7 +56,7 @@ class HTTPConnection extends EventEmitter {
           if (!response || !response.result) {
             this.connected = true
             this.ready = true
-            this.status = 'ready'
+            this.status = 'connected'
             this.emitStatus()
           } else {
             this.statusTimer = setTimeout(this.pollStatus, 30 * 1000)
