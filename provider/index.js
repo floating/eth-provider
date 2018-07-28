@@ -61,6 +61,7 @@ class EthereumProvider extends EventEmitter {
         this.emit('close')
         this.refresh()
       })
+      this.connection.on('status', status => this.updateStatus(status))
       this.connection.on('connect', () => {
         this.connection.target = this.targets[index]
         this.connection.index = index

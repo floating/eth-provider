@@ -19,7 +19,7 @@ class HTTPConnection extends EventEmitter {
   }
   create () {
     if (!XHR) return this.emit('error', new Error('No HTTP transport available'))
-    this.on('error', e => this.close())
+    this.on('error', () => { if (this.connected) this.close() })
     this.initStatus()
   }
   close () {
@@ -30,6 +30,7 @@ class HTTPConnection extends EventEmitter {
     this.connected = false
     this.status = 'closed'
     this.emit('close')
+    this.removeAllListeners()
   }
   setStatus (status) {
     if (this.status !== status) {
@@ -70,6 +71,7 @@ class HTTPConnection extends EventEmitter {
     this.send({jsonrpc: '2.0', method: 'eth_syncing', params: [], id: 1}, (err, response) => {
       if (err) return this.emit('error', err)
       this.connected = true
+      this.pollStatus()
       if (response.result) {
         this.setStatus('syncing')
         this.emit('connect')
@@ -81,7 +83,6 @@ class HTTPConnection extends EventEmitter {
         })
       }
     })
-    this.pollStatus()
   }
   filterStatus (res) {
     if (res.status >= 200 && res.status < 300) return res
