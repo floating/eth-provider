@@ -10,82 +10,78 @@ class HTTPConnection extends EventEmitter {
     super()
     XHR = _XHR
     this.connected = false
-    this.ready = false
     this.subscriptions = false
     this.status = 'loading'
-    this.post = {method: 'POST', headers: {'Content-Type': 'application/json'}}
-    setTimeout(() => this.create(url, options), 0)
-  }
-  create (url, options) {
-    if (!XHR) return this.emit('error', new Error('No HTTP transport available'))
     this.url = url
     this.pollId = uuid()
+    this.post = {method: 'POST', headers: {'Content-Type': 'application/json'}}
+    setTimeout(() => this.create(), 0)
+  }
+  create () {
+    if (!XHR) return this.emit('error', new Error('No HTTP transport available'))
+    this.on('error', e => this.close())
     this.initStatus()
   }
   close () {
+    if (this.status === 'closed') return
     if (dev) console.log('Closing HTTP connection')
     clearTimeout(this.statusTimer)
     clearTimeout(this.subscriptionTimer)
     this.connected = false
-    this.ready = false
-    this.status = 'disconnected'
+    this.status = 'closed'
+    this.emit('close')
   }
-  emitStatus () {
-    this.emit('status', {status: this.status})
+  setStatus (status) {
+    if (this.status !== status) {
+      this.status = status
+      this.emit('status', this.status)
+    }
   }
   pollSubscriptions () {
     clearTimeout(this.subscriptionTimer)
     if (this.subscriptions) {
+      this.subscriptionTimer = setTimeout(() => this.pollSubscriptions(), 4000)
       this.send({jsonrpc: '2.0', id: 1, method: 'eth_pollSubscriptions', params: [this.pollId]}, (err, response) => {
-        if (err) {
-          this.emit('error', err)
-        } else {
-          if (response && response.result) response.result.map(p => JSON.parse(p)).forEach(p => this.emit('data', p))
-          this.subscriptionTimer = setTimeout(() => this.pollSubscriptions(), 4 * 1000)
-        }
+        if (err) return this.emit('error', err)
+        if (response && response.result) response.result.map(p => JSON.parse(p)).forEach(p => this.emit('data', p))
       })
     }
   }
   pollStatus () {
     clearTimeout(this.statusTimer)
+    this.statusTimer = setTimeout(() => this.pollStatus(), 4000)
     if (this.status === 'syncing') {
-      this.send({jsonrpc: '2.0', id: 1, method: 'eth_syncing', params: [this.pollId]}, (err, response) => {
-        if (err) {
-          this.emit('error', err)
-        } else {
-          if (!response || !response.result) {
-            this.connected = true
-            this.ready = true
-            this.status = 'connected'
-            this.emitStatus()
-          } else {
-            this.statusTimer = setTimeout(this.pollStatus, 30 * 1000)
-          }
-        }
+      this.send({jsonrpc: '2.0', id: 1, method: 'eth_syncing', params: []}, (err, response) => {
+        if (err) return this.emit('error', err)
+        if (response.result) return this.setStatus('syncing')
+        this.send({jsonrpc: '2.0', id: 1, method: 'net_version', params: []}, (err, response) => {
+          if (err) return this.emit('error', err)
+          this.setStatus('connected')
+        })
+      })
+    } else {
+      this.send({jsonrpc: '2.0', id: 1, method: 'net_version', params: []}, (err, response) => {
+        if (err) return this.emit('error', err)
+        this.setStatus('connected')
       })
     }
   }
   initStatus () {
-    this.send({jsonrpc: '2.0', method: 'eth_syncing', params: [], id: 0}, (err, response) => {
-      if (err) {
-        this.emit('error', err)
+    this.send({jsonrpc: '2.0', method: 'eth_syncing', params: [], id: 1}, (err, response) => {
+      if (err) return this.emit('error', err)
+      this.connected = true
+      if (response.result) {
+        this.setStatus('syncing')
+        this.emit('connect')
       } else {
-        this.connected = true
-        if (response.result) {
-          this.ready = false
-          this.status = 'syncing'
-          this.pollStatus()
+        this.send({jsonrpc: '2.0', id: 1, method: 'eth_pollSubscriptions', params: [this.pollId]}, (err, response) => {
+          if (err) { this.subscriptions = false } else { this.subscriptions = true }
+          this.setStatus('connected')
           this.emit('connect')
-        } else {
-          this.send({jsonrpc: '2.0', id: 1, method: 'eth_pollSubscriptions', params: [this.pollId]}, (err, response) => {
-            if (err) { this.subscriptions = false } else { this.subscriptions = true }
-            this.ready = true
-            this.status = 'connected'
-            this.emit('connect')
-          })
-        }
+        })
       }
     })
+    this.pollStatus()
   }
   filterStatus (res) {
     if (res.status >= 200 && res.status < 300) return res
@@ -94,7 +90,7 @@ class HTTPConnection extends EventEmitter {
     throw error.message
   }
   send (payload, res) {
-    if (this.status === 'closed') return res(new Error('Not connected, provider has been closed'))
+    if (this.status === 'closed') return res(new Error('Not connected, connection has been closed'))
     if (payload.method === 'eth_subscribe') {
       if (this.subscriptions) {
         payload.pollId = this.pollId
@@ -111,7 +107,6 @@ class HTTPConnection extends EventEmitter {
       let err = new Error('HTTP Timeout')
       res(err)
       this.emit('error', err)
-      this.close()
     }
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4) {
