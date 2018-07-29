@@ -61,6 +61,7 @@ class EthereumProvider extends EventEmitter {
         this.emit('close')
         this.refresh()
       })
+      this.connection.on('status', status => this.updateStatus(status))
       this.connection.on('connect', () => {
         this.connection.target = this.targets[index]
         this.connection.index = index
@@ -82,7 +83,7 @@ class EthereumProvider extends EventEmitter {
   sendAsync (payload, res) {
     if (this.inSetup) {
       setTimeout(() => this.sendAsync(payload, res), 100)
-    } else if (this.connection && this.connection.ready) {
+    } else if (this.connection && this.connection.status === 'connected') {
       this.connection.send(payload, res)
     } else {
       res(new Error('Not connected'))
