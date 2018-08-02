@@ -46,6 +46,7 @@ class WebSocketConnection extends EventEmitter {
     this.connected = false
     this.status = 'closed'
     this.emit('close')
+    this.removeAllListeners()
   }
   onError (err) {
     this.emit('error', err)

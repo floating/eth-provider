@@ -94,6 +94,7 @@ class IPCConnection extends EventEmitter {
     this.status = 'closed'
     this.emit('close')
     this.errAllResCallbacks(new Error('IPC provider has been closed'))
+    this.removeAllListeners()
   }
   send (payload, res) {
     if (!this.socket || !this.socket.writable) {
