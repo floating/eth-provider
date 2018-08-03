@@ -9,15 +9,16 @@ class EthereumProvider extends EventEmitter {
     this.connections = connections
     this.connected = false
     this.status = 'loading'
+    this.interval = options.interval || 1000
     this.name = options.name || 'default'
     this.inSetup = true
     this.firstCycle = true
     this.connect()
   }
-  refresh (timeout = 1000) {
-    if (dev) console.log(`Reconnect queued for ${(timeout / 1000).toFixed(2)}s in the future`)
+  refresh (interval = this.interval) {
+    if (dev) console.log(`Reconnect queued for ${(interval / 1000).toFixed(2)}s in the future`)
     clearTimeout(this.connectTimer)
-    this.connectTimer = setTimeout(() => this.connect(), timeout)
+    this.connectTimer = setTimeout(() => this.connect(), interval)
   }
   onError (err) {
     if (dev) console.warn('An error event: ', err.message)
@@ -34,7 +35,6 @@ class EthereumProvider extends EventEmitter {
     } else if (this.targets.length === 0) {
       if (dev) console.log('No valid targets supplied')
     } else {
-      if (dev) console.log('Trying to connect to: ' + this.targets[index].location)
       let {protocol, location} = this.targets[index]
       this.connection = this.connections[protocol](location)
       let connectionError = err => {
@@ -56,7 +56,6 @@ class EthereumProvider extends EventEmitter {
         this.connected = false
         this.updateStatus('disconnected')
         if (this.connection) this.connection.close()
-        this.connection.removeAllListeners()
         this.connection = null
         this.emit('close')
         this.refresh()
