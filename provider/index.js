@@ -27,6 +27,7 @@ const monitor = provider => {
 }
 
 module.exports = (connections, targets, options) => {
+  if (connections.injected.ethereum) return monitor(connections.injected.ethereum)
   const provider = new EthereumProvider(new ConnectionManager(connections, targets, options))
   provider.setMaxListeners(128)
   return monitor(provider)

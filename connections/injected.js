@@ -1,9 +1,13 @@
 const EventEmitter = require('events')
 
 class InjectedConnection extends EventEmitter {
-  constructor (_injected, url, options) {
+  constructor (_injected, options) {
     super()
-    setTimeout(() => this.emit('error', new Error('Injected provider not yet available')), 0)
+    if (_injected.web3) {
+      setTimeout(() => this.emit('error', new Error('Injected provider via web3 is not supported')), 0)
+    } else {
+      setTimeout(() => this.emit('error', new Error('No injected provider not yet available')), 0)
+    }
   }
 }
 
