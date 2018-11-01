@@ -19,7 +19,7 @@
   "license": "GPL-3.0",
   "repository": "github:floating/eth-provider",
   "dependencies": {
-    "ethereum-provider": "0.0.1",
+    "ethereum-provider": "0.0.2",
     "oboe": "2.1.4",
     "uuid": "3.3.2",
     "ws": "6.1.0",
