@@ -11,7 +11,7 @@
 
 ### Notice
 * **Alpha software, eth-provider is a work in progress and not ready for production use**
-* Will evolve with [EIP 1193](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1193.md)
+* Evolving with [EIP 1193](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1193.md)
 * Testing and feedback is very much appreciated!
 
 ### Goals
@@ -38,7 +38,7 @@ const web3 = new Web3(provider())
 const provider = require('eth-provider')
 const web3 = new Web3(provider('wss://rinkeby.infura.io/ws'))
 ```
-* When passing in multiple RPC targets order them by priority 
+* When passing in multiple RPC targets order them by priority
 * When eth-provider fails to connect to a target it will automatically attempt to connect to the next priority target
 * For example `['injected', 'wss://rinkeby.infura.io/ws']` will first try to discover injected providers and if unsuccessful connect to the Infura endpoint
 ```js
@@ -54,10 +54,10 @@ const web3 = new Web3(provider('direct'))
 ### Presets
 * **`injected`** - Discover providers injected by environment, usually by the browser or a browser extension
   * Browser
-    * `['injected']` 
+    * `['injected']`
 * **`frame`** - Connect to [Frame](https://github.com/floating/frame) running on the user's device
   * Browser/Node/Electron
-    * `['ws://127.0.0.1:1248', 'http://127.0.0.1:1248']` 
+    * `['ws://127.0.0.1:1248', 'http://127.0.0.1:1248']`
 * **`direct`** - Connect to local Ethereum nodes running on the user's device
   * Browser
     * `['ws://127.0.0.1:8546', 'http://127.0.0.1:8545']`
@@ -69,5 +69,5 @@ const web3 = new Web3(provider('direct'))
 * **`infuraRinkeby`** - Connect to Rinkeby Infura
   * Browser/Node/Electron
     * `['wss://rinkeby.infura.io/ws', 'https://rinkeby.infura.io/upS1XaBx0l4b9ntUUVQv']`
-    
+
 If you do not pass any targets, eth-provider will use default targets `['injected', 'frame']` in the Browser and `['frame', 'direct']` in Node and Electron.

@@ -1,97 +1,37 @@
-const EventEmitter = require('events')
+const EthereumProvider = require('ethereum-provider')
+const ConnectionManager = require('../ConnectionManager')
 
-const dev = process.env.NODE_ENV === 'development'
-
-class EthereumProvider extends EventEmitter {
-  constructor (connections, targets, options) {
-    super()
-    this.targets = targets
-    this.connections = connections
-    this.connected = false
-    this.status = 'loading'
-    this.interval = options.interval || 1000
-    this.name = options.name || 'default'
-    this.inSetup = true
-    this.firstCycle = true
-    this.connect()
+const monitor = provider => {
+  function update (status) {
+    provider.status = status
+    provider.emit('status', status)
   }
-  refresh (interval = this.interval) {
-    if (dev) console.log(`Reconnect queued for ${(interval / 1000).toFixed(2)}s in the future`)
-    clearTimeout(this.connectTimer)
-    this.connectTimer = setTimeout(() => this.connect(), interval)
-  }
-  onError (err) {
-    if (dev) console.warn('An error event: ', err.message)
-    if (this.listenerCount('error')) this.emit('error', err)
-  }
-  updateStatus (status) {
-    this.status = status
-    this.emit('status', status)
-  }
-  connect (index = 0) {
-    if (dev && index === 0) console.log(`\n\n\n\nA connection cycle started for provider with name: ${this.name}`)
-    if (this.connection && this.connection.status === 'connected' && index >= this.connection.index) {
-      if (dev) console.log('Stopping connection cycle becasuse we\'re already connected to a higher priority provider')
-    } else if (this.targets.length === 0) {
-      if (dev) console.log('No valid targets supplied')
-    } else {
-      let {protocol, location} = this.targets[index]
-      this.connection = this.connections[protocol](location)
-      let connectionError = err => {
-        this.targets[index].status = err
-        if (this.targets.length - 1 === index) {
-          this.inSetup = false
-          if (dev) console.warn('eth-provider unable to connect to any targets, view connection cycle summary: ', this.targets)
-          this.updateStatus('disconnected')
-          this.refresh()
-        } else { // Not last target, move on the next connection option
-          this.connect(++index)
-        }
+  async function check () {
+    if (provider.inSetup) return setTimeout(check, 1000)
+    try {
+      if (await provider.send('eth_syncing')) {
+        update('syncing')
+        setTimeout(() => check(), 5000)
+      } else {
+        update('connected')
       }
-      this.connection.on('error', err => {
-        if (!this.connected) return connectionError(err)
-        this.onError(err)
-      })
-      this.connection.on('close', (summary) => {
-        this.connected = false
-        this.updateStatus('disconnected')
-        if (this.connection) this.connection.close()
-        this.connection = null
-        this.emit('close')
-        this.refresh()
-      })
-      this.connection.on('status', status => this.updateStatus(status))
-      this.connection.on('connect', () => {
-        this.connection.target = this.targets[index]
-        this.connection.index = index
-        this.targets[index].status = this.connection.status
-        this.connected = true
-        this.inSetup = false
-        this.updateStatus(this.connection.status)
-        if (dev) console.log('Successfully connected to: ' + this.targets[index].location)
-        this.emit('connect')
-      })
-      this.connection.on('data', data => this.emit('data', data))
+    } catch (e) {
+      update('disconnected')
     }
   }
-  close () {
-    if (this.connection) this.connection.close()
-    clearTimeout(this.connectTimer)
-    this.removeAllListeners()
-  }
-  sendAsync (payload, res) {
-    if (this.inSetup) {
-      setTimeout(() => this.sendAsync(payload, res), 100)
-    } else if (this.connection) {
-      this.connection.send(payload, res)
-    } else {
-      res(new Error('Not connected'))
-    }
-  }
+  update('loading')
+  check()
+  provider.on('connect', () => check())
+  provider.on('close', () => update('disconnected'))
+  return provider
 }
 
 module.exports = (connections, targets, options) => {
-  const provider = new EthereumProvider(connections, targets, options)
+  if (connections.injected.__isProvider) { // Short circuit if injected Ethereum provider
+    delete connections.injected.__isProvider
+    return monitor(connections.injected)
+  }
+  const provider = new EthereumProvider(new ConnectionManager(connections, targets, options))
   provider.setMaxListeners(128)
-  return provider
+  return monitor(provider)
 }

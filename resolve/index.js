@@ -9,9 +9,9 @@ const getProtocol = location => {
 module.exports = (targets, presets) => {
   return [].concat(...[].concat(targets).map(provider => {
     if (presets[provider]) {
-      return presets[provider].map(location => ({type: provider, location, protocol: getProtocol(location)}))
+      return presets[provider].map(location => ({ type: provider, location, protocol: getProtocol(location) }))
     } else {
-      return {type: 'custom', location: provider, protocol: getProtocol(provider)}
+      return { type: 'custom', location: provider, protocol: getProtocol(provider) }
     }
   })).filter(provider => {
     if (provider.protocol || provider.type === 'injected') {
