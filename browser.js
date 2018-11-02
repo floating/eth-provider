@@ -9,8 +9,10 @@ const injected = {
 const ws = typeof window !== 'undefined' && typeof window.WebSocket !== 'undefined' ? window.WebSocket : null
 const XHR = typeof window !== 'undefined' && typeof window.XMLHttpRequest !== 'undefined' ? window.XMLHttpRequest : null
 
+if (injected.ethereum) injected.ethereum.__isProvider = true
+
 const connections = {
-  injected: require('./connections/injected')(injected),
+  injected: injected.ethereum || require('./connections/injected')(injected.web3),
   ipc: require('./connections/unavailable')('IPC connections are unavliable in the browser'),
   ws: require('./connections/ws')(ws),
   http: require('./connections/http')(XHR)
