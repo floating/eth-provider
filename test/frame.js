@@ -39,3 +39,36 @@ describe('HTTP Provider (Frame)', () => {
     })
   })
 })
+
+describe('WebSocket Provider', () => {
+  let wsProvider = provider('http://127.0.0.1:1248')
+  let web3ws = new Web3(wsProvider)
+  describe('Subscribe via WS (please wait for next block)', () => {
+    it('should subscribe to newBlockHeaders', done => {
+      let sub = web3ws.eth.subscribe('newBlockHeaders', (err, result) => {
+        if (err) throw err
+        assert(result)
+        sub.unsubscribe((err, success) => {
+          if (err) throw err
+          assert(success)
+          done()
+        })
+      })
+    }).timeout(45 * 1000)
+  })
+  describe('Get accounts via WS', () => {
+    it('should return array', done => {
+      web3ws.eth.getAccounts().then(accounts => {
+        assert(Array.isArray(accounts))
+        wsProvider.close()
+        done()
+      }).catch(err => { throw err })
+    })
+    it('should error due to being closed', done => {
+      web3ws.eth.getAccounts().then().catch(err => {
+        assert(err.message === 'Not connected')
+        done()
+      })
+    })
+  })
+})
