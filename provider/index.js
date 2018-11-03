@@ -27,7 +27,8 @@ const monitor = provider => {
 }
 
 module.exports = (connections, targets, options) => {
-  if (connections.injected.__isProvider) { // Short circuit if injected Ethereum provider
+  // If window.ethereum and injected is a target in any priority, return ethereum provider
+  if (connections.injected.__isProvider && targets.map(t => t.type).indexOf('injected') > -1) {
     delete connections.injected.__isProvider
     return monitor(connections.injected)
   }
