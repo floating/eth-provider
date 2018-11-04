@@ -42,7 +42,13 @@ class HTTPConnection extends EventEmitter {
         return this.emit('error', err)
       } else {
         if (!this.closed) this.subscriptionTimeout = this.pollSubscriptions()
-        if (result) result.map(p => JSON.parse(p)).forEach(p => this.emit('payload', p))
+        if (result) {
+          result.map(p => {
+            let parse
+            try { parse = JSON.parse(p) } catch (e) { parse = false }
+            return parse
+          }).filter(n => n).forEach(p => this.emit('payload', p))
+        }
       }
     })
   }
@@ -88,7 +94,7 @@ class HTTPConnection extends EventEmitter {
     }
     try { this.post.body = JSON.stringify(payload) } catch (e) { return res(e) }
     xhr.open('POST', this.url, true)
-    xhr.timeout = 20000
+    xhr.timeout = 60 * 1000
     xhr.onerror = res
     xhr.ontimeout = res
     xhr.onreadystatechange = () => {
