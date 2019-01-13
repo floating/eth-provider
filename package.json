@@ -1,6 +1,6 @@
 {
   "name": "eth-provider",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A Universal Ethereum Provider",
   "browser": "browser.js",
   "main": "node.js",

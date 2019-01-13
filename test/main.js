@@ -5,7 +5,7 @@ const Web3 = require('web3')
 const provider = require('../')
 
 describe('WebSocket Provider', () => {
-  let wsProvider = provider('wss://rinkeby.infura.io/ws')
+  let wsProvider = provider('wss://rinkeby.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b')
   let web3ws = new Web3(wsProvider)
   describe('Subscribe via WS (please wait for next block)', () => {
     it('should subscribe to newBlockHeaders', done => {
@@ -38,7 +38,7 @@ describe('WebSocket Provider', () => {
 })
 
 describe('HTTP Provider', () => {
-  let httpProvider = provider('https://rinkeby.infura.io/upS1XaBx0l4b9ntUUVQv')
+  let httpProvider = provider('https://rinkeby.infura.io/v3/786ade30f36244469480aa5c2bf0743b')
   let web3http = new Web3(httpProvider)
   describe('Subscribe via HTTP', () => {
     it('should be unsupported', done => {
