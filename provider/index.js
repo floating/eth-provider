@@ -1,10 +1,11 @@
+const EventEmitter = require('events')
 const EthereumProvider = require('ethereum-provider')
 const ConnectionManager = require('../ConnectionManager')
 
 const monitor = provider => {
   function update (status) {
     provider.status = status
-    provider.emit('status', status)
+    if (provider instanceof EventEmitter) provider.emit('status', status)
   }
   async function check () {
     if (provider.inSetup) return setTimeout(check, 1000)
