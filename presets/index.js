@@ -1,4 +1,3 @@
-console.log('NEW ETH-PROVIDER PRESETS!!!')
 module.exports = {
   injected: ['injected'],
   frame: ['ws://127.0.0.1:1248', 'http://127.0.0.1:1248'],
