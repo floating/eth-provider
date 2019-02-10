@@ -4,13 +4,13 @@
 </div>
 <br>
 <br>
-<h3 align="center">A Universal Ethereum Provider</h3>
+<h3 align="center">A Universal Ethereum Provider Client</h3>
 <p align="center">Seamlessly connect to  <b>HTTP</b>, <b>WebSocket</b>, <b>IPC</b> and <b>Injected</b> RPC transports in <b>Node</b> and the <b>Browser</b>!</p>
 <br>
 <br>
 
 ### Notice
-* **Alpha software, eth-provider is a work in progress and not ready for production use**
+* **Alpha software, eth-provider is a work in progress**
 * Evolving with [EIP 1193](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1193.md)
 * Testing and feedback is very much appreciated!
 
