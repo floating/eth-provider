@@ -4,13 +4,13 @@
 </div>
 <br>
 <br>
-<h3 align="center">A Universal Ethereum Provider</h3>
+<h3 align="center">A Universal Ethereum Provider Client</h3>
 <p align="center">Seamlessly connect to  <b>HTTP</b>, <b>WebSocket</b>, <b>IPC</b> and <b>Injected</b> RPC transports in <b>Node</b> and the <b>Browser</b>!</p>
 <br>
 <br>
 
 ### Notice
-* **Alpha software, eth-provider is a work in progress and not ready for production use**
+* **Alpha software, eth-provider is a work in progress**
 * Evolving with [EIP 1193](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1193.md)
 * Testing and feedback is very much appreciated!
 
@@ -69,5 +69,11 @@ const web3 = new Web3(provider('direct'))
 * **`infuraRinkeby`** - Connect to Rinkeby Infura
   * Browser/Node/Electron
     * `['wss://rinkeby.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b', 'https://rinkeby.infura.io/v3/786ade30f36244469480aa5c2bf0743b']`
+* **`infuraRopsten`** - Connect to Ropsten Infura
+  * Browser/Node/Electron
+    * `['wss://ropsten.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b', 'https://ropsten.infura.io/v3/786ade30f36244469480aa5c2bf0743b']`
+* **`infuraKovan`** - Connect to Kovan Infura
+  * Browser/Node/Electron
+    * `['wss://kovan.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b', 'https://kovan.infura.io/v3/786ade30f36244469480aa5c2bf0743b']`
 
 If you do not pass any targets, eth-provider will use default targets `['injected', 'frame']` in the Browser and `['frame', 'direct']` in Node and Electron.
