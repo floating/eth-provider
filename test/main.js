@@ -18,7 +18,7 @@ describe('WebSocket Provider', () => {
           done()
         })
       })
-    }).timeout(45 * 1000)
+    }).timeout(25 * 1000)
   })
   describe('Get accounts via WS', () => {
     it('should return array', done => {
@@ -62,6 +62,53 @@ describe('HTTP Provider', () => {
     it('should error due to being closed', done => {
       web3http.eth.getAccounts().then().catch(err => {
         assert(err.message === 'Not connected')
+        done()
+      })
+    })
+  })
+})
+
+describe('Preset', () => {
+  describe('Mainnet', () => {
+    let web3 = new Web3(provider('infura'))
+    it('net_version', done => {
+      web3.eth.net.getId((err, netId) => {
+        if (err) throw err
+        assert(netId === 1)
+        web3.currentProvider.close()
+        done()
+      })
+    })
+  })
+  describe('Ropsten', () => {
+    let web3 = new Web3(provider('infuraRopsten'))
+    it('net_version', done => {
+      web3.eth.net.getId((err, netId) => {
+        if (err) throw err
+        assert(netId === 3)
+        web3.currentProvider.close()
+        done()
+      })
+    })
+  })
+  describe('Rinkeby', () => {
+    let web3 = new Web3(provider('infuraRinkeby'))
+    it('net_version', done => {
+      web3.eth.net.getId((err, netId) => {
+        if (err) throw err
+        assert(netId === 4)
+        web3.currentProvider.close()
+        done()
+      })
+    })
+  })
+  describe('Kovan', () => {
+    let web3 = new Web3(provider('infuraKovan'))
+    it('net_version', done => {
+      web3.eth.net.getId((err, netId) => {
+        if (err) throw err
+        assert(netId === 42)
+        web3.currentProvider.close()
         done()
       })
     })
