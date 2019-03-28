@@ -1,13 +1,12 @@
-/* globals it describe */
+/* globals describe it */
 
 const assert = require('assert')
 const Web3 = require('web3')
 const provider = require('../')
 
 describe('Test web3 is v1.x', () => {
-  it('major version should be 1', done => {
+  it('major version should be 1', () => {
     assert(new Web3().version[0] === '1')
-    done()
   })
 })
 
