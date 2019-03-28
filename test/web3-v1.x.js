@@ -1,12 +1,20 @@
-/* globals describe it */
+/* globals it describe */
 
 const assert = require('assert')
 const Web3 = require('web3')
 const provider = require('../')
 
+describe('Test web3 is v1.x', () => {
+  it('major version should be 1', done => {
+    assert(new Web3().version[0] === '1')
+    done()
+  })
+})
+
 describe('WebSocket Provider', () => {
   let wsProvider = provider('wss://rinkeby.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b')
   let web3ws = new Web3(wsProvider)
+  // v1.x specific
   describe('Subscribe via WS (please wait for next block)', () => {
     it('should subscribe to newBlockHeaders', done => {
       let sub = web3ws.eth.subscribe('newBlockHeaders', (err, result) => {
@@ -36,10 +44,10 @@ describe('WebSocket Provider', () => {
     })
   })
 })
-
 describe('HTTP Provider', () => {
   let httpProvider = provider('https://rinkeby.infura.io/v3/786ade30f36244469480aa5c2bf0743b')
   let web3http = new Web3(httpProvider)
+  // v1.x specific
   describe('Subscribe via HTTP', () => {
     it('should be unsupported', done => {
       web3http.eth.subscribe('newBlockHeaders', (err, result) => {
@@ -67,48 +75,51 @@ describe('HTTP Provider', () => {
     })
   })
 })
-
 describe('Preset', () => {
   describe('Mainnet', () => {
-    let web3 = new Web3(provider('infura'))
+    let p = provider('infura')
+    let web3 = new Web3(p)
     it('net_version', done => {
       web3.eth.net.getId((err, netId) => {
         if (err) throw err
         assert(netId === 1)
-        web3.currentProvider.close()
+        p.close()
         done()
       })
     })
   })
   describe('Ropsten', () => {
-    let web3 = new Web3(provider('infuraRopsten'))
+    let p = provider('infuraRopsten')
+    let web3 = new Web3(p)
     it('net_version', done => {
       web3.eth.net.getId((err, netId) => {
         if (err) throw err
         assert(netId === 3)
-        web3.currentProvider.close()
+        p.close()
         done()
       })
     })
   })
   describe('Rinkeby', () => {
-    let web3 = new Web3(provider('infuraRinkeby'))
+    let p = provider('infuraRinkeby')
+    let web3 = new Web3(p)
     it('net_version', done => {
       web3.eth.net.getId((err, netId) => {
         if (err) throw err
         assert(netId === 4)
-        web3.currentProvider.close()
+        p.close()
         done()
       })
     })
   })
   describe('Kovan', () => {
-    let web3 = new Web3(provider('infuraKovan'))
+    let p = provider('infuraKovan')
+    let web3 = new Web3(p)
     it('net_version', done => {
       web3.eth.net.getId((err, netId) => {
         if (err) throw err
         assert(netId === 42)
-        web3.currentProvider.close()
+        p.close()
         done()
       })
     })

@@ -4,6 +4,13 @@ const assert = require('assert')
 const Web3 = require('web3')
 const provider = require('../')
 
+describe('Test web3 is v1.x', () => {
+  it('major version should be 1', done => {
+    assert(new Web3().version[0] === '1')
+    done()
+  })
+})
+
 describe('HTTP Provider (Frame)', () => {
   let httpProvider = provider('http://127.0.0.1:1248')
   let web3http = new Web3(httpProvider)
