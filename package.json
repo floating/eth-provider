@@ -12,7 +12,7 @@
     "test:frame": "standard && npm install web3@1.0.0-beta.37 && mocha test/frame.js",
     "test:ipc": "standard && mocha test/ipc.js",
     "test:all": "standard && mocha",
-    "test:browser": "parcel test/browser.html --open",
+    "test:browser": "npm install web3@0.20.7 && parcel test/browser.html --open",
     "prepublishOnly": "npm run test"
   },
   "author": {
@@ -36,6 +36,6 @@
     "mocha": "5.2.0",
     "parcel-bundler": "^1.12.3",
     "standard": "12.0.1",
-    "web3": "^1.0.0-beta.37"
+    "web3": "^0.20.7"
   }
 }
