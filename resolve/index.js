@@ -1,5 +1,6 @@
 const getProtocol = location => {
   if (location === 'injected') return 'injected'
+  if (location === 'walletconnect') return 'walletconnect'
   if (location.endsWith('.ipc')) return 'ipc'
   if (location.startsWith('wss://') || location.startsWith('ws://')) return 'ws'
   if (location.startsWith('https://') || location.startsWith('http://')) return 'http'
