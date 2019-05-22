@@ -22,6 +22,8 @@
   "license": "GPL-3.0",
   "repository": "github:floating/eth-provider",
   "dependencies": {
+    "@walletconnect/browser": "^1.0.0-beta.22",
+    "@walletconnect/qrcode-modal": "^1.0.0-beta.22",
     "ethereum-provider": "0.0.6",
     "oboe": "2.1.4",
     "uuid": "3.3.2",
