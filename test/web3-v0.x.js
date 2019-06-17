@@ -73,6 +73,21 @@ describe('HTTP Provider', () => {
     })
   })
 })
+
+describe('WalletConnect Provider', () => {
+  let wcProvider = provider('walletconnect')
+  let web3wc = new Web3(wcProvider)
+  describe('Get accounts via WalletConnect', () => {
+    it('should error due to being closed', done => {
+      web3wc.eth.getAccounts(err => {
+        assert(err.message === 'Not connected')
+        wcProvider.close()
+        done()
+      })
+    }).timeout(25 * 1000)
+  })
+})
+
 describe('Preset', () => {
   describe('Mainnet', () => {
     let p = provider('infura')

@@ -22,7 +22,8 @@ const connections = {
   injected: require('./connections/unavailable')('Injected connections are unavliable in Node/Electron'),
   ipc: require('./connections/ipc')(net),
   ws: require('./connections/ws')(ws),
-  http: require('./connections/http')(XHR)
+  http: require('./connections/http')(XHR),
+  walletconnect: require('./connections/unavailable')('WalletConnect is currently unavailable in Node/Electron')
 }
 
 module.exports = (targets = ['injected', 'frame'], options = {}) => provider(connections, resolve(targets, presets), options)
