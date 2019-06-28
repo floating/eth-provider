@@ -18,7 +18,7 @@
   "author": {
     "name": "Jordan Muir",
     "email": "jordan@frame.sh",
-    "url": "https//frame.sh"
+    "url": "https://frame.sh"
   },
   "license": "GPL-3.0",
   "repository": "github:floating/eth-provider",
@@ -26,6 +26,7 @@
     "@walletconnect/browser": "^1.0.0-beta.22",
     "@walletconnect/qrcode-modal": "^1.0.0-beta.22",
     "ethereum-provider": "0.0.6",
+    "evm-chains": "^0.1.1",
     "oboe": "2.1.4",
     "uuid": "3.3.2",
     "ws": "6.1.0",
