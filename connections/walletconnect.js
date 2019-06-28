@@ -164,20 +164,27 @@ class WalletConnectConnection extends EventEmitter {
 
   updateRpcUrl(chain) {
     const { chainId, rpc } = chain
+    let rpcUrl = ''
     if (rpc.length) {
       if (this.infuraId) {
         const matches = rpc.filter(rpcUrl => rpcUrl.inclues('infura.io'))
         if (matches && matches.length) {
-          this.rpcUrl = matches[0].replace("${INFURA_API_KEY}", this.infuraId)
+          rpcUrl = matches[0].replace("${INFURA_API_KEY}", this.infuraId)
         } else {
-          this.rpcUrl = rpc[0]
+          rpcUrl = rpc[0]
         }
       }
     } else {
-      this.rpcUrl = this.getPresetRpcUrl(chainId)
+      rpcUrl = this.getPresetRpcUrl(chainId)
     }
-    // Handle httpConnection update
-    this.updateHttpConnection()
+    if (rpcUrl) {
+      // Update rpcUrl 
+      this.rpcUrl = rpcUrl
+      // Handle httpConnection update
+      this.updateHttpConnection()
+    } else {
+      this.emit('error', new Error(`No RPC Url avaialble for chainId: ${chainId}`))
+    }
   }
 
   updateHttpConnection = (options) => {
