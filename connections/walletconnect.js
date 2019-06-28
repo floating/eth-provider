@@ -1,5 +1,5 @@
 const { getChain } = require('evm-chains')
-const { convertNumberToHex } = require('@walletconnect/browser')
+const { convertNumberToHex } = require('@walletconnect/utils')
 const EventEmitter = require('events')
 const presets = require('../presets')
 const dev = process.env.NODE_ENV === 'development'
