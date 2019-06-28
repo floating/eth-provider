@@ -106,11 +106,13 @@ class WalletConnectConnection extends EventEmitter {
     ]
     if (this.wc && this.wc.connected) {
       if (signingMethods.includes(payload.method)) {
-        return await this.wc.sendCustomRequest(payload)
+        const response = await this.wc.unsafeSend(payload)
+        this.emit('payload', response)
       } else if (stateMethods.includes(payload.method)) {
-        return await this.handleStateMethods(payload)
+        const response = await this.handleStateMethods(payload)
+        this.emit('payload', response)
       } else {
-        return await this.httpConnection.send(payload)
+        await this.httpConnection.send(payload)
       }
     } else {
       return this.error(payload, 'Not connected')
@@ -118,29 +120,26 @@ class WalletConnectConnection extends EventEmitter {
   }
 
   async handleStateMethods(payload) {
+    const response = {
+      id: payload.id,
+      jsonrpc: payload.jsonrpc,
+      result
+    }
     switch (payload.method) {
       case 'eth_accounts':
-        return {
-          id: payload.id,
-          jsonrpc: payload.jsonrpc,
-          result: this.accounts
-        }
+        response.result = this.accounts
+        break;
       case 'eth_chainId':
-        return {
-          id: payload.id,
-          jsonrpc: payload.jsonrpc,
-          result: convertNumberToHex(this.chainId)
-        }
+        response.result = convertNumberToHex(this.chainId)
+        break;
 
       case 'net_version':
-        return {
-          id: payload.id,
-          jsonrpc: payload.jsonrpc,
-          result: this.networkId
-        }
+        response.result = this.networkId
+        break;
       default:
         break;
     }
+    return response
   }
 
   async updateChain(chainId) {
@@ -194,6 +193,8 @@ class WalletConnectConnection extends EventEmitter {
   updateHttpConnection = (options) => {
     if (this.rpcUrl) {
       this.httpConnection = new HTTPConnection(XHR, this.rpcUrl, options)
+      this.httpConnection.on('payload', payload => this.emit('payload', payload))
+      this.httpConnection.on('error', error => this.emit('error', error))
     }
   }
 
