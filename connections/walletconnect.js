@@ -108,34 +108,38 @@ class WalletConnectConnection extends EventEmitter {
       if (signingMethods.includes(payload.method)) {
         return await this.wc.sendCustomRequest(payload)
       } else if (stateMethods.includes(payload.method)) {
-        switch (payload.method) {
-          case 'eth_accounts':
-            return {
-              id: payload.id,
-              jsonrpc: payload.jsonrpc,
-              result: this.accounts
-            }
-          case 'eth_chainId':
-            return {
-              id: payload.id,
-              jsonrpc: payload.jsonrpc,
-              result: convertNumberToHex(this.chainId)
-            }
-
-          case 'net_version':
-            return {
-              id: payload.id,
-              jsonrpc: payload.jsonrpc,
-              result: this.networkId
-            }
-          default:
-            break;
-        }
+        return await this.handleStateMethods(payload)
       } else {
         return await this.httpConnection.send(payload)
       }
     } else {
       return this.error(payload, 'Not connected')
+    }
+  }
+
+  async handleStateMethods(payload) {
+    switch (payload.method) {
+      case 'eth_accounts':
+        return {
+          id: payload.id,
+          jsonrpc: payload.jsonrpc,
+          result: this.accounts
+        }
+      case 'eth_chainId':
+        return {
+          id: payload.id,
+          jsonrpc: payload.jsonrpc,
+          result: convertNumberToHex(this.chainId)
+        }
+
+      case 'net_version':
+        return {
+          id: payload.id,
+          jsonrpc: payload.jsonrpc,
+          result: this.networkId
+        }
+      default:
+        break;
     }
   }
 
