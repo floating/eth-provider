@@ -14,7 +14,6 @@ class HTTPConnection extends EventEmitter {
     this.status = 'loading'
     this.url = url
     this.pollId = uuid()
-    this.post = { method: 'POST', headers: { 'Content-Type': 'application/json' } }
     setTimeout(() => this.create(), 0)
   }
 
@@ -99,8 +98,8 @@ class HTTPConnection extends EventEmitter {
         }
       }
     }
-    try { this.post.body = JSON.stringify(payload) } catch (e) { return res(e) }
     xhr.open('POST', this.url, true)
+    xhr.setRequestHeader('Content-Type', 'application/json')
     xhr.timeout = 60 * 1000
     xhr.onerror = res
     xhr.ontimeout = res
