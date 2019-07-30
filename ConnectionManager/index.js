@@ -14,6 +14,7 @@ class ConnectionManager extends EventEmitter {
     this.inSetup = true
     this.connect()
   }
+
   connect (index = 0) {
     if (dev && index === 0) console.log(`\n\n\n\nA connection cycle started for provider with name: ${this.name}`)
 
@@ -22,7 +23,7 @@ class ConnectionManager extends EventEmitter {
     } else if (this.targets.length === 0) {
       if (dev) console.log('No valid targets supplied')
     } else {
-      let { protocol, location } = this.targets[index]
+      const { protocol, location } = this.targets[index]
       this.connection = this.connections[protocol](location)
 
       this.connection.on('error', err => {
@@ -50,11 +51,13 @@ class ConnectionManager extends EventEmitter {
       this.connection.on('payload', payload => this.emit('payload', payload))
     }
   }
+
   refresh (interval = this.interval) {
     if (dev) console.log(`Reconnect queued for ${(interval / 1000).toFixed(2)}s in the future`)
     clearTimeout(this.connectTimer)
     this.connectTimer = setTimeout(() => this.connect(), interval)
   }
+
   connectionError (index, err) {
     this.targets[index].status = err
     if (this.targets.length - 1 === index) {
@@ -65,6 +68,7 @@ class ConnectionManager extends EventEmitter {
       this.connect(++index)
     }
   }
+
   close () {
     this.closing = true
     if (this.connection) {
@@ -74,9 +78,11 @@ class ConnectionManager extends EventEmitter {
     }
     clearTimeout(this.connectTimer)
   }
+
   error (payload, message, code = -1) {
     this.emit('payload', { id: payload.id, jsonrpc: payload.jsonrpc, error: { message, code } })
   }
+
   send (payload) {
     if (this.inSetup) {
       setTimeout(() => this.send(payload), 100)

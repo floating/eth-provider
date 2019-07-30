@@ -10,6 +10,7 @@ class WebSocketConnection extends EventEmitter {
     WebSocket = _WebSocket
     setTimeout(() => this.create(url, options), 0)
   }
+
   create (url, options) {
     if (!WebSocket) this.emit('error', new Error('No WebSocket transport available'))
     try { this.socket = new WebSocket(url) } catch (e) { return this.emit('error', e) }
@@ -17,7 +18,7 @@ class WebSocketConnection extends EventEmitter {
     this.socket.addEventListener('open', () => {
       this.emit('connect')
       this.socket.addEventListener('message', message => {
-        let data = typeof message.data === 'string' ? message.data : ''
+        const data = typeof message.data === 'string' ? message.data : ''
         parse(data, (err, payloads) => {
           if (err) return //
           payloads.forEach(load => {
@@ -32,6 +33,7 @@ class WebSocketConnection extends EventEmitter {
       this.socket.addEventListener('close', () => this.onClose())
     })
   }
+
   onClose () {
     this.socket = null
     this.closed = true
@@ -39,6 +41,7 @@ class WebSocketConnection extends EventEmitter {
     this.emit('close')
     this.removeAllListeners()
   }
+
   close () {
     if (this.socket) {
       this.socket.close()
@@ -46,9 +49,11 @@ class WebSocketConnection extends EventEmitter {
       this.onClose()
     }
   }
+
   error (payload, message, code = -1) {
     this.emit('payload', { id: payload.id, jsonrpc: payload.jsonrpc, error: { message, code } })
   }
+
   send (payload) {
     if (this.socket && this.socket.readyState === this.socket.CONNECTING) {
       setTimeout(_ => this.send(payload), 10)

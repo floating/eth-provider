@@ -1,15 +1,15 @@
 {
   "name": "eth-provider",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "A Universal Ethereum Provider",
   "browser": "browser.js",
   "main": "node.js",
   "scripts": {
     "test": "standard && npm run test:web3:v0 && npm run test:web3:v1",
     "test:web3:v0": "npm install web3@0.20.7 && mocha test/web3-v0.x.js",
-    "test:web3:v1": "npm install web3@1.0.0-beta.37 && mocha test/web3-v1.x.js",
+    "test:web3:v1": "npm install web3@1.2.0 && mocha test/web3-v1.x.js",
     "test:web3:latest": "npm install web3@latest && mocha test/web3-v1.x.js",
-    "test:frame": "standard && npm install web3@1.0.0-beta.37 && mocha test/frame.js",
+    "test:frame": "standard && npm install web3@1.2.0 && mocha test/frame.js",
     "test:ipc": "standard && mocha test/ipc.js",
     "test:all": "standard && mocha",
     "prepublishOnly": "npm run test"
@@ -25,12 +25,12 @@
     "ethereum-provider": "0.0.6",
     "oboe": "2.1.4",
     "uuid": "3.3.2",
-    "ws": "6.1.0",
+    "ws": "7.1.1",
     "xhr2-cookies": "1.1.0"
   },
   "devDependencies": {
-    "mocha": "5.2.0",
-    "standard": "12.0.1",
-    "web3": "^1.0.0-beta.37"
+    "mocha": "6.2.0",
+    "standard": "13.1.0",
+    "web3": "^1.2.0"
   }
 }

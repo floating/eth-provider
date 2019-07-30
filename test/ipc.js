@@ -5,11 +5,11 @@ const Web3 = require('web3')
 const provider = require('../')
 
 describe('IPC Provider', () => {
-  let ipcProvider = provider('direct')
-  let web3ipc = new Web3(ipcProvider)
+  const ipcProvider = provider('direct')
+  const web3ipc = new Web3(ipcProvider)
   describe('Subscribe via IPC (please wait for next block)', () => {
     it('should subscribe to newBlockHeaders', done => {
-      let sub = web3ipc.eth.subscribe('newBlockHeaders', (err, result) => {
+      const sub = web3ipc.eth.subscribe('newBlockHeaders', (err, result) => {
         if (err) throw err
         assert(result)
         sub.unsubscribe((err, success) => {

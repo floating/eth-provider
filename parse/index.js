@@ -1,7 +1,7 @@
 let last, timeout
 
 module.exports = (res, cb) => {
-  let values = []
+  const values = []
   res
     .replace(/\}[\n\r]?\{/g, '}|--|{') // }{
     .replace(/\}\][\n\r]?\[\{/g, '}]|--|[{') // }][{

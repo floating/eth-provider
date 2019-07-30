@@ -11,6 +11,7 @@ class IPCConnection extends EventEmitter {
     net = _net
     setTimeout(() => this.create(path, options), 0)
   }
+
   create (path, options) {
     if (!net) return this.emit('error', new Error('No IPC transport'))
     this.socket = net.connect({ path })
@@ -28,6 +29,7 @@ class IPCConnection extends EventEmitter {
     })
     this.socket.on('error', err => this.emit('error', err))
   }
+
   onClose () {
     this.socket = null
     this.closed = true
@@ -35,6 +37,7 @@ class IPCConnection extends EventEmitter {
     this.emit('close')
     this.removeAllListeners()
   }
+
   close () {
     if (this.socket) {
       this.socket.destroy()
@@ -42,15 +45,18 @@ class IPCConnection extends EventEmitter {
       this.onClose()
     }
   }
+
   emitPayloads (payloads) {
     payloads.forEach(load => {
       if (Array.isArray(load)) return load.forEach(payload => this.emit('payload', payload))
       this.emit('payload', load)
     })
   }
+
   error (payload, message, code = -1) {
     this.emit('payload', Object.assign(payload, { error: { message, code } }))
   }
+
   send (payload) {
     if (!this.socket || !this.socket.writable) {
       this.error(payload, 'Not connected')

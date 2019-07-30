@@ -11,11 +11,11 @@ describe('Test web3 is v1.x', () => {
 })
 
 describe('HTTP Provider (Frame)', () => {
-  let httpProvider = provider('http://127.0.0.1:1248')
-  let web3http = new Web3(httpProvider)
+  const httpProvider = provider('http://127.0.0.1:1248')
+  const web3http = new Web3(httpProvider)
   describe('Subscribe via HTTP (please wait for next block)', () => {
     it('should subscribe to newBlockHeaders', done => {
-      let sub = web3http.eth.subscribe('newBlockHeaders', (err, result) => {
+      const sub = web3http.eth.subscribe('newBlockHeaders', (err, result) => {
         if (err) throw err
         assert(result)
         sub.unsubscribe((err, success) => {
@@ -47,11 +47,11 @@ describe('HTTP Provider (Frame)', () => {
 })
 
 describe('WebSocket Provider', () => {
-  let wsProvider = provider('http://127.0.0.1:1248')
-  let web3ws = new Web3(wsProvider)
+  const wsProvider = provider('http://127.0.0.1:1248')
+  const web3ws = new Web3(wsProvider)
   describe('Subscribe via WS (please wait for next block)', () => {
     it('should subscribe to newBlockHeaders', done => {
-      let sub = web3ws.eth.subscribe('newBlockHeaders', (err, result) => {
+      const sub = web3ws.eth.subscribe('newBlockHeaders', (err, result) => {
         if (err) throw err
         assert(result)
         sub.unsubscribe((err, success) => {

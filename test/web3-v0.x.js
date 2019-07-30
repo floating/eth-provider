@@ -11,8 +11,8 @@ describe('Test web3 is v0.x', () => {
 })
 
 describe('WebSocket Provider', () => {
-  let wsProvider = provider('wss://rinkeby.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b')
-  let web3ws = new Web3(wsProvider)
+  const wsProvider = provider('wss://rinkeby.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b')
+  const web3ws = new Web3(wsProvider)
   describe('Get accounts via WS', () => {
     it('should return array', done => {
       web3ws.eth.getAccounts((err, accounts) => {
@@ -31,13 +31,13 @@ describe('WebSocket Provider', () => {
   })
 })
 describe('HTTP Provider', () => {
-  let httpProvider = provider('https://rinkeby.infura.io/v3/786ade30f36244469480aa5c2bf0743b')
-  let web3http = new Web3(httpProvider)
+  const httpProvider = provider('https://rinkeby.infura.io/v3/786ade30f36244469480aa5c2bf0743b')
+  const web3http = new Web3(httpProvider)
   // v0.x specific
   describe('Batch requests', () => {
     it('process batch requests', done => {
       let count = 0
-      let batch = web3http.createBatch()
+      const batch = web3http.createBatch()
       batch.add(web3http.eth.getAccounts.request((err, accounts) => {
         if (err) throw err
         assert(Array.isArray(accounts))
@@ -75,8 +75,8 @@ describe('HTTP Provider', () => {
 })
 describe('Preset', () => {
   describe('Mainnet', () => {
-    let p = provider('infura')
-    let web3 = new Web3(p)
+    const p = provider('infura')
+    const web3 = new Web3(p)
     it('net_version', done => {
       web3.version.getNetwork((err, netId) => {
         if (err) throw err
@@ -87,8 +87,8 @@ describe('Preset', () => {
     })
   })
   describe('Ropsten', () => {
-    let p = provider('infuraRopsten')
-    let web3 = new Web3(p)
+    const p = provider('infuraRopsten')
+    const web3 = new Web3(p)
     it('net_version', done => {
       web3.version.getNetwork((err, netId) => {
         if (err) throw err
@@ -99,8 +99,8 @@ describe('Preset', () => {
     })
   })
   describe('Rinkeby', () => {
-    let p = provider('infuraRinkeby')
-    let web3 = new Web3(p)
+    const p = provider('infuraRinkeby')
+    const web3 = new Web3(p)
     it('net_version', done => {
       web3.version.getNetwork((err, netId) => {
         if (err) throw err
@@ -111,8 +111,8 @@ describe('Preset', () => {
     })
   })
   describe('Kovan', () => {
-    let p = provider('infuraKovan')
-    let web3 = new Web3(p)
+    const p = provider('infuraKovan')
+    const web3 = new Web3(p)
     it('net_version', done => {
       web3.version.getNetwork((err, netId) => {
         if (err) throw err
