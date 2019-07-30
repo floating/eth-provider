@@ -10,7 +10,6 @@
 <br>
 
 ### Notice
-* **Alpha software, eth-provider is a work in progress**
 * Evolving with [EIP 1193](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1193.md)
 * Testing and feedback is very much appreciated!
 
