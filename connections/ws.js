@@ -13,7 +13,7 @@ class WebSocketConnection extends EventEmitter {
 
   create (url, options) {
     if (!WebSocket) this.emit('error', new Error('No WebSocket transport available'))
-    try { this.socket = new WebSocket(url) } catch (e) { return this.emit('error', e) }
+    try { this.socket = new WebSocket(url, [], { origin: options.origin }) } catch (e) { return this.emit('error', e) }
     this.socket.addEventListener('error', err => this.emit('error', err))
     this.socket.addEventListener('open', () => {
       this.emit('connect')

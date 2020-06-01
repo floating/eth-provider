@@ -6,6 +6,7 @@ class ConnectionManager extends EventEmitter {
   constructor (connections, targets, options) {
     super()
     this.targets = targets
+    this.options = options
     this.connections = connections
     this.connected = false
     this.status = 'loading'
@@ -24,7 +25,7 @@ class ConnectionManager extends EventEmitter {
       if (dev) console.log('No valid targets supplied')
     } else {
       const { protocol, location } = this.targets[index]
-      this.connection = this.connections[protocol](location)
+      this.connection = this.connections[protocol](location, this.options)
 
       this.connection.on('error', err => {
         if (!this.connected) return this.connectionError(index, err)

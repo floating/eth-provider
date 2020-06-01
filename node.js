@@ -14,9 +14,8 @@ if (process.platform === 'darwin') {
 } else if (process.platform === 'freebsd' || process.platform === 'linux' || process.platform === 'sunos') {
   ipc = [`${home}/.ethereum/geth.ipc`, `${home}/.ethereum/rinkeby/geth.ipc`]
 } else if (process.platform === 'win32') {
-  ipc = [`\\\\.\\pipe\\geth.ipc`]
+  ipc = ['\\\\.\\pipe\\geth.ipc']
 }
-presets.direct = ipc.concat(presets.direct)
 
 const connections = {
   injected: require('./connections/unavailable')('Injected connections are unavliable in Node/Electron'),
@@ -25,4 +24,19 @@ const connections = {
   http: require('./connections/http')(XHR)
 }
 
-module.exports = (targets = ['injected', 'frame'], options = {}) => provider(connections, resolve(targets, presets), options)
+module.exports = (targets, options) => {
+  if (typeof targets === 'string') targets = [targets]
+  if (targets && !Array.isArray(targets) && typeof targets === 'object' && !options) {
+    options = targets
+    targets = undefined
+  }
+  if (!targets) targets = ['injected', 'frame']
+  if (!options) options = {}
+
+  if (targets.indexOf('infura') > -1 && !options.infuraId) throw new Error('Infura was included as a connection target but no Infura project ID was passed in options e.g. { infuraId: \'123abc\' }')
+
+  const sets = presets(options)
+  sets.direct = ipc.concat(sets.direct)
+
+  return provider(connections, resolve(targets, sets), options)
+}

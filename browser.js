@@ -18,4 +18,17 @@ const connections = {
   http: require('./connections/http')(XHR)
 }
 
-module.exports = (targets = ['injected', 'frame'], options = {}) => provider(connections, resolve(targets, presets), options)
+module.exports = (targets, options) => {
+  if (targets && !Array.isArray(targets) && typeof targets === 'object' && !options) {
+    options = targets
+    targets = undefined
+  }
+  if (!targets) targets = ['injected', 'frame']
+  if (!options) options = {}
+
+  if (targets.indexOf('infura') > -1 && !options.infuraId) throw new Error('Infura was included as a connection target but no Infura project ID was passed in options e.g. { infuraId: \'123abc\' }')
+
+  const sets = presets(options)
+
+  return provider(connections, resolve(targets, sets), options)
+}

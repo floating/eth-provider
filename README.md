@@ -9,16 +9,12 @@
 <br>
 <br>
 
-### Notice
-* Evolving with [EIP 1193](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1193.md)
-* Testing and feedback is very much appreciated!
-
 ### Goals
-* Support all transport types
-* Attempt connection to an array of RPC endpoints until success
+* Follows [EIP 1193](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1193.md) Spec
+* Support all transport types (websocket, http, ipc & injected)
+* Attempt connection to an array of RPC endpoints until successful connection
 * Reconnect when connection is lost
 * Emit helpful status updates so apps can handle changes gracefully
-* Implement `eth_pollSubscriptions` method for HTTP subscriptions (supported by [Frame](https://github.com/floating/frame))
 
 ### Install
 ```
@@ -26,6 +22,7 @@ npm install eth-provider --save
 ```
 
 ### Use
+
 ```js
 const provider = require('eth-provider')
 const web3 = new Web3(provider())
@@ -35,14 +32,14 @@ const web3 = new Web3(provider())
 * You can override these defaults by passing in your own RPC targets
 ```js
 const provider = require('eth-provider')
-const web3 = new Web3(provider('wss://rinkeby.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b'))
+const web3 = new Web3(provider('wss://rinkeby.infura.io/ws/v3/${INFURA_ID}))
 ```
 * When passing in multiple RPC targets order them by priority
 * When eth-provider fails to connect to a target it will automatically attempt to connect to the next priority target
-* For example `['injected', 'wss://rinkeby.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b']` will first try to discover injected providers and if unsuccessful connect to the Infura endpoint
+* For example `['injected', 'wss://rinkeby.infura.io/ws/v3/${INFURA_ID}']` will first try to discover injected providers and if unsuccessful connect to the Infura endpoint
 ```js
 const provider = require('eth-provider')
-const web3 = new Web3(provider(['injected', 'wss://rinkeby.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b']))
+const web3 = new Web3(provider(['injected', 'wss://rinkeby.infura.io/ws/v3/${INFURA_ID}']))
 ```
 * In Node and Electron you'll have access to IPC endpoints created by Geth or Parity that cannot be accessed by the Browser. You can connect to these by using the `'direct'` preset, or by passing custom IPC paths
 ```js
@@ -64,15 +61,26 @@ const web3 = new Web3(provider('direct'))
     * `[/* Default IPC paths for platform */, 'ws://127.0.0.1:8546', 'http://127.0.0.1:8545']`
 * **`infura`** - Connect to Mainnet Infura
   * Browser/Node/Electron
-    * `['wss://mainnet.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b', 'https://mainnet.infura.io/v3/786ade30f36244469480aa5c2bf0743b']`
+    * `['wss://mainnet.infura.io/ws/v3/${INFURA_ID}', 'https://mainnet.infura.io/v3/${INFURA_ID}']`
 * **`infuraRinkeby`** - Connect to Rinkeby Infura
   * Browser/Node/Electron
-    * `['wss://rinkeby.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b', 'https://rinkeby.infura.io/v3/786ade30f36244469480aa5c2bf0743b']`
+    * `['wss://rinkeby.infura.io/ws/v3/${INFURA_ID}', 'https://rinkeby.infura.io/v3/${INFURA_ID}']`
 * **`infuraRopsten`** - Connect to Ropsten Infura
   * Browser/Node/Electron
-    * `['wss://ropsten.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b', 'https://ropsten.infura.io/v3/786ade30f36244469480aa5c2bf0743b']`
+    * `['wss://ropsten.infura.io/ws/v3/${INFURA_ID}', 'https://ropsten.infura.io/v3/${INFURA_ID}']`
 * **`infuraKovan`** - Connect to Kovan Infura
   * Browser/Node/Electron
-    * `['wss://kovan.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b', 'https://kovan.infura.io/v3/786ade30f36244469480aa5c2bf0743b']`
+    * `['wss://kovan.infura.io/ws/v3/${INFURA_ID}', 'https://kovan.infura.io/v3/${INFURA_ID}']`
 
 If you do not pass any targets, eth-provider will use default targets `['injected', 'frame']` in the Browser and `['frame', 'direct']` in Node and Electron.
+
+### Options
+
+When creating the provider you can also pass an options object
+
+* `infuraId` - Your projects Infura ID
+* `origin` - Used when connecting from outside of a browser env to declare you're origin (this currently doesn't work with HTTP connections)
+
+`provider('infura', { infuraId: '123abc' })` or `provider({ origin: 'DappName', infuraId: '123abc' })`
+
+The origin setting will only be applied when a dapp is connecting to from outside of a browser env. 

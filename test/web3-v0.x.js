@@ -75,7 +75,7 @@ describe('HTTP Provider', () => {
 })
 describe('Preset', () => {
   describe('Mainnet', () => {
-    const p = provider('infura')
+    const p = provider('infura', { infuraId: '786ade30f36244469480aa5c2bf0743b' })
     const web3 = new Web3(p)
     it('net_version', done => {
       web3.version.getNetwork((err, netId) => {
@@ -87,7 +87,7 @@ describe('Preset', () => {
     })
   })
   describe('Ropsten', () => {
-    const p = provider('infuraRopsten')
+    const p = provider('infuraRopsten', { infuraId: '786ade30f36244469480aa5c2bf0743b' })
     const web3 = new Web3(p)
     it('net_version', done => {
       web3.version.getNetwork((err, netId) => {
@@ -99,7 +99,7 @@ describe('Preset', () => {
     })
   })
   describe('Rinkeby', () => {
-    const p = provider('infuraRinkeby')
+    const p = provider('infuraRinkeby', { infuraId: '786ade30f36244469480aa5c2bf0743b' })
     const web3 = new Web3(p)
     it('net_version', done => {
       web3.version.getNetwork((err, netId) => {
@@ -111,7 +111,7 @@ describe('Preset', () => {
     })
   })
   describe('Kovan', () => {
-    const p = provider('infuraKovan')
+    const p = provider('infuraKovan', { infuraId: '786ade30f36244469480aa5c2bf0743b' })
     const web3 = new Web3(p)
     it('net_version', done => {
       web3.version.getNetwork((err, netId) => {

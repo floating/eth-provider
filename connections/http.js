@@ -1,5 +1,5 @@
 const EventEmitter = require('events')
-const uuid = require('uuid/v4')
+const { v4: uuid } = require('uuid')
 
 const dev = process.env.NODE_ENV === 'development'
 
@@ -9,6 +9,7 @@ class HTTPConnection extends EventEmitter {
   constructor (_XHR, url, options) {
     super()
     XHR = _XHR
+    this.options = options
     this.connected = false
     this.subscriptions = false
     this.status = 'loading'
@@ -100,6 +101,8 @@ class HTTPConnection extends EventEmitter {
     }
     xhr.open('POST', this.url, true)
     xhr.setRequestHeader('Content-Type', 'application/json')
+    // Below not working becasue XHR lib blocks it claiming "restricted header"
+    // if (this.options.origin) xhr.setRequestHeader('Origin', this.options.origin)
     xhr.timeout = 60 * 1000
     xhr.onerror = res
     xhr.ontimeout = res

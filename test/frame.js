@@ -11,7 +11,7 @@ describe('Test web3 is v1.x', () => {
 })
 
 describe('HTTP Provider (Frame)', () => {
-  const httpProvider = provider('http://127.0.0.1:1248')
+  const httpProvider = provider('http://127.0.0.1:1248', { origin: 'HTTPProviderOriginTest' }) // Origin settings currently don't work for HTTP connections
   const web3http = new Web3(httpProvider)
   describe('Subscribe via HTTP (please wait for next block)', () => {
     it('should subscribe to newBlockHeaders', done => {

@@ -1,36 +1,39 @@
 {
   "name": "eth-provider",
-  "version": "0.2.5",
+  "version": "0.4.0",
   "description": "A Universal Ethereum Provider",
   "browser": "browser.js",
   "main": "node.js",
   "scripts": {
-    "test": "standard && npm run test:web3:v0 && npm run test:web3:v1",
+    "test": "standard && npm run test:web3:v0 && npm run test:web3:v1 && npm run test:frame && npm run test:endpoints && npm run test:eip1193",
+    "test:web3": "npm run test:web3:v0 && npm run test:web3:latest",
     "test:web3:v0": "npm install web3@0.20.7 && mocha test/web3-v0.x.js",
-    "test:web3:v1": "npm install web3@1.2.0 && mocha test/web3-v1.x.js",
+    "test:web3:v1": "npm install web3@1.2.8 && mocha test/web3-v1.x.js",
     "test:web3:latest": "npm install web3@latest && mocha test/web3-v1.x.js",
-    "test:frame": "standard && npm install web3@1.2.0 && mocha test/frame.js",
-    "test:ipc": "standard && mocha test/ipc.js",
-    "test:all": "standard && mocha",
+    "test:frame": "npm install web3@1.2.8 && mocha test/frame.js",
+    "test:endpoints": "npm install web3@1.2.8 && mocha test/endpoints.js",
+    "test:eip1193": "mocha test/eip1193.js",
+    "test:ipc": "mocha test/ipc.js",
+    "test:all": "mocha",
     "prepublishOnly": "npm run test"
   },
   "author": {
     "name": "Jordan Muir",
     "email": "jordan@frame.sh",
-    "url": "https//frame.sh"
+    "url": "https://frame.sh"
   },
   "license": "GPL-3.0",
   "repository": "github:floating/eth-provider",
   "dependencies": {
-    "ethereum-provider": "0.0.6",
-    "oboe": "2.1.4",
-    "uuid": "3.3.2",
-    "ws": "7.1.2",
+    "ethereum-provider": "0.1.1",
+    "oboe": "2.1.5",
+    "uuid": "8.1.0",
+    "ws": "7.3.0",
     "xhr2-cookies": "1.1.0"
   },
   "devDependencies": {
-    "mocha": "6.2.0",
-    "standard": "13.1.0",
-    "web3": "^1.2.0"
+    "mocha": "7.2.0",
+    "standard": "14.3.4",
+    "web3": "1.2.8"
   }
 }
