@@ -8,20 +8,20 @@ describe('EIP-1193 Tests', () => {
   it('should return a chainId', async () => {
     const chainId = await ethereum.request({ method: 'eth_chainId' })
     assert(chainId)
-  })
+  }).timeout(45 * 1000)
 
   it('should return accounts', async () => {
     console.log('If you\'re not logged into an account on frame please do so now')
     const accounts = await ethereum.request({ method: 'eth_requestAccounts' })
     assert(accounts)
-  })
+  }).timeout(45 * 1000)
 
   it('should return accounts (again)', async () => {
     const accounts = await ethereum.request({ method: 'eth_accounts' })
     assert(accounts)
   }).timeout(45 * 1000)
 
-  it('should pass on accountChance', done => {
+  it('should pass on accountChange', done => {
     ethereum.once('accountsChanged', accounts => {
       assert(Array.isArray(accounts))
       done()

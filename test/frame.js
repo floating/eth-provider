@@ -36,7 +36,7 @@ describe('HTTP Provider (Frame)', () => {
         console.log(err)
         throw err
       })
-    })
+    }).timeout(45 * 1000)
     it('should error due to being closed', done => {
       web3http.eth.getAccounts().then().catch(err => {
         assert(err.message === 'Not connected')

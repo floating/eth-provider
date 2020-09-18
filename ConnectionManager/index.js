@@ -33,10 +33,10 @@ class ConnectionManager extends EventEmitter {
         console.warn('eth-provider - Uncaught connection error: ' + err.message)
       })
 
-      this.connection.on('close', (summary) => {
+      this.connection.on('close', () => {
         this.connected = false
-        this.emit('close')
-        if (!this.closing) this.refresh()
+        if (!this.closing) return this.refresh()
+        this.close()
       })
 
       this.connection.on('connect', () => {
@@ -73,12 +73,13 @@ class ConnectionManager extends EventEmitter {
 
   close () {
     this.closing = true
-    if (this.connection) {
+    if (this.connection && !this.connection.closed) {
       this.connection.close() // Let event bubble from here
     } else {
       this.emit('close')
     }
     clearTimeout(this.connectTimer)
+    clearTimeout(this.setupTimer)
   }
 
   error (payload, message, code = -1) {
@@ -87,9 +88,9 @@ class ConnectionManager extends EventEmitter {
 
   send (payload) {
     if (this.inSetup) {
-      setTimeout(() => this.send(payload), 100)
+      this.setupTimer = setTimeout(() => this.send(payload), 100)
     } else if (this.connection.closed) {
-      this.error(payload, 'Not connected')
+      this.error(payload, 'Not connected', 4900)
     } else {
       this.connection.send(payload)
     }
