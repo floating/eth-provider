@@ -27,13 +27,13 @@ class HTTPConnection extends EventEmitter {
   init () {
     this.send({ jsonrpc: '2.0', method: 'eth_syncing', params: [], id: 1 }, (err, response) => {
       if (err) return this.emit('error', err)
+      this.connected = true
+      this.emit('connect')
       this.send({ jsonrpc: '2.0', id: 1, method: 'eth_pollSubscriptions', params: [this.pollId, 'immediate'] }, (err, response) => {
         if (!err) {
           this.subscriptions = true
           this.pollSubscriptions()
         }
-        this.connected = true
-        this.emit('connect')
       })
     })
   }

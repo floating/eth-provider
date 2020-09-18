@@ -61,7 +61,11 @@ class IPCConnection extends EventEmitter {
     if (!this.socket || !this.socket.writable) {
       this.error(payload, 'Not connected')
     } else {
-      this.socket.write(JSON.stringify(Object.assign({}, payload)))
+      try {
+        this.socket.write(JSON.stringify(Object.assign({}, payload)))
+      } catch (e) {
+        this.error(payload, e.message)
+      }
     }
   }
 }
