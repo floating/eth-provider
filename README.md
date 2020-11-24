@@ -79,7 +79,7 @@ If you do not pass any targets, eth-provider will use default targets `['injecte
 When creating the provider you can also pass an options object
 
 * `infuraId` - Your projects Infura ID
-* `origin` - Used when connecting from outside of a browser env to declare you're origin (this currently doesn't work with HTTP connections)
+* `origin` - Used when connecting from outside of a browser env to declare the identity of your connection to interfaces like Frame (this currently doesn't work with HTTP connections)
 
 `provider('infura', { infuraId: '123abc' })` or `provider({ origin: 'DappName', infuraId: '123abc' })`
 
