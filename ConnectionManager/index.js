@@ -73,7 +73,7 @@ class ConnectionManager extends EventEmitter {
 
   close () {
     this.closing = true
-    if (this.connection && !this.connection.closed) {
+    if (this.connection && this.connection.close && !this.connection.closed) {
       this.connection.close() // Let event bubble from here
     } else {
       this.emit('close')

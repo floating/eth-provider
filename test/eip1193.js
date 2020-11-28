@@ -10,23 +10,81 @@ describe('EIP-1193 Tests', () => {
     assert(chainId)
   }).timeout(45 * 1000)
 
+  it('wait for available account', done => {
+    const accountCheck = async () => {
+      try {
+        const accounts = await ethereum.request({ method: 'eth_requestAccounts' })
+        if (accounts.length) return done()
+      } catch (e) {
+        if (e.code === 4001) {
+          console.log('Waiting for an account to be available...')
+          const accountsChange = a => {
+            ethereum.off('accountsChanged', accountsChange)
+            console.log('Account found!')
+            if (a.length) return done()
+          }
+          ethereum.on('accountsChanged', accountsChange)
+        }
+      }
+    }
+    accountCheck()
+  }).timeout(45 * 1000)
+
   it('should return accounts', async () => {
-    console.log('If you\'re not logged into an account on frame please do so now')
     const accounts = await ethereum.request({ method: 'eth_requestAccounts' })
-    assert(accounts)
+    assert(accounts.length)
   }).timeout(45 * 1000)
 
   it('should return accounts (again)', async () => {
     const accounts = await ethereum.request({ method: 'eth_accounts' })
-    assert(accounts)
+    assert(accounts.length)
   }).timeout(45 * 1000)
 
-  it('should pass on accountChange', done => {
+  it('should have no accounts on accountChange', done => {
+    console.log('Close your Frame account')
+    const accountsChanged = accounts => {
+      assert(Array.isArray(accounts))
+      assert(accounts.length === 0)
+      ethereum.off('accountsChanged', accountsChanged)
+      done()
+    }
+    ethereum.on('accountsChanged', accountsChanged)
+  }).timeout(45 * 1000)
+
+  it('should have an account on accountChange', done => {
+    console.log('Open a Frame account')
     ethereum.once('accountsChanged', accounts => {
       assert(Array.isArray(accounts))
+      assert(accounts.length > 0)
       done()
     })
-    console.log('Please switch accounts in Frame...')
+  }).timeout(45 * 1000)
+
+  it('should subscribe to newBlockHeaders using EIP-1193 spec', done => {
+    const waitForNewHead = async () => {
+      try {
+        const subId = await ethereum.request({ method: 'eth_subscribe', params: ['newHeads'] })
+        const onMessage = message => {
+          if (message.type === 'eth_subscription') {
+            const { data } = message
+            if (data.subscription === subId) {
+              if ('result' in data && typeof data.result === 'object') {
+                assert(typeof data.result === 'object')
+                ethereum.off('message', onMessage)
+                done()
+              } else {
+                throw new Error(`Something went wrong: ${data.result}`)
+              }
+            }
+          }
+        }
+        ethereum.on('message', onMessage)
+      } catch (e) {
+        console.error(e)
+      }
+    }
+    console.log('Testing newHeads subscription, please wait...')
+    waitForNewHead()
   }).timeout(45 * 1000)
 
   it('should pass on chainChange', done => {
