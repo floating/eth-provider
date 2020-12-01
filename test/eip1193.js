@@ -10,6 +10,24 @@ describe('EIP-1193 Tests', () => {
     assert(chainId)
   }).timeout(45 * 1000)
 
+  it('should still work via eip .send', async () => {
+    const chainId = await ethereum.send('eth_chainId')
+    assert(chainId)
+  }).timeout(45 * 1000)
+
+  it('should still work via legacy .send', async () => {
+    const chainId = await ethereum.send({ method: 'eth_chainId' })
+    assert(chainId)
+  }).timeout(45 * 1000)
+
+  it('should still work via eip .sendAsync', async () => {
+    ethereum.sendAsync({ method: 'eth_chainId' }, (err, res) => {
+      if (err) throw err
+      const chainId = res.result
+      assert(chainId)
+    })
+  }).timeout(45 * 1000)
+
   it('wait for available account', done => {
     const accountCheck = async () => {
       try {

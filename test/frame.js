@@ -13,7 +13,7 @@ describe('Test web3 is v1.x', () => {
 describe('HTTP Provider (Frame)', () => {
   const httpProvider = provider('http://127.0.0.1:1248', { origin: 'HTTPProviderOriginTest' }) // Origin settings currently don't work for HTTP connections
   const web3http = new Web3(httpProvider)
-  describe('Subscribe via HTTP (please wait for next block)', () => {
+  describe('Subscribe via HTTP (please wait for two blocks)', () => {
     it('should subscribe to newBlockHeaders', done => {
       const sub = web3http.eth.subscribe('newBlockHeaders', (err, result) => {
         if (err) throw err
@@ -24,6 +24,31 @@ describe('HTTP Provider (Frame)', () => {
           done()
         })
       })
+    }).timeout(45 * 1000)
+    it('should subscribe to newBlockHeaders via HTTP using EIP-1193 spec', done => {
+      const waitForNewHead = async () => {
+        try {
+          const subId = await httpProvider.request({ method: 'eth_subscribe', params: ['newHeads'] })
+          const onMessage = message => {
+            if (message.type === 'eth_subscription') {
+              const { data } = message
+              if (data.subscription === subId) {
+                if ('result' in data && typeof data.result === 'object') {
+                  assert(typeof data.result === 'object')
+                  httpProvider.off('message', onMessage)
+                  done()
+                } else {
+                  throw new Error(`Something went wrong: ${data.result}`)
+                }
+              }
+            }
+          }
+          httpProvider.on('message', onMessage)
+        } catch (e) {
+          console.error(e)
+        }
+      }
+      waitForNewHead()
     }).timeout(45 * 1000)
   })
   describe('Get accounts via HTTP', () => {
