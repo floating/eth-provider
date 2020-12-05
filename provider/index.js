@@ -1,4 +1,4 @@
-const EventEmitter = require('events')
+const EventEmitter = require('eventemitter3')
 const EthereumProvider = require('ethereum-provider')
 const ConnectionManager = require('../ConnectionManager')
 
