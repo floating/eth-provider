@@ -1,4 +1,4 @@
-const EventEmitter = require('events')
+const EventEmitter = require('eventemitter3')
 const oboe = require('oboe')
 const parse = require('../parse')
 const dev = process.env.NODE_ENV === 'development'

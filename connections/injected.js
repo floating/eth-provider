@@ -1,4 +1,4 @@
-const EventEmitter = require('events')
+const EventEmitter = require('eventemitter3')
 
 class InjectedConnection extends EventEmitter {
   constructor (_injected, options) {

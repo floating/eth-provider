@@ -1,4 +1,4 @@
-const EventEmitter = require('events')
+const EventEmitter = require('eventemitter3')
 const { v4: uuid } = require('uuid')
 
 const dev = process.env.NODE_ENV === 'development'
