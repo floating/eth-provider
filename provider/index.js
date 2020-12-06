@@ -1,4 +1,4 @@
-const EventEmitter = require('eventemitter3')
+const EventEmitter = require('events')
 const EthereumProvider = require('ethereum-provider')
 const ConnectionManager = require('../ConnectionManager')
 
@@ -34,6 +34,6 @@ module.exports = (connections, targets, options) => {
     return monitor(connections.injected)
   }
   const provider = new EthereumProvider(new ConnectionManager(connections, targets, options))
-  provider.setMaxListeners(128)
+  // provider.setMaxListeners(128)
   return monitor(provider)
 }

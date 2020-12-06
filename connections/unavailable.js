@@ -1,4 +1,4 @@
-const EventEmitter = require('eventemitter3')
+const EventEmitter = require('events')
 
 class UnavailableConnection extends EventEmitter {
   constructor (message) {
