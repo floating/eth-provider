@@ -88,13 +88,13 @@ describe('WebSocket Provider', () => {
     }).timeout(45 * 1000)
   })
   describe('Get accounts via WS', () => {
-    it('should return array', done => {
+    it('should return array and then close', done => {
       web3ws.eth.getAccounts().then(accounts => {
         assert(Array.isArray(accounts))
-        wsProvider.close()
-        done()
+        console.log('Accounts found, quit Frame now to disconnect')
+        wsProvider.on('close', () => done())
       }).catch(err => { throw err })
-    })
+    }).timeout(45 * 1000)
     it('should error due to being closed', done => {
       web3ws.eth.getAccounts().then().catch(err => {
         assert(err.message === 'Not connected')

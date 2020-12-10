@@ -35,7 +35,6 @@ class ConnectionManager extends EventEmitter {
 
       this.connection.on('close', () => {
         this.connected = false
-        if (!this.closing) return this.refresh()
         this.close()
       })
 
