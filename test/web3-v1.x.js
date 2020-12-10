@@ -7,7 +7,7 @@ const provider = require('../')
 describe('Test web3 is v1.x', () => {
   it('major version should be 1', () => {
     assert(new Web3().version[0] === '1')
-  })
+  }).timeout(45 * 1000)
 })
 
 describe('WebSocket Provider', () => {
@@ -34,13 +34,13 @@ describe('WebSocket Provider', () => {
         wsProvider.close()
         done()
       }).catch(err => { throw err })
-    })
+    }).timeout(45 * 1000)
     it('should error due to being closed', done => {
       web3ws.eth.getAccounts().then().catch(err => {
         assert(err.message === 'Not connected')
         done()
       })
-    })
+    }).timeout(45 * 1000)
   })
 })
 describe('HTTP Provider', () => {
@@ -53,7 +53,7 @@ describe('HTTP Provider', () => {
         assert(err.message === 'Subscriptions are not supported by this HTTP endpoint')
         done()
       })
-    })
+    }).timeout(45 * 1000)
   })
   describe('Get accounts via HTTP', () => {
     it('should return array', done => {
@@ -65,13 +65,13 @@ describe('HTTP Provider', () => {
         console.log(err)
         throw err
       })
-    })
+    }).timeout(45 * 1000)
     it('should error due to being closed', done => {
       web3http.eth.getAccounts().then().catch(err => {
         assert(err.message === 'Not connected')
         done()
       })
-    })
+    }).timeout(45 * 1000)
   })
 })
 describe('Preset', () => {
@@ -85,7 +85,7 @@ describe('Preset', () => {
         p.close()
         done()
       })
-    })
+    }).timeout(45 * 1000)
   })
   describe('Ropsten', () => {
     const p = provider('infuraRopsten', { infuraId: '786ade30f36244469480aa5c2bf0743b' })
@@ -97,7 +97,7 @@ describe('Preset', () => {
         p.close()
         done()
       })
-    })
+    }).timeout(45 * 1000)
   })
   describe('Rinkeby', () => {
     const p = provider('infuraRinkeby', { infuraId: '786ade30f36244469480aa5c2bf0743b' })
@@ -109,7 +109,7 @@ describe('Preset', () => {
         p.close()
         done()
       })
-    })
+    }).timeout(45 * 1000)
   })
   describe('Kovan', () => {
     const p = provider('infuraKovan', { infuraId: '786ade30f36244469480aa5c2bf0743b' })
@@ -121,6 +121,6 @@ describe('Preset', () => {
         p.close()
         done()
       })
-    })
+    }).timeout(45 * 1000)
   })
 })

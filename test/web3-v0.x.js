@@ -7,7 +7,7 @@ const provider = require('../')
 describe('Test web3 is v0.x', () => {
   it('major version should be 0', () => {
     assert(new Web3().version.api[0] === '0')
-  })
+  }).timeout(45 * 1000)
 })
 
 describe('WebSocket Provider', () => {
@@ -21,13 +21,13 @@ describe('WebSocket Provider', () => {
         wsProvider.close()
         done()
       })
-    })
+    }).timeout(45 * 1000)
     it('should error due to being closed', done => {
       web3ws.eth.getAccounts(err => {
         assert(err.message === 'Not connected')
         done()
       })
-    })
+    }).timeout(45 * 1000)
   })
 })
 describe('HTTP Provider', () => {
@@ -54,7 +54,7 @@ describe('HTTP Provider', () => {
         if (++count >= 3) done()
       }))
       batch.execute()
-    })
+    }).timeout(45 * 1000)
   })
   describe('Get accounts via HTTP', () => {
     it('should return array', done => {
@@ -64,13 +64,13 @@ describe('HTTP Provider', () => {
         httpProvider.close()
         done()
       })
-    })
+    }).timeout(45 * 1000)
     it('should error due to being closed', done => {
       web3http.eth.getAccounts(err => {
         assert(err.message === 'Not connected')
         done()
       })
-    })
+    }).timeout(45 * 1000)
   })
 })
 describe('Preset', () => {

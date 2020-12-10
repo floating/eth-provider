@@ -27,12 +27,12 @@ describe('IPC Provider', () => {
         ipcProvider.close()
         done()
       }).catch(err => { throw err })
-    })
+    }).timeout(45 * 1000)
     it('should error due to being closed', done => {
       web3ipc.eth.getAccounts().then().catch(err => {
         assert(err.message === 'Not connected')
         done()
       })
-    })
+    }).timeout(45 * 1000)
   })
 })

@@ -67,7 +67,7 @@ describe('HTTP Provider (Frame)', () => {
         assert(err.message === 'Not connected')
         done()
       })
-    })
+    }).timeout(45 * 1000)
   })
 })
 
@@ -106,7 +106,7 @@ describe('WebSocket Provider', () => {
         assert(err.message === 'Not connected')
         done()
       })
-    })
+    }).timeout(45 * 1000)
   })
 })
 
