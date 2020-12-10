@@ -84,7 +84,7 @@ describe('Preset', () => {
         p.close()
         done()
       })
-    })
+    }).timeout(45 * 1000)
   })
   describe('Ropsten', () => {
     const p = provider('infuraRopsten', { infuraId: '786ade30f36244469480aa5c2bf0743b' })
@@ -96,7 +96,7 @@ describe('Preset', () => {
         p.close()
         done()
       })
-    })
+    }).timeout(45 * 1000)
   })
   describe('Rinkeby', () => {
     const p = provider('infuraRinkeby', { infuraId: '786ade30f36244469480aa5c2bf0743b' })
@@ -108,18 +108,19 @@ describe('Preset', () => {
         p.close()
         done()
       })
-    })
+    }).timeout(45 * 1000)
   })
   describe('Kovan', () => {
     const p = provider('infuraKovan', { infuraId: '786ade30f36244469480aa5c2bf0743b' })
     const web3 = new Web3(p)
     it('net_version', done => {
       web3.version.getNetwork((err, netId) => {
+        console.log(netId)
         if (err) throw err
         assert(netId === '42')
         p.close()
         done()
       })
-    })
+    }).timeout(45 * 1000)
   })
 })

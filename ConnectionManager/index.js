@@ -72,16 +72,16 @@ class ConnectionManager extends EventEmitter {
   }
 
   emitClose () {
+    this.emit('close')
+  }
+
+  close () {
+    this.closing = true
     if (this.connection && this.connection.close && !this.connection.closed) {
       this.connection.close() // Let event bubble from here
     } else {
       this.emit('close')
     }
-  }
-
-  close () {
-    this.closing = true
-    this.emitClose()
     clearTimeout(this.connectTimer)
     clearTimeout(this.setupTimer)
   }

@@ -126,4 +126,3 @@ describe('Frame Quit Connect/Disconnect Events', () => {
     }).timeout(45 * 1000)
   })
 })
-
