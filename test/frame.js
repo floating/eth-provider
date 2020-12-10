@@ -72,7 +72,7 @@ describe('HTTP Provider (Frame)', () => {
 })
 
 describe('WebSocket Provider', () => {
-  const wsProvider = provider('http://127.0.0.1:1248')
+  const wsProvider = provider('ws://127.0.0.1:1248')
   const web3ws = new Web3(wsProvider)
   describe('Subscribe via WS (please wait for next block)', () => {
     it('should subscribe to newBlockHeaders', done => {
@@ -88,11 +88,17 @@ describe('WebSocket Provider', () => {
     }).timeout(45 * 1000)
   })
   describe('Get accounts via WS', () => {
-    it('should return array and then close', done => {
+    it('should return array', done => {
       web3ws.eth.getAccounts().then(accounts => {
         assert(Array.isArray(accounts))
-        console.log('Accounts found, quit Frame now to disconnect')
-        wsProvider.on('close', () => done())
+        done()
+      }).catch(err => { throw err })
+    }).timeout(45 * 1000)
+    it('should close itself', done => {
+      web3ws.eth.getAccounts().then(accounts => {
+        assert(Array.isArray(accounts))
+        wsProvider.once('close', done)
+        wsProvider.close()
       }).catch(err => { throw err })
     }).timeout(45 * 1000)
     it('should error due to being closed', done => {
@@ -103,3 +109,21 @@ describe('WebSocket Provider', () => {
     })
   })
 })
+
+describe('Frame Quit Connect/Disconnect Events', () => {
+  const wsProvider = provider('ws://127.0.0.1:1248')
+  describe('Should handle connections on quit and launch', () => {
+    it('should disconnect on quit', done => {
+      console.log('Please close Frame')
+      wsProvider.once('disconnect', () => done())
+    }).timeout(45 * 1000)
+    it('should connect on launch', done => {
+      console.log('Please launch Frame')
+      wsProvider.once('connect', () => {
+        done()
+        wsProvider.close()
+      })
+    }).timeout(45 * 1000)
+  })
+})
+
