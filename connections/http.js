@@ -16,19 +16,20 @@ class HTTPConnection extends EventEmitter {
     this.url = url
     this.pollId = uuid()
     setTimeout(() => this.create(), 0)
+    this._emit = (...args) => !this.closed ? this.emit(...args) : null
   }
 
   create () {
-    if (!XHR) return this.emit('error', new Error('No HTTP transport available'))
+    if (!XHR) return this._emit('error', new Error('No HTTP transport available'))
     this.on('error', () => { if (this.connected) this.close() })
     this.init()
   }
 
   init () {
-    this.send({ jsonrpc: '2.0', method: 'eth_syncing', params: [], id: 1 }, (err, response) => {
-      if (err) return this.emit('error', err)
+    this.send({ jsonrpc: '2.0', method: 'net_version', params: [], id: 1 }, (err, response) => {
+      if (err) return this._emit('error', err)
       this.connected = true
-      this.emit('connect')
+      this._emit('connect')
       this.send({ jsonrpc: '2.0', id: 1, method: 'eth_pollSubscriptions', params: [this.pollId, 'immediate'] }, (err, response) => {
         if (!err) {
           this.subscriptions = true
@@ -42,7 +43,7 @@ class HTTPConnection extends EventEmitter {
     this.send({ jsonrpc: '2.0', id: 1, method: 'eth_pollSubscriptions', params: [this.pollId] }, (err, result) => {
       if (err) {
         this.subscriptionTimeout = setTimeout(() => this.pollSubscriptions(), 10000)
-        return this.emit('error', err)
+        return this._emit('error', err)
       } else {
         if (!this.closed) this.subscriptionTimeout = this.pollSubscriptions()
         if (result) {
@@ -50,7 +51,7 @@ class HTTPConnection extends EventEmitter {
             let parse
             try { parse = JSON.parse(p) } catch (e) { parse = false }
             return parse
-          }).filter(n => n).forEach(p => this.emit('payload', p))
+          }).filter(n => n).forEach(p => this._emit('payload', p))
         }
       }
     })
@@ -59,7 +60,7 @@ class HTTPConnection extends EventEmitter {
   close () {
     if (dev) console.log('Closing HTTP connection')
     this.closed = true
-    this.emit('close')
+    this._emit('close')
     clearTimeout(this.subscriptionTimeout)
     this.removeAllListeners()
   }
@@ -72,7 +73,7 @@ class HTTPConnection extends EventEmitter {
   }
 
   error (payload, message, code = -1) {
-    this.emit('payload', { id: payload.id, jsonrpc: payload.jsonrpc, error: { message, code } })
+    this._emit('payload', { id: payload.id, jsonrpc: payload.jsonrpc, error: { message, code } })
   }
 
   send (payload, internal) {
@@ -95,7 +96,7 @@ class HTTPConnection extends EventEmitter {
         } else {
           const { id, jsonrpc } = payload
           const load = err ? { id, jsonrpc, error: { message: err.message, code: err.code } } : { id, jsonrpc, result }
-          this.emit('payload', load)
+          this._emit('payload', load)
         }
       }
     }
