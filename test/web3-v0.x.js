@@ -115,7 +115,6 @@ describe('Preset', () => {
     const web3 = new Web3(p)
     it('net_version', done => {
       web3.version.getNetwork((err, netId) => {
-        console.log(netId)
         if (err) throw err
         assert(netId === '42')
         p.close()

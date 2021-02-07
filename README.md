@@ -61,16 +61,12 @@ const web3 = new Web3(provider('direct'))
     * `[/* Default IPC paths for platform */, 'ws://127.0.0.1:8546', 'http://127.0.0.1:8545']`
 * **`infura`** - Connect to Mainnet Infura
   * Browser/Node/Electron
-    * `['wss://mainnet.infura.io/ws/v3/${INFURA_ID}', 'https://mainnet.infura.io/v3/${INFURA_ID}']`
-* **`infuraRinkeby`** - Connect to Rinkeby Infura
+    * `['wss://mainnet.infura.io/ws/v3/${infuraId}', 'https://mainnet.infura.io/v3/${infuraId}']`
+* **`alchemy`** - Connect to Mainnet Alchemy
   * Browser/Node/Electron
-    * `['wss://rinkeby.infura.io/ws/v3/${INFURA_ID}', 'https://rinkeby.infura.io/v3/${INFURA_ID}']`
-* **`infuraRopsten`** - Connect to Ropsten Infura
-  * Browser/Node/Electron
-    * `['wss://ropsten.infura.io/ws/v3/${INFURA_ID}', 'https://ropsten.infura.io/v3/${INFURA_ID}']`
-* **`infuraKovan`** - Connect to Kovan Infura
-  * Browser/Node/Electron
-    * `['wss://kovan.infura.io/ws/v3/${INFURA_ID}', 'https://kovan.infura.io/v3/${INFURA_ID}']`
+    * `['wss://eth-mainnet.ws.alchemyapi.io/v2/${alchemyId}', 'https://eth-mainnet.alchemyapi.io/v2/${alchemyId}']`
+
+View all possible presets [here](https://github.com/floating/eth-provider/blob/master/presets/index.js)
 
 If you do not pass any targets, eth-provider will use default targets `['injected', 'frame']` in the Browser and `['frame', 'direct']` in Node and Electron.
 
@@ -79,6 +75,7 @@ If you do not pass any targets, eth-provider will use default targets `['injecte
 When creating the provider you can also pass an options object
 
 * `infuraId` - Your projects Infura ID
+* `alchemyId` - Your projects Alchemy ID
 * `origin` - Used when connecting from outside of a browser env to declare the identity of your connection to interfaces like Frame (this currently doesn't work with HTTP connections)
 
 `provider('infura', { infuraId: '123abc' })` or `provider({ origin: 'DappName', infuraId: '123abc' })`

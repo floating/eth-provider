@@ -1,17 +1,17 @@
 {
   "name": "eth-provider",
-  "version": "0.5.3",
+  "version": "0.6.0",
   "description": "A Universal Ethereum Provider",
   "browser": "browser.js",
   "main": "node.js",
   "scripts": {
     "test": "standard --fix && npm run test:web3:v0 && npm run test:web3:v1 && npm run test:endpoints && npm run test:eip1193 && npm run test:frame",
     "test:web3": "npm run test:web3:v0 && npm run test:web3:latest",
-    "test:web3:v0": "npm install web3@0.20.7 && mocha test/web3-v0.x.js",
-    "test:web3:v1": "npm install web3@1.2.8 --save-exact && mocha test/web3-v1.x.js",
-    "test:web3:latest": "npm install web3@latest && mocha test/web3-v1.x.js",
-    "test:frame": "npm install web3@1.2.8 --save-exact && mocha test/frame.js",
-    "test:endpoints": "npm install web3@1.2.8 --save-exact && mocha test/endpoints.js",
+    "test:web3:v0": "npm install web3@0.20.7 --no-save && mocha test/web3-v0.x.js",
+    "test:web3:v1": "npm install web3@1.2.8 --no-save && mocha test/web3-v1.x.js",
+    "test:web3:latest": "npm install web3@latest --no-save && mocha test/web3-v1.x.js",
+    "test:frame": "npm install web3@1.2.8 --no-save && mocha test/frame.js",
+    "test:endpoints": "mocha test/endpoints.js",
     "test:eip1193": "mocha test/eip1193.js",
     "test:ipc": "mocha test/ipc.js",
     "test:all": "mocha",
@@ -28,13 +28,12 @@
     "ethereum-provider": "0.2.2",
     "events": "3.2.0",
     "oboe": "2.1.5",
-    "uuid": "8.3.1",
-    "ws": "7.4.1",
+    "uuid": "8.3.2",
+    "ws": "7.4.3",
     "xhr2-cookies": "1.1.0"
   },
   "devDependencies": {
     "mocha": "8.2.1",
-    "standard": "16.0.3",
-    "web3": "1.2.8"
+    "standard": "16.0.3"
   }
 }
