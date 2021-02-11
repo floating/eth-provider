@@ -25,13 +25,14 @@ const connections = {
 }
 
 module.exports = (targets, options) => {
-  if (typeof targets === 'string') targets = [targets]
   if (targets && !Array.isArray(targets) && typeof targets === 'object' && !options) {
     options = targets
     targets = undefined
   }
   if (!targets) targets = ['injected', 'frame']
   if (!options) options = {}
+
+  targets = [].concat(targets)
 
   targets.forEach(t => {
     if (t.startsWith('alchemy') && !options.alchemyId) throw new Error('Alchemy was included as a connection target but no Alchemy project ID was passed in options e.g. { alchemyId: \'123abc\' }')

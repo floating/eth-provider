@@ -44,7 +44,7 @@ describe('Test Endpoints', () => {
     }).timeout(45 * 1000)
 
     it('Infura WS Endpoint: wss://mainnet.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b', async () => {
-      const pro = provider(['wss://mainnet.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b'])
+      const pro = provider('wss://mainnet.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b')
       assert(await pro.request({ method: 'eth_chainId' }) === '0x1')
       pro.close()
     }).timeout(45 * 1000)
@@ -56,7 +56,7 @@ describe('Test Endpoints', () => {
     }).timeout(45 * 1000)
 
     it('Alchemy HTTP Endpoint: https://eth-mainnet.alchemyapi.io/v2/NBms1eV9i16RFHpFqQxod56OLdlucIq0', async () => {
-      const pro = provider(['https://eth-mainnet.alchemyapi.io/v2/NBms1eV9i16RFHpFqQxod56OLdlucIq0'])
+      const pro = provider('https://eth-mainnet.alchemyapi.io/v2/NBms1eV9i16RFHpFqQxod56OLdlucIq0')
       assert(await pro.request({ method: 'eth_chainId' }) === '0x1')
       pro.close()
     }).timeout(45 * 1000)

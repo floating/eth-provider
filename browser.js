@@ -26,6 +26,8 @@ module.exports = (targets, options) => {
   if (!targets) targets = ['injected', 'frame']
   if (!options) options = {}
 
+  targets = [].concat(targets)
+
   targets.forEach(t => {
     if (t.startsWith('alchemy') && !options.alchemyId) throw new Error('Alchemy was included as a connection target but no Alchemy project ID was passed in options e.g. { alchemyId: \'123abc\' }')
     if (t.startsWith('infura') && !options.infuraId) throw new Error('Infura was included as a connection target but no Infura project ID was passed in options e.g. { infuraId: \'123abc\' }')
