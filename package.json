@@ -29,7 +29,7 @@
     "events": "3.2.0",
     "oboe": "2.1.5",
     "uuid": "8.3.2",
-    "ws": "7.4.3",
+    "ws": "7.4.5",
     "xhr2-cookies": "1.1.0"
   },
   "devDependencies": {
