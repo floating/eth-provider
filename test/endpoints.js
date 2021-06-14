@@ -286,4 +286,5 @@ describe('Test Endpoints', () => {
       assert(await pro.request({ method: 'eth_chainId' }) === '0xa')
       pro.close()
     }).timeout(45 * 1000)
+  })
 })
