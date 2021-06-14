@@ -274,9 +274,16 @@ describe('Test Endpoints', () => {
 
   describe('Matic', () => {
     it('Preset Endpoint: \'matic\'', async () => {
-      const pro = provider(['matic'])
+      const pro = provider(['matic'], { maticId: '852d3148d4d2880682d0c12ba514e7106406316d' })
       assert(await pro.request({ method: 'eth_chainId' }) === '0x89')
       pro.close()
     }).timeout(45 * 1000)
   })
+
+  describe('Optimism', () => {
+    it('Preset Endpoint: \'optimism\'', async () => {
+      const pro = provider(['optimism'])
+      assert(await pro.request({ method: 'eth_chainId' }) === '0xa')
+      pro.close()
+    }).timeout(45 * 1000)
 })

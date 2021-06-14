@@ -15,6 +15,11 @@ module.exports = (options = {}) => {
     alchemyGoerli: [`wss://eth-goerli.ws.alchemyapi.io/v2/${options.alchemyId}`, `https://eth-goerli.alchemyapi.io/v2/${options.alchemyId}`],
     idChain: ['wss://idchain.one/ws/'],
     xDai: ['https://rpc.xdaichain.com', 'https://dai.poa.network'],
-    matic: ['https://rpc-mainnet.maticvigil.com']
+    matic: [
+      // as of 14-06-2021, Matic websocket connection is unreliable and will frequently disconnect incorrectly
+      // `wss://rpc-mainnet.maticvigil.com/ws/v1/${options.maticId}`
+      `https://rpc-mainnet.maticvigil.com/v1/${options.maticId}`
+    ],
+    optimism: ['wss://ws-mainnet.optimism.io', 'https://mainnet.optimism.io']
   }
 }

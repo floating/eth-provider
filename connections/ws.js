@@ -30,14 +30,14 @@ class WebSocketConnection extends EventEmitter {
           })
         })
       })
-      this.socket.addEventListener('close', () => this.onClose())
+      this.socket.addEventListener('close', e => this.onClose(e))
     })
   }
 
-  onClose () {
+  onClose (e) {
     this.socket = null
     this.closed = true
-    if (dev) console.log('Closing WebSocket connection')
+    if (dev) console.log(`Closing WebSocket connection, reason: ${e.reason} (code ${e.code})`)
     this.emit('close')
     this.removeAllListeners()
   }
