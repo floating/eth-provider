@@ -20,6 +20,6 @@ module.exports = (options = {}) => {
       // `wss://rpc-mainnet.maticvigil.com/ws/v1/${options.maticId}`
       `https://rpc-mainnet.maticvigil.com/v1/${options.maticId}`
     ],
-    optimism: ['wss://ws-mainnet.optimism.io', 'https://mainnet.optimism.io']
+    optimism: ['https://mainnet.optimism.io']
   }
 }
