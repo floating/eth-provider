@@ -55,20 +55,20 @@ describe('Test Endpoints', () => {
       pro.close()
     }).timeout(45 * 1000)
 
-    it('Alchemy HTTP Endpoint: https://eth-mainnet.alchemyapi.io/v2/NBms1eV9i16RFHpFqQxod56OLdlucIq0', async () => {
-      const pro = provider('https://eth-mainnet.alchemyapi.io/v2/NBms1eV9i16RFHpFqQxod56OLdlucIq0')
+    it('Alchemy HTTP Endpoint: https://eth-mainnet.alchemyapi.io/v2/jn3PI8En2phQwdeFAaQ6LK2aexudYJs5', async () => {
+      const pro = provider('https://eth-mainnet.alchemyapi.io/v2/jn3PI8En2phQwdeFAaQ6LK2aexudYJs5')
       assert(await pro.request({ method: 'eth_chainId' }) === '0x1')
       pro.close()
     }).timeout(45 * 1000)
 
-    it('Alchemy WS Endpoint: wss://eth-mainnet.ws.alchemyapi.io/v2/NBms1eV9i16RFHpFqQxod56OLdlucIq0', async () => {
-      const pro = provider(['wss://eth-mainnet.ws.alchemyapi.io/v2/NBms1eV9i16RFHpFqQxod56OLdlucIq0'])
+    it('Alchemy WS Endpoint: wss://eth-mainnet.ws.alchemyapi.io/v2/jn3PI8En2phQwdeFAaQ6LK2aexudYJs5', async () => {
+      const pro = provider(['wss://eth-mainnet.ws.alchemyapi.io/v2/jn3PI8En2phQwdeFAaQ6LK2aexudYJs5'])
       assert(await pro.request({ method: 'eth_chainId' }) === '0x1')
       pro.close()
     }).timeout(45 * 1000)
 
     it('Alchemy Preset Endpoints: \'alchemy\'', async () => {
-      const pro = provider('alchemy', { alchemyId: 'NBms1eV9i16RFHpFqQxod56OLdlucIq0' })
+      const pro = provider('alchemy', { alchemyId: 'jn3PI8En2phQwdeFAaQ6LK2aexudYJs5' })
       assert(await pro.request({ method: 'eth_chainId' }) === '0x1')
       pro.close()
     }).timeout(45 * 1000)
@@ -93,20 +93,20 @@ describe('Test Endpoints', () => {
       pro.close()
     }).timeout(45 * 1000)
 
-    it('Alchemy HTTP Endpoint: https://eth-ropsten.alchemyapi.io/v2/309BFrQgBev-IEsRukKFKN-5j19HRUQk', async () => {
-      const pro = provider(['https://eth-ropsten.alchemyapi.io/v2/309BFrQgBev-IEsRukKFKN-5j19HRUQk'])
+    it('Alchemy HTTP Endpoint: https://eth-ropsten.alchemyapi.io/v2/tgVXaG0xTYT-FAUqBH8qpBZa-eF3rlgw', async () => {
+      const pro = provider(['https://eth-ropsten.alchemyapi.io/v2/tgVXaG0xTYT-FAUqBH8qpBZa-eF3rlgw'])
       assert(await pro.request({ method: 'eth_chainId' }) === '0x3')
       pro.close()
     }).timeout(45 * 1000)
 
-    it('Alchemy WS Endpoint: wss://eth-ropsten.ws.alchemyapi.io/v2/309BFrQgBev-IEsRukKFKN-5j19HRUQk', async () => {
-      const pro = provider(['wss://eth-ropsten.ws.alchemyapi.io/v2/309BFrQgBev-IEsRukKFKN-5j19HRUQk'])
+    it('Alchemy WS Endpoint: wss://eth-ropsten.ws.alchemyapi.io/v2/tgVXaG0xTYT-FAUqBH8qpBZa-eF3rlgw', async () => {
+      const pro = provider(['wss://eth-ropsten.ws.alchemyapi.io/v2/tgVXaG0xTYT-FAUqBH8qpBZa-eF3rlgw'])
       assert(await pro.request({ method: 'eth_chainId' }) === '0x3')
       pro.close()
     }).timeout(45 * 1000)
 
     it('Alchemy Preset Endpoints: \'alchemyRopsten\'', async () => {
-      const pro = provider('alchemyRopsten', { alchemyId: '309BFrQgBev-IEsRukKFKN-5j19HRUQk' })
+      const pro = provider('alchemyRopsten', { alchemyId: 'tgVXaG0xTYT-FAUqBH8qpBZa-eF3rlgw' })
       assert(await pro.request({ method: 'eth_chainId' }) === '0x3')
       pro.close()
     }).timeout(45 * 1000)
@@ -131,31 +131,31 @@ describe('Test Endpoints', () => {
       pro.close()
     }).timeout(45 * 1000)
 
-    it('Alchemy HTTP Endpoint: https://eth-rinkeby.alchemyapi.io/v2/jQfxLzfySetDYKmplUgK1nm6vfNnhasr', async () => {
-      const pro = provider(['https://eth-rinkeby.alchemyapi.io/v2/jQfxLzfySetDYKmplUgK1nm6vfNnhasr'])
+    it('Alchemy HTTP Endpoint: https://eth-rinkeby.alchemyapi.io/v2/S0qILA0tYj3fRgZM9p6fUKx1uC5cDNwn', async () => {
+      const pro = provider(['https://eth-rinkeby.alchemyapi.io/v2/S0qILA0tYj3fRgZM9p6fUKx1uC5cDNwn'])
       assert(await pro.request({ method: 'eth_chainId' }) === '0x4')
       pro.close()
     }).timeout(45 * 1000)
 
-    it('Alchemy WS Endpoint: wss://eth-rinkeby.ws.alchemyapi.io/v2/jQfxLzfySetDYKmplUgK1nm6vfNnhasr', async () => {
-      const pro = provider(['wss://eth-rinkeby.ws.alchemyapi.io/v2/jQfxLzfySetDYKmplUgK1nm6vfNnhasr'])
+    it('Alchemy WS Endpoint: wss://eth-rinkeby.ws.alchemyapi.io/v2/S0qILA0tYj3fRgZM9p6fUKx1uC5cDNwn', async () => {
+      const pro = provider(['wss://eth-rinkeby.ws.alchemyapi.io/v2/S0qILA0tYj3fRgZM9p6fUKx1uC5cDNwn'])
       assert(await pro.request({ method: 'eth_chainId' }) === '0x4')
       pro.close()
     }).timeout(45 * 1000)
 
     it('Alchemy Preset Endpoints: \'alchemyRinkeby\'', async () => {
-      const pro = provider('alchemyRinkeby', { alchemyId: 'jQfxLzfySetDYKmplUgK1nm6vfNnhasr' })
+      const pro = provider('alchemyRinkeby', { alchemyId: 'S0qILA0tYj3fRgZM9p6fUKx1uC5cDNwn' })
       assert(await pro.request({ method: 'eth_chainId' }) === '0x4')
       pro.close()
     }).timeout(45 * 1000)
   })
 
   describe('Görli', () => {
-    it('Prylabs HTTP Endpoint: https://goerli.prylabs.net', async () => {
-      const pro = provider(['https://goerli.prylabs.net'])
-      assert(await pro.request({ method: 'eth_chainId' }) === '0x5')
-      pro.close()
-    }).timeout(45 * 1000)
+    // it('Prylabs HTTP Endpoint: https://goerli.prylabs.net', async () => {
+    //   const pro = provider(['https://goerli.prylabs.net'])
+    //   assert(await pro.request({ method: 'eth_chainId' }) === '0x5')
+    //   pro.close()
+    // }).timeout(45 * 1000)
 
     it('Mudit HTTP Endpoint: https://rpc.goerli.mudit.blog', async () => {
       const pro = provider(['https://rpc.goerli.mudit.blog'])
@@ -163,11 +163,11 @@ describe('Test Endpoints', () => {
       pro.close()
     }).timeout(45 * 1000)
 
-    it('Slockit HTTP Endpoint: https://rpc.slock.it/goerli', async () => {
-      const pro = provider(['https://rpc.slock.it/goerli'])
-      assert(await pro.request({ method: 'eth_chainId' }) === '0x5')
-      pro.close()
-    }).timeout(45 * 1000)
+    // it('Slockit HTTP Endpoint: https://rpc.slock.it/goerli', async () => {
+    //   const pro = provider(['https://rpc.slock.it/goerli'])
+    //   assert(await pro.request({ method: 'eth_chainId' }) === '0x5')
+    //   pro.close()
+    // }).timeout(45 * 1000)
 
     it('Infura HTTP Endpoint: https://goerli.infura.io/v3/786ade30f36244469480aa5c2bf0743b', async () => {
       const pro = provider(['https://goerli.infura.io/v3/786ade30f36244469480aa5c2bf0743b'])
@@ -187,20 +187,20 @@ describe('Test Endpoints', () => {
       pro.close()
     }).timeout(45 * 1000)
 
-    it('Alchemy HTTP Endpoint: https://eth-goerli.alchemyapi.io/v2/kWQ7ItsHOI_HooADAfkHFNNueKbOsHxe', async () => {
-      const pro = provider(['https://eth-goerli.alchemyapi.io/v2/kWQ7ItsHOI_HooADAfkHFNNueKbOsHxe'])
+    it('Alchemy HTTP Endpoint: https://eth-goerli.alchemyapi.io/v2/U3oyFKY1jVpX2APDwMjbNOCIZlt8e6rg', async () => {
+      const pro = provider(['https://eth-goerli.alchemyapi.io/v2/U3oyFKY1jVpX2APDwMjbNOCIZlt8e6rg'])
       assert(await pro.request({ method: 'eth_chainId' }) === '0x5')
       pro.close()
     }).timeout(45 * 1000)
 
-    it('Alchemy WS Endpoint: wss://eth-goerli.ws.alchemyapi.io/v2/kWQ7ItsHOI_HooADAfkHFNNueKbOsHxe', async () => {
-      const pro = provider(['wss://eth-goerli.ws.alchemyapi.io/v2/kWQ7ItsHOI_HooADAfkHFNNueKbOsHxe'])
+    it('Alchemy WS Endpoint: wss://eth-goerli.ws.alchemyapi.io/v2/U3oyFKY1jVpX2APDwMjbNOCIZlt8e6rg', async () => {
+      const pro = provider(['wss://eth-goerli.ws.alchemyapi.io/v2/U3oyFKY1jVpX2APDwMjbNOCIZlt8e6rg'])
       assert(await pro.request({ method: 'eth_chainId' }) === '0x5')
       pro.close()
     }).timeout(45 * 1000)
 
     it('Alchemy Preset Endpoints: \'alchemyGoerli\'', async () => {
-      const pro = provider('alchemyGoerli', { alchemyId: 'kWQ7ItsHOI_HooADAfkHFNNueKbOsHxe' })
+      const pro = provider('alchemyGoerli', { alchemyId: 'U3oyFKY1jVpX2APDwMjbNOCIZlt8e6rg' })
       assert(await pro.request({ method: 'eth_chainId' }) === '0x5')
       pro.close()
     }).timeout(45 * 1000)
@@ -225,20 +225,20 @@ describe('Test Endpoints', () => {
       pro.close()
     }).timeout(45 * 1000)
 
-    it('Alchemy HTTP Endpoint: https://eth-kovan.alchemyapi.io/v2/QM2H65KBbywSoB0NOcDGreaDWwJqphfb', async () => {
-      const pro = provider(['https://eth-kovan.alchemyapi.io/v2/QM2H65KBbywSoB0NOcDGreaDWwJqphfb'])
+    it('Alchemy HTTP Endpoint: https://eth-kovan.alchemyapi.io/v2/95cngtka6KasmW5lrKUX1xAGn8tu-RPZ', async () => {
+      const pro = provider(['https://eth-kovan.alchemyapi.io/v2/95cngtka6KasmW5lrKUX1xAGn8tu-RPZ'])
       assert(await pro.request({ method: 'eth_chainId' }) === '0x2a')
       pro.close()
     }).timeout(45 * 1000)
 
-    it('Alchemy WS Endpoint: wss://eth-kovan.ws.alchemyapi.io/v2/QM2H65KBbywSoB0NOcDGreaDWwJqphfb', async () => {
-      const pro = provider(['wss://eth-kovan.ws.alchemyapi.io/v2/QM2H65KBbywSoB0NOcDGreaDWwJqphfb'])
+    it('Alchemy WS Endpoint: wss://eth-kovan.ws.alchemyapi.io/v2/95cngtka6KasmW5lrKUX1xAGn8tu-RPZ', async () => {
+      const pro = provider(['wss://eth-kovan.ws.alchemyapi.io/v2/95cngtka6KasmW5lrKUX1xAGn8tu-RPZ'])
       assert(await pro.request({ method: 'eth_chainId' }) === '0x2a')
       pro.close()
     }).timeout(45 * 1000)
 
     it('Alchemy Preset Endpoints: \'alchemyKovan\'', async () => {
-      const pro = provider('alchemyKovan', { alchemyId: 'QM2H65KBbywSoB0NOcDGreaDWwJqphfb' })
+      const pro = provider('alchemyKovan', { alchemyId: '95cngtka6KasmW5lrKUX1xAGn8tu-RPZ' })
       assert(await pro.request({ method: 'eth_chainId' }) === '0x2a')
       pro.close()
     }).timeout(45 * 1000)
