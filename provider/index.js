@@ -7,22 +7,33 @@ const monitor = provider => {
     provider.status = status
     if (provider instanceof EventEmitter) provider.emit('status', status)
   }
-  async function check () {
-    if (provider.inSetup) return setTimeout(check, 1000)
+
+  async function checkSyncing () {
     try {
       if (await provider.send('eth_syncing')) {
         update('syncing')
-        setTimeout(() => check(), 5000)
-      } else {
-        update('connected')
       }
+    } catch (e) {
+      // don't do anything if it can't be determined whether the node is syncing or not
+    }
+  }
+
+  async function checkConnected () {
+    if (provider.inSetup) return setTimeout(checkConnected, 1000)
+
+    try {
+      await provider.send('eth_chainId')
+      update('connected')
+
+      setTimeout(checkSyncing, 500)
     } catch (e) {
       update('disconnected')
     }
   }
+
   update('loading')
-  check()
-  provider.on('connect', () => check())
+  checkConnected()
+  provider.on('connect', () => checkConnected())
   provider.on('close', () => update('disconnected'))
   return provider
 }
