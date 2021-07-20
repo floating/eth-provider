@@ -272,10 +272,18 @@ describe('Test Endpoints', () => {
     }).timeout(45 * 1000)
   })
 
-  describe('Matic', () => {
-    it('Preset Endpoint: \'matic\'', async () => {
-      const pro = provider(['matic'], { maticId: '852d3148d4d2880682d0c12ba514e7106406316d' })
+  describe('Polygon', () => {
+    it('Preset Endpoint: \'infuraPolygon\'', async () => {
+      const pro = provider(['infuraPolygon'], { infuraId: '786ade30f36244469480aa5c2bf0743b' })
       assert(await pro.request({ method: 'eth_chainId' }) === '0x89')
+      pro.close()
+    }).timeout(45 * 1000)
+  })
+
+  describe('Arbitrum', () => {
+    it('Preset Endpoint: \'infuraArbitrum\'', async () => {
+      const pro = provider(['infuraArbitrum'], { infuraId: '786ade30f36244469480aa5c2bf0743b' })
+      assert(await pro.request({ method: 'eth_chainId' }) === '0xa4b1')
       pro.close()
     }).timeout(45 * 1000)
   })
@@ -283,6 +291,11 @@ describe('Test Endpoints', () => {
   describe('Optimism', () => {
     it('Preset Endpoint: \'optimism\'', async () => {
       const pro = provider(['optimism'])
+      assert(await pro.request({ method: 'eth_chainId' }) === '0xa')
+      pro.close()
+    }).timeout(45 * 1000)
+    it('Preset Endpoint: \'infuraOptimism\'', async () => {
+      const pro = provider(['infuraOptimism'], { infuraId: '786ade30f36244469480aa5c2bf0743b' })
       assert(await pro.request({ method: 'eth_chainId' }) === '0xa')
       pro.close()
     }).timeout(45 * 1000)
