@@ -13,9 +13,11 @@ module.exports = (options = {}) => {
     alchemyKovan: [`wss://eth-kovan.ws.alchemyapi.io/v2/${options.alchemyId}`, `https://eth-kovan.alchemyapi.io/v2/${options.alchemyId}`],
     infuraGoerli: [`wss://goerli.infura.io/ws/v3/${options.infuraId}`, `https://goerli.infura.io/ws/v3/${options.infuraId}`],
     alchemyGoerli: [`wss://eth-goerli.ws.alchemyapi.io/v2/${options.alchemyId}`, `https://eth-goerli.alchemyapi.io/v2/${options.alchemyId}`],
+    infuraPolygon: [`wss://polygon-mainnet.infura.io/ws/v3/${options.infuraId}`, `https://polygon-mainnet.infura.io/v3/${options.infuraId}`],
+    infuraArbitrum: [`wss://arbitrum-mainnet.infura.io/ws/v3/${options.infuraId}`, `https://arbitrum-mainnet.infura.io/v3/${options.infuraId}`],
+    infuraOptimism: [`wss://optimism-mainnet.infura.io/ws/v3/${options.infuraId}`, `https://optimism-mainnet.infura.io/v3/${options.infuraId}`],
     idChain: ['wss://idchain.one/ws/'],
     xDai: ['https://rpc.xdaichain.com', 'https://dai.poa.network'],
-    matic: [`wss://polygon-mainnet.infura.io/ws/v3/${options.maticId}`, `https://polygon-mainnet.infura.io/v3/${options.maticId}`],
     optimism: ['https://mainnet.optimism.io']
   }
 }
