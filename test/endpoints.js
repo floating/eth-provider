@@ -274,7 +274,7 @@ describe('Test Endpoints', () => {
 
   describe('Matic', () => {
     it('Preset Endpoint: \'matic\'', async () => {
-      const pro = provider(['matic'], { maticId: '852d3148d4d2880682d0c12ba514e7106406316d' })
+      const pro = provider(['matic'], { maticId: '4de05cd0b6cf4b6288b47be6d9939019' })
       assert(await pro.request({ method: 'eth_chainId' }) === '0x89')
       pro.close()
     }).timeout(45 * 1000)
