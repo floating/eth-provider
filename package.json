@@ -1,6 +1,6 @@
 {
   "name": "eth-provider",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "description": "A Universal Ethereum Provider",
   "browser": "browser.js",
   "main": "node.js",
@@ -25,7 +25,7 @@
   "license": "GPL-3.0",
   "repository": "github:floating/eth-provider",
   "dependencies": {
-    "ethereum-provider": "0.4.3",
+    "ethereum-provider": "0.4.4",
     "events": "3.3.0",
     "oboe": "2.1.5",
     "uuid": "8.3.2",
