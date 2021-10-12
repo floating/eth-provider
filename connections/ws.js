@@ -7,6 +7,12 @@ let WebSocket
 class WebSocketConnection extends EventEmitter {
   constructor (_WebSocket, url, options) {
     super()
+
+    this.onError = this.onError.bind(this)
+    this.onMessage = this.onMessage.bind(this)
+    this.onOpen = this.onOpen.bind(this)
+    this.onClose = this.onClose.bind(this)
+
     WebSocket = _WebSocket
     setTimeout(() => this.create(url, options), 0)
   }
@@ -14,36 +20,55 @@ class WebSocketConnection extends EventEmitter {
   create (url, options) {
     if (!WebSocket) this.emit('error', new Error('No WebSocket transport available'))
     try { this.socket = new WebSocket(url, [], { origin: options.origin }) } catch (e) { return this.emit('error', e) }
-    this.socket.addEventListener('error', err => this.emit('error', err))
-    this.socket.addEventListener('open', () => {
-      this.emit('connect')
-      this.socket.addEventListener('message', message => {
-        const data = typeof message.data === 'string' ? message.data : ''
-        parse(data, (err, payloads) => {
-          if (err) return //
-          payloads.forEach(load => {
-            if (Array.isArray(load)) {
-              load.forEach(payload => this.emit('payload', payload))
-            } else {
-              this.emit('payload', load)
-            }
-          })
-        })
+
+    this.socket.addEventListener('error', this.onError)
+    this.socket.addEventListener('open', this.onOpen)
+    this.socket.addEventListener('close', this.onClose)
+  }
+
+  onOpen () {
+    this.emit('connect')
+
+    this.socket.addEventListener('message', this.onMessage)
+  }
+
+  onMessage (message) {
+    const data = typeof message.data === 'string' ? message.data : ''
+    parse(data, (err, payloads) => {
+      if (err) return //
+      payloads.forEach(load => {
+        if (Array.isArray(load)) {
+          load.forEach(payload => this.emit('payload', payload))
+        } else {
+          this.emit('payload', load)
+        }
       })
-      this.socket.addEventListener('close', e => this.onClose(e))
     })
   }
 
+  onError (err) {
+    this.emit('error', err)
+  }
+
   onClose (e) {
-    this.socket = null
+    if (this.socket) {
+      this.socket.removeEventListener('close', this.onClose)
+      this.socket.removeEventListener('message', this.onMessage)
+      this.socket = null
+    }
+
     this.closed = true
+
     if (dev) console.log(`Closing WebSocket connection, reason: ${e.reason} (code ${e.code})`)
+
     this.emit('close')
     this.removeAllListeners()
   }
 
   close () {
     if (this.socket) {
+      this.socket.removeEventListener('open', this.onOpen)
+      this.socket.removeEventListener('error', this.onError)
       this.socket.close()
     } else {
       this.onClose()
