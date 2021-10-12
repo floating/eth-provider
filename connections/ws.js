@@ -51,9 +51,13 @@ class WebSocketConnection extends EventEmitter {
   }
 
   onClose (e) {
+    clearTimeout(this.closeTimeout)
+
     if (this.socket) {
+      this.socket.removeEventListener('open', this.onOpen)
       this.socket.removeEventListener('close', this.onClose)
       this.socket.removeEventListener('message', this.onMessage)
+      this.socket.removeEventListener('error', this.onError)
       this.socket = null
     }
 
@@ -67,9 +71,13 @@ class WebSocketConnection extends EventEmitter {
 
   close () {
     if (this.socket) {
-      this.socket.removeEventListener('open', this.onOpen)
-      this.socket.removeEventListener('error', this.onError)
       this.socket.close()
+
+      // give the socket close event some time to fire, otherwise we can clean up
+      // and close everything manually
+      this.closeTimeout = setTimeout(() => {
+        this.onClose()
+      }, 1000)
     } else {
       this.onClose()
     }
