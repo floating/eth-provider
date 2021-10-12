@@ -59,9 +59,11 @@ class HTTPConnection extends EventEmitter {
 
   close () {
     if (dev) console.log('Closing HTTP connection')
-    this.closed = true
-    this._emit('close')
+
     clearTimeout(this.subscriptionTimeout)
+
+    this._emit('close')
+    this.closed = true
     this.removeAllListeners()
   }
 
