@@ -1,6 +1,6 @@
 {
   "name": "eth-provider",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "description": "A Universal Ethereum Provider",
   "browser": "browser.js",
   "main": "node.js",
@@ -29,11 +29,11 @@
     "events": "3.3.0",
     "oboe": "2.1.5",
     "uuid": "8.3.2",
-    "ws": "8.0.0",
+    "ws": "8.2.3",
     "xhr2-cookies": "1.1.0"
   },
   "devDependencies": {
-    "mocha": "9.0.3",
-    "standard": "16.0.3"
+    "mocha": "9.1.2",
+    "standard": "16.0.4"
   }
 }
