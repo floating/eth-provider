@@ -61,7 +61,7 @@ class ConnectionManager extends EventEmitter {
   }
 
   connectionError (index, err) {
-    if (this.connection) this.connection.close()
+    if (this.connection && this.connection.close) this.connection.close()
 
     this.targets[index].status = err
     if (this.targets.length - 1 === index) {
