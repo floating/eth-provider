@@ -53,6 +53,11 @@ class WebSocketConnection extends EventEmitter {
   onClose (e) {
     clearTimeout(this.closeTimeout)
 
+    const err = {
+      reason: e ? e.reason : 'unknown',
+      code: e ? e.code : 'unknown',
+    }
+
     if (this.socket) {
       this.socket.removeEventListener('open', this.onOpen)
       this.socket.removeEventListener('close', this.onClose)
@@ -63,7 +68,7 @@ class WebSocketConnection extends EventEmitter {
 
     this.closed = true
 
-    if (dev) console.log(`Closing WebSocket connection, reason: ${e.reason} (code ${e.code})`)
+    if (dev) console.log(`Closing WebSocket connection, reason: ${err.reason} (code ${err.code})`)
 
     this.emit('close')
     this.removeAllListeners()
@@ -88,13 +93,19 @@ class WebSocketConnection extends EventEmitter {
   }
 
   send (payload) {
-    if (this.socket && this.socket.readyState === this.socket.CONNECTING) {
-      setTimeout(_ => this.send(payload), 10)
-    } else if (!this.socket || this.socket.readyState > 1) {
-      this.connected = false
-      this.error(payload, 'Not connected')
-    } else {
-      this.socket.send(JSON.stringify(payload))
+    try {
+      if (this.socket && this.socket.readyState === this.socket.CONNECTING) {
+        setTimeout(_ => this.send(payload), 10)
+      } else if (!this.socket || this.socket.readyState > 1) {
+        this.connected = false
+        this.error(payload, 'Not connected')
+      } else {
+        this.socket.send(JSON.stringify(payload))
+      }
+    } catch (e) {
+      if (dev) console.error('Error sending Websocket request', e)
+
+      this.error(payload, e)
     }
   }
 }

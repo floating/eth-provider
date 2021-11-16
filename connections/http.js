@@ -87,6 +87,7 @@ class HTTPConnection extends EventEmitter {
         return this.error(payload, 'Subscriptions are not supported by this HTTP endpoint')
       }
     }
+
     const xhr = new XHR()
     let responded = false
     const res = (err, result) => {
@@ -102,24 +103,31 @@ class HTTPConnection extends EventEmitter {
         }
       }
     }
-    xhr.open('POST', this.url, true)
-    xhr.setRequestHeader('Content-Type', 'application/json')
-    // Below not working becasue XHR lib blocks it claiming "restricted header"
-    // if (this.options.origin) xhr.setRequestHeader('Origin', this.options.origin)
-    xhr.timeout = 60 * 1000
-    xhr.onerror = res
-    xhr.ontimeout = res
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState === 4) {
-        try {
-          const response = JSON.parse(xhr.responseText)
-          res(response.error, response.result)
-        } catch (e) {
-          res(e)
+
+    try {
+      xhr.open('POST', this.url, true)
+      xhr.setRequestHeader('Content-Type', 'application/json')
+      // Below not working becasue XHR lib blocks it claiming "restricted header"
+      // if (this.options.origin) xhr.setRequestHeader('Origin', this.options.origin)
+      xhr.timeout = 60 * 1000
+      xhr.onerror = res
+      xhr.ontimeout = res
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          try {
+            const response = JSON.parse(xhr.responseText)
+            res(response.error, response.result)
+          } catch (e) {
+            res(e)
+          }
         }
       }
+      xhr.send(JSON.stringify(payload))
+    } catch (e) {
+      if (dev) console.error('Error sending HTTP request', e)
+
+      res({ message: e.message, code: -1 })
     }
-    xhr.send(JSON.stringify(payload))
   }
 }
 
