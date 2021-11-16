@@ -105,7 +105,7 @@ class WebSocketConnection extends EventEmitter {
     } catch (e) {
       if (dev) console.error('Error sending Websocket request', e)
 
-      this.error(payload, e)
+      this.error(payload, e.message)
     }
   }
 }
