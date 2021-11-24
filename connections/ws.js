@@ -55,7 +55,7 @@ class WebSocketConnection extends EventEmitter {
 
     const err = {
       reason: e ? e.reason : 'unknown',
-      code: e ? e.code : 'unknown',
+      code: e ? e.code : 'unknown'
     }
 
     if (this.socket) {
