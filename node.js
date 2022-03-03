@@ -4,7 +4,7 @@ const presets = require('./presets')
 
 const net = require('net')
 const ws = require('ws')
-const XHR = require('xhr2-cookies').XMLHttpRequest
+const fetch = require('node-fetch')
 
 const home = require('os').homedir()
 
@@ -18,10 +18,10 @@ if (process.platform === 'darwin') {
 }
 
 const connections = {
-  injected: require('./connections/unavailable')('Injected connections are unavliable in Node/Electron'),
+  injected: require('./connections/unavailable')('Injected connections are unavailable in Node/Electron'),
   ipc: require('./connections/ipc')(net),
   ws: require('./connections/ws')(ws),
-  http: require('./connections/http')(XHR)
+  http: require('./connections/http')(fetch)
 }
 
 module.exports = (targets, options) => {

@@ -25,12 +25,13 @@
   "license": "GPL-3.0",
   "repository": "github:floating/eth-provider",
   "dependencies": {
+    "@chainsafe/abort-controller": "^3.0.1",
     "ethereum-provider": "0.5.0",
     "events": "3.3.0",
+    "node-fetch": "^2.6.7",
     "oboe": "2.1.5",
     "uuid": "8.3.2",
-    "ws": "8.4.0",
-    "xhr2-cookies": "1.1.0"
+    "ws": "8.4.0"
   },
   "devDependencies": {
     "mocha": "9.1.3",
