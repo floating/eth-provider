@@ -14,13 +14,19 @@ class WebSocketConnection extends EventEmitter {
     this.onClose = this.onClose.bind(this)
 
     WebSocket = _WebSocket
-    setTimeout(() => this.create(url, options), 0)
+    setTimeout(() => this.create(new URL(url), options), 0)
   }
 
   create (url, options) {
-    if (!WebSocket) this.emit('error', new Error('No WebSocket transport available'))
+    if (!WebSocket) {
+      this.emit('error', new Error('No WebSocket transport available'))
+    }
+    const opts = { origin: options.origin }
+    if (url.protocol === 'wss:') {
+      opts.rejectUnauthorized = false
+    }
     try {
-      this.socket = new WebSocket(url, [], { origin: options.origin, rejectUnauthorized: false })
+      this.socket = new WebSocket(url, [], opts)
     } catch (e) {
       return this.emit('error', e)
     }
