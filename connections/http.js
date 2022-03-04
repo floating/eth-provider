@@ -136,7 +136,7 @@ class HTTPConnection extends EventEmitter {
 
         try {
           const data = await response.json()
-          res(undefined, data.result)
+          res(data.error, data.result)
         } catch (e) {
           res(e)
         }
