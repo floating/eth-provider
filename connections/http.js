@@ -111,7 +111,6 @@ class HTTPConnection extends EventEmitter {
 
     (async () => {
       try {
-        console.log('sending payload', JSON.stringify(payload))
         const opts = {
           method: 'post',
           body: JSON.stringify(payload),
