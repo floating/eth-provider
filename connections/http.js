@@ -1,7 +1,6 @@
 /* global AbortController */
 const EventEmitter = require('events')
 const { v4: uuid } = require('uuid')
-require('@chainsafe/abort-controller/polyfill')
 
 const dev = process.env.NODE_ENV === 'development'
 
