@@ -1,6 +1,6 @@
 const EventEmitter = require('events')
 
-const dev = process.env.NODE_ENV === 'development'
+const dev = true // process.env.NODE_ENV === 'development'
 
 class ConnectionManager extends EventEmitter {
   constructor (connections, targets, options) {
@@ -20,7 +20,7 @@ class ConnectionManager extends EventEmitter {
     if (dev && index === 0) console.log(`\n\n\n\nA connection cycle started for provider with name: ${this.name}`)
 
     if (this.connection && this.connection.status === 'connected' && index >= this.connection.index) {
-      if (dev) console.log('Stopping connection cycle becasuse we\'re already connected to a higher priority provider')
+      if (dev) console.log('Stopping connection cycle because we\'re already connected to a higher priority provider')
     } else if (this.targets.length === 0) {
       if (dev) console.log('No valid targets supplied')
     } else {
@@ -30,7 +30,7 @@ class ConnectionManager extends EventEmitter {
       this.connection.on('error', err => {
         if (!this.connected) return this.connectionError(index, err)
         if (this.listenerCount('error')) return this.emit('error', err)
-        console.warn('eth-provider - Uncaught connection error: ' + err.message)
+        console.warn('eth-provider - Uncaught connection error: ', err)
       })
 
       this.connection.on('close', () => {
@@ -64,6 +64,8 @@ class ConnectionManager extends EventEmitter {
     if (this.connection && this.connection.close) this.connection.close()
 
     this.targets[index].status = err
+
+    if (dev) console.warn('eth-provider unable to connect to a target, view connection cycle summary: ', this.targets)
     if (this.targets.length - 1 === index) {
       this.inSetup = false
       if (dev) console.warn('eth-provider unable to connect to any targets, view connection cycle summary: ', this.targets)

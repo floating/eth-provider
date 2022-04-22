@@ -1,6 +1,6 @@
 const EventEmitter = require('events')
 const parse = require('../parse')
-const dev = process.env.NODE_ENV === 'development'
+const dev = true // process.env.NODE_ENV === 'development'
 
 let WebSocket
 
@@ -26,9 +26,11 @@ class WebSocketConnection extends EventEmitter {
       opts.rejectUnauthorized = false
     }
     try {
-      this.socket = new WebSocket(url, [], opts)
+      console.log('attempting ws creation', url.toString(), opts)
+      this.socket = new WebSocket(url.toString(), [], opts)
     } catch (e) {
-      return this.emit('error', e)
+      console.log('caught ws creation error', e)
+      return this.emit('error creating websocket', e)
     }
 
     this.socket.addEventListener('error', this.onError)

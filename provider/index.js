@@ -44,6 +44,7 @@ module.exports = (connections, targets, options) => {
     delete connections.injected.__isProvider
     return monitor(connections.injected)
   }
+  console.log('zomg targets', targets)
   const provider = new EthereumProvider(new ConnectionManager(connections, targets, options))
   provider.setMaxListeners(128)
   return monitor(provider)
