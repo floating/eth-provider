@@ -5,6 +5,7 @@ class UnavailableConnection extends EventEmitter {
     super()
     setTimeout(() => this.onError(new Error(message)), 0)
   }
+
   onError (err) {
     if (this.listenerCount('error')) this.emit('error', err)
   }

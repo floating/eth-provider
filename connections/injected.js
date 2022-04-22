@@ -9,6 +9,7 @@ class InjectedConnection extends EventEmitter {
       setTimeout(() => this.onError(new Error('No injected provider found')), 0)
     }
   }
+
   onError (err) {
     if (this.listenerCount('error')) this.emit('error', err)
   }
