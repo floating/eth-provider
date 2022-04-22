@@ -79,7 +79,7 @@ class WebSocketConnection extends EventEmitter {
     if (this.socket && this.socket._readyState !== WebSocket.CLOSED) {
       this.socket.terminate()
     } else {
-      this.onClose('manual close, no socket or socket is already closed')
+      this.onClose()
     }
   }
 
