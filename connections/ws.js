@@ -63,7 +63,6 @@ class WebSocketConnection extends EventEmitter {
     }
 
     if (this.socket) {
-      this.socket.terminate()
       this.socket.removeAllListeners()
       this.socket = null
     }
@@ -77,7 +76,11 @@ class WebSocketConnection extends EventEmitter {
   }
 
   close () {
-    this.onClose()
+    if (this.socket && this.socket._readyState !== WebSocket.CLOSED) {
+      this.socket.terminate()
+    } else {
+      this.onClose('manual close, no socket or socket is already closed')
+    }
   }
 
   error (payload, message, code = -1) {
