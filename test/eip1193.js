@@ -58,7 +58,7 @@ describe('EIP-1193 Tests', () => {
     assert(accounts.length)
   }).timeout(45 * 1000)
 
-  it('should have no accounts on accountChange', done => {
+  it('should get accountsChanged event', done => {
     console.log('Change your Frame account')
     const accountsChanged = accounts => {
       assert(Array.isArray(accounts))

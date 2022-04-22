@@ -18,7 +18,7 @@ class WebSocketConnection extends EventEmitter {
   }
 
   create (url, options) {
-    if (!WebSocket) this.onError(new Error('No WebSocket transport available'))
+    if (!WebSocket) return this.onError(new Error('No WebSocket transport available'))
     try {
       this.socket = new WebSocket(url, [], { origin: options.origin })
     } catch (e) {
