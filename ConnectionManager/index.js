@@ -29,8 +29,7 @@ class ConnectionManager extends EventEmitter {
 
       this.connection.on('error', err => {
         if (!this.connected) return this.connectionError(index, err)
-        if (this.listenerCount('error')) return this.emit('error', err)
-        console.warn('eth-provider - Uncaught connection error: ' + err.message)
+        this.onError(err)
       })
 
       this.connection.on('close', () => {
@@ -52,6 +51,11 @@ class ConnectionManager extends EventEmitter {
       this.connection.on('data', data => this.emit('data', data))
       this.connection.on('payload', payload => this.emit('payload', payload))
     }
+  }
+
+  onError (err) {
+    if (this.listenerCount('error')) return this.emit('error', err)
+    console.warn('[eth-provider] Uncaught connection error: ' + err.message)
   }
 
   refresh (interval = this.interval) {

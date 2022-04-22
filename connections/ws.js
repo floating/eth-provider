@@ -18,8 +18,12 @@ class WebSocketConnection extends EventEmitter {
   }
 
   create (url, options) {
-    if (!WebSocket) this.emit('error', new Error('No WebSocket transport available'))
-    try { this.socket = new WebSocket(url, [], { origin: options.origin }) } catch (e) { return this.emit('error', e) }
+    if (!WebSocket) return this.onError(new Error('No WebSocket transport available'))
+    try {
+      this.socket = new WebSocket(url, [], { origin: options.origin })
+    } catch (e) {
+      return this.onError(e)
+    }
 
     this.socket.addEventListener('error', this.onError)
     this.socket.addEventListener('open', this.onOpen)
@@ -47,22 +51,20 @@ class WebSocketConnection extends EventEmitter {
   }
 
   onError (err) {
-    this.emit('error', err)
+    if (this.listenerCount('error')) this.emit('error', err)
   }
 
   onClose (e) {
-    clearTimeout(this.closeTimeout)
-
+    // onClose should only be called as a result of the socket's close event
+    // OR when close() is called manually and the socket either doesn't exist or is already in a closed state
+    
     const err = {
       reason: e ? e.reason : 'unknown',
       code: e ? e.code : 'unknown'
     }
 
     if (this.socket) {
-      this.socket.removeEventListener('open', this.onOpen)
-      this.socket.removeEventListener('close', this.onClose)
-      this.socket.removeEventListener('message', this.onMessage)
-      this.socket.removeEventListener('error', this.onError)
+      this.socket.removeAllListeners()
       this.socket = null
     }
 
@@ -75,14 +77,15 @@ class WebSocketConnection extends EventEmitter {
   }
 
   close () {
-    if (this.socket) {
-      this.socket.close()
-
-      // give the socket close event some time to fire, otherwise we can clean up
-      // and close everything manually
-      this.closeTimeout = setTimeout(() => {
-        this.onClose()
-      }, 1000)
+    if (this.socket && WebSocket && this.socket.readyState !== WebSocket.CLOSED) {
+      this.socket.removeAllListeners()
+      this.socket.addEventListener('error', () => {})
+      this.socket.addEventListener('close', this.onClose)
+      if (this.socket.terminate) {
+        this.socket.terminate()
+      } else {
+        this.socket.close()
+      }
     } else {
       this.onClose()
     }

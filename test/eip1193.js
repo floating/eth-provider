@@ -58,24 +58,14 @@ describe('EIP-1193 Tests', () => {
     assert(accounts.length)
   }).timeout(45 * 1000)
 
-  it('should have no accounts on accountChange', done => {
-    console.log('Close your Frame account')
+  it('should get accountsChanged event', done => {
+    console.log('Change your Frame account')
     const accountsChanged = accounts => {
       assert(Array.isArray(accounts))
-      assert(accounts.length === 0)
       ethereum.off('accountsChanged', accountsChanged)
       done()
     }
     ethereum.on('accountsChanged', accountsChanged)
-  }).timeout(45 * 1000)
-
-  it('should have an account on accountChange', done => {
-    console.log('Open a Frame account')
-    ethereum.once('accountsChanged', accounts => {
-      assert(Array.isArray(accounts))
-      assert(accounts.length > 0)
-      done()
-    })
   }).timeout(45 * 1000)
 
   it('should subscribe to newBlockHeaders using EIP-1193 spec', done => {

@@ -19,15 +19,19 @@ class HTTPConnection extends EventEmitter {
     this._emit = (...args) => !this.closed ? this.emit(...args) : null
   }
 
+  onError (err) {
+    if (!this.closed && this.listenerCount('error')) this.emit('error', err)
+  }
+
   create () {
-    if (!XHR) return this._emit('error', new Error('No HTTP transport available'))
+    if (!XHR) return this.onError(new Error('No HTTP transport available'))
     this.on('error', () => { if (this.connected) this.close() })
     this.init()
   }
 
   init () {
     this.send({ jsonrpc: '2.0', method: 'net_version', params: [], id: 1 }, (err, response) => {
-      if (err) return this._emit('error', err)
+      if (err) return this.onError(err)
       this.connected = true
       this._emit('connect')
       this.send({ jsonrpc: '2.0', id: 1, method: 'eth_pollSubscriptions', params: [this.pollId, 'immediate'] }, (err, response) => {
@@ -43,7 +47,7 @@ class HTTPConnection extends EventEmitter {
     this.send({ jsonrpc: '2.0', id: 1, method: 'eth_pollSubscriptions', params: [this.pollId] }, (err, result) => {
       if (err) {
         this.subscriptionTimeout = setTimeout(() => this.pollSubscriptions(), 10000)
-        return this._emit('error', err)
+        return this.onError(err)
       } else {
         if (!this.closed) this.subscriptionTimeout = this.pollSubscriptions()
         if (result) {
