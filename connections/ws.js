@@ -21,6 +21,8 @@ class WebSocketConnection extends EventEmitter {
     if (!WebSocket) this.emit('error', new Error('No WebSocket transport available'))
     try { this.socket = new WebSocket(url, [], { origin: options.origin }) } catch (e) { return this.emit('error', e) }
 
+
+    console.log(new Date().toISOString(), ' *** CREATING LISTENERS')
     this.socket.addEventListener('error', this.onError)
     this.socket.addEventListener('open', this.onOpen)
     this.socket.addEventListener('close', this.onClose)
@@ -47,6 +49,7 @@ class WebSocketConnection extends EventEmitter {
   }
 
   onError (err) {
+    console.log('ON ERROR', { listeners: this.socket.listenerCount('error') })
     this.emit('error', err)
   }
 
@@ -59,6 +62,7 @@ class WebSocketConnection extends EventEmitter {
     }
 
     if (this.socket) {
+      console.trace(new Date().toISOString(), '*** REMOVING LISTENERS')
       this.socket.removeEventListener('open', this.onOpen)
       this.socket.removeEventListener('close', this.onClose)
       this.socket.removeEventListener('message', this.onMessage)
@@ -75,7 +79,16 @@ class WebSocketConnection extends EventEmitter {
   }
 
   close () {
+    console.trace(new Date().toISOString())
     if (this.socket) {
+      this.socket.once('close', cl => {
+        console.log(new Date().toISOString(), '*** SOCKET CLOSED', cl)
+      })
+
+      // this.socket.once('error', err => {
+      //   console.log(new Date().toISOString(), '*** SOCKET ERROR', err)
+      // })
+
       this.socket.close()
 
       // give the socket close event some time to fire, otherwise we can clean up

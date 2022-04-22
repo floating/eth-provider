@@ -28,6 +28,7 @@ class ConnectionManager extends EventEmitter {
       this.connection = this.connections[protocol](location, this.options)
 
       this.connection.on('error', err => {
+        console.trace(new Date().toISOString(), '*** ERROR', err)
         if (!this.connected) return this.connectionError(index, err)
         if (this.listenerCount('error')) return this.emit('error', err)
         console.warn('eth-provider - Uncaught connection error: ' + err.message)
