@@ -13,7 +13,7 @@ class IPCConnection extends EventEmitter {
   }
 
   create (path, options) {
-    if (!net) return this.emit('error', new Error('No IPC transport'))
+    if (!net) return this.onError(new Error('No IPC transport'))
     this.socket = net.connect({ path })
     this.socket.on('connect', () => {
       this.emit('connect')
@@ -27,7 +27,11 @@ class IPCConnection extends EventEmitter {
         this.socket.on('data', data => parse(data.toString(), (err, payloads) => { if (!err) this.emitPayloads(payloads) }))
       }
     })
-    this.socket.on('error', err => this.emit('error', err))
+    this.socket.on('error', err => this.onError(err))
+  }
+
+  onError (err) {
+    if (this.listenerCount('error')) this.emit('error', err)
   }
 
   onClose () {

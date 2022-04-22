@@ -3,7 +3,10 @@ const EventEmitter = require('events')
 class UnavailableConnection extends EventEmitter {
   constructor (message) {
     super()
-    setTimeout(() => this.emit('error', new Error(message)), 0)
+    setTimeout(() => this.onError(new Error(message)), 0)
+  }
+  onError (err) {
+    if (this.listenerCount('error')) this.emit('error', err)
   }
 }
 

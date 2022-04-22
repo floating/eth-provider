@@ -51,9 +51,7 @@ class WebSocketConnection extends EventEmitter {
   }
 
   onError (err) {
-    if (this.listenerCount('error')) {
-      this.emit('error', err)
-    }
+    if (this.listenerCount('error')) this.emit('error', err)
   }
 
   onClose (e) {
@@ -65,10 +63,8 @@ class WebSocketConnection extends EventEmitter {
     }
 
     if (this.socket) {
-      this.socket.removeEventListener('open', this.onOpen)
-      this.socket.removeEventListener('close', this.onClose)
-      this.socket.removeEventListener('message', this.onMessage)
-      this.socket.removeEventListener('error', this.onError)
+      this.socket.terminate()
+      this.socket.removeAllListeners()
       this.socket = null
     }
 
@@ -81,17 +77,7 @@ class WebSocketConnection extends EventEmitter {
   }
 
   close () {
-    if (this.socket) {
-      this.socket.close()
-
-      // give the socket close event some time to fire, otherwise we can clean up
-      // and close everything manually
-      this.closeTimeout = setTimeout(() => {
-        this.onClose()
-      }, 1000)
-    } else {
-      this.onClose()
-    }
+    this.onClose()
   }
 
   error (payload, message, code = -1) {
