@@ -57,9 +57,7 @@ class WebSocketConnection extends EventEmitter {
   onClose (e) {
     // onClose should only be called as a result of the socket's close event
     // OR when close() is called manually and the socket either doesn't exist or is already in a closed state
-
-    clearTimeout(this.closeTimeout)
-
+    
     const err = {
       reason: e ? e.reason : 'unknown',
       code: e ? e.code : 'unknown'
@@ -80,7 +78,14 @@ class WebSocketConnection extends EventEmitter {
 
   close () {
     if (this.socket && WebSocket && this.socket.readyState !== WebSocket.CLOSED) {
-      this.socket.terminate()
+      this.socket.removeAllListeners()
+      this.socket.addEventListener('error', () => {})
+      this.socket.addEventListener('close', this.onClose)
+      if (this.socket.terminate) {
+        this.socket.terminate()
+      } else {
+        this.socket.close()
+      }
     } else {
       this.onClose()
     }
