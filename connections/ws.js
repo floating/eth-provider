@@ -18,8 +18,12 @@ class WebSocketConnection extends EventEmitter {
   }
 
   create (url, options) {
-    if (!WebSocket) this.emit('error', new Error('No WebSocket transport available'))
-    try { this.socket = new WebSocket(url, [], { origin: options.origin }) } catch (e) { return this.emit('error', e) }
+    if (!WebSocket) this.onError(new Error('No WebSocket transport available'))
+    try { 
+      this.socket = new WebSocket(url, [], { origin: options.origin }) 
+    } catch (e) { 
+      return this.onError(e)
+    }
 
     this.socket.addEventListener('error', this.onError)
     this.socket.addEventListener('open', this.onOpen)
@@ -47,7 +51,9 @@ class WebSocketConnection extends EventEmitter {
   }
 
   onError (err) {
-    this.emit('error', err)
+    if (this.listenerCount('error')) {
+      this.emit('error', err)
+    }
   }
 
   onClose (e) {
