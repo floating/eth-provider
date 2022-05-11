@@ -7,12 +7,6 @@ let WebSocket
 class WebSocketConnection extends EventEmitter {
   constructor (_WebSocket, url, options) {
     super()
-
-    this.onError = this.onError.bind(this)
-    this.onMessage = this.onMessage.bind(this)
-    this.onOpen = this.onOpen.bind(this)
-    this.onClose = this.onClose.bind(this)
-
     this.socketListeners = []
     WebSocket = _WebSocket
     setTimeout(() => this.create(url, options), 0)
@@ -26,9 +20,9 @@ class WebSocketConnection extends EventEmitter {
       return this.onError(e)
     }
 
-    this.addSocketListener('error', this.onError)
-    this.addSocketListener('open', this.onOpen)
-    this.addSocketListener('close', this.onClose)
+    this.addSocketListener('error', this.onError.bind(this))
+    this.addSocketListener('open', this.onOpen.bind(this))
+    this.addSocketListener('close', this.onClose.bind(this))
   }
 
   addSocketListener (event, handler) {
@@ -45,7 +39,7 @@ class WebSocketConnection extends EventEmitter {
 
   onOpen () {
     this.emit('connect')
-    this.addSocketListener('message', this.onMessage)
+    this.addSocketListener('message', this.onMessage.bind(this))
   }
 
   onMessage (message) {
@@ -91,7 +85,7 @@ class WebSocketConnection extends EventEmitter {
     if (this.socket && WebSocket && this.socket.readyState !== WebSocket.CLOSED) {
       this.socket.removeAllListeners()
       this.addSocketListener('error', () => {})
-      this.addSocketListener('close', this.onClose)
+      this.addSocketListener('close', this.onClose.bind(this))
       if (this.socket.terminate) {
         this.socket.terminate()
       } else {
