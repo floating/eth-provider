@@ -7,12 +7,7 @@ let WebSocket
 class WebSocketConnection extends EventEmitter {
   constructor (_WebSocket, url, options) {
     super()
-
-    this.onError = this.onError.bind(this)
-    this.onMessage = this.onMessage.bind(this)
-    this.onOpen = this.onOpen.bind(this)
-    this.onClose = this.onClose.bind(this)
-
+    this.socketListeners = []
     WebSocket = _WebSocket
     setTimeout(() => this.create(url, options), 0)
   }
@@ -25,15 +20,26 @@ class WebSocketConnection extends EventEmitter {
       return this.onError(e)
     }
 
-    this.socket.addEventListener('error', this.onError)
-    this.socket.addEventListener('open', this.onOpen)
-    this.socket.addEventListener('close', this.onClose)
+    this.addSocketListener('error', this.onError.bind(this))
+    this.addSocketListener('open', this.onOpen.bind(this))
+    this.addSocketListener('close', this.onClose.bind(this))
+  }
+
+  addSocketListener (event, handler) {
+    this.socket.addEventListener(event, handler)
+    this.socketListeners.push({ event, handler }) 
+  }
+
+  removeAllSocketListeners () {
+    this.socketListeners.forEach(({ event, handler }) => {
+      this.socket.removeEventListener(event, handler)
+    })
+    this.socketListeners = []
   }
 
   onOpen () {
     this.emit('connect')
-
-    this.socket.addEventListener('message', this.onMessage)
+    this.addSocketListener('message', this.onMessage.bind(this))
   }
 
   onMessage (message) {
@@ -57,14 +63,13 @@ class WebSocketConnection extends EventEmitter {
   onClose (e) {
     // onClose should only be called as a result of the socket's close event
     // OR when close() is called manually and the socket either doesn't exist or is already in a closed state
-    
     const err = {
       reason: e ? e.reason : 'unknown',
       code: e ? e.code : 'unknown'
     }
 
     if (this.socket) {
-      this.socket.removeAllListeners()
+      this.removeAllSocketListeners()
       this.socket = null
     }
 
@@ -79,8 +84,8 @@ class WebSocketConnection extends EventEmitter {
   close () {
     if (this.socket && WebSocket && this.socket.readyState !== WebSocket.CLOSED) {
       this.socket.removeAllListeners()
-      this.socket.addEventListener('error', () => {})
-      this.socket.addEventListener('close', this.onClose)
+      this.addSocketListener('error', () => {})
+      this.addSocketListener('close', this.onClose.bind(this))
       if (this.socket.terminate) {
         this.socket.terminate()
       } else {
