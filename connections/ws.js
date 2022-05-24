@@ -83,7 +83,7 @@ class WebSocketConnection extends EventEmitter {
 
   close () {
     if (this.socket && WebSocket && this.socket.readyState !== WebSocket.CLOSED) {
-      this.socket.removeAllListeners()
+      this.removeAllSocketListeners()
       this.addSocketListener('error', () => {})
       this.addSocketListener('close', this.onClose.bind(this))
       if (this.socket.terminate) {
