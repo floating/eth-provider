@@ -27,7 +27,7 @@ class WebSocketConnection extends EventEmitter {
 
   addSocketListener (event, handler) {
     this.socket.addEventListener(event, handler)
-    this.socketListeners.push({ event, handler }) 
+    this.socketListeners.push({ event, handler })
   }
 
   removeAllSocketListeners () {
