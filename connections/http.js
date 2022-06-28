@@ -1,19 +1,20 @@
+/* global AbortController */
 const EventEmitter = require('events')
 const { v4: uuid } = require('uuid')
 
 const dev = process.env.NODE_ENV === 'development'
 
-let XHR
+let fetch
 
 class HTTPConnection extends EventEmitter {
-  constructor (_XHR, url, options) {
+  constructor (_fetch, url, options) {
     super()
-    XHR = _XHR
+    fetch = _fetch
     this.options = options
     this.connected = false
     this.subscriptions = false
     this.status = 'loading'
-    this.url = url
+    this.url = new URL(url)
     this.pollId = uuid()
     setTimeout(() => this.create(), 0)
     this._emit = (...args) => !this.closed ? this.emit(...args) : null
@@ -24,7 +25,7 @@ class HTTPConnection extends EventEmitter {
   }
 
   create () {
-    if (!XHR) return this.onError(new Error('No HTTP transport available'))
+    if (!fetch) return this.onError(new Error('No HTTP transport available'))
     this.on('error', () => { if (this.connected) this.close() })
     this.init()
   }
@@ -92,11 +93,11 @@ class HTTPConnection extends EventEmitter {
       }
     }
 
-    const xhr = new XHR()
+    const controller = new AbortController()
     let responded = false
     const res = (err, result) => {
       if (!responded) {
-        xhr.abort()
+        controller.abort()
         responded = true
         if (internal) {
           internal(err, result)
@@ -108,31 +109,50 @@ class HTTPConnection extends EventEmitter {
       }
     }
 
-    try {
-      xhr.open('POST', this.url, true)
-      xhr.setRequestHeader('Content-Type', 'application/json')
-      // Below not working becasue XHR lib blocks it claiming "restricted header"
-      // if (this.options.origin) xhr.setRequestHeader('Origin', this.options.origin)
-      xhr.timeout = 60 * 1000
-      xhr.onerror = res
-      xhr.ontimeout = res
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4) {
-          try {
-            const response = JSON.parse(xhr.responseText)
-            res(response.error, response.result)
-          } catch (e) {
-            res(e)
-          }
-        }
-      }
-      xhr.send(JSON.stringify(payload))
-    } catch (e) {
-      if (dev) console.error('Error sending HTTP request', e)
+    let timeout
 
-      res({ message: e.message, code: -1 })
-    }
+    (async () => {
+      try {
+        const opts = {
+          method: 'post',
+          body: JSON.stringify(payload),
+          headers: { 'Content-Type': 'application/json' },
+          signal: controller.signal
+        }
+        if (this.url.protocol === 'https:') {
+          const https = require('https')
+          const httpsAgent = new https.Agent({
+            rejectUnauthorized: false
+          })
+          opts.agent = httpsAgent
+
+        } 
+        if (this.options.origin) {
+          opts.headers.Origin = this.options.origin
+        }
+        timeout = setTimeout(() => {
+          controller.abort()
+          res(new Error('request timed out'))
+        }, 60000)
+        const response = await fetch(this.url, opts)
+        clearTimeout(timeout)
+
+        try {
+          const data = await response.json()
+          res(data.error, data.result)
+        } catch (e) {
+          res(e)
+        }
+      } catch (e) {
+        clearTimeout(timeout)
+        if (dev) {
+          console.error('Error sending HTTP request', e)
+        }
+
+        res({ message: e.message, code: -1 })
+      }
+    })()
   }
 }
 
-module.exports = XHR => (url, options) => new HTTPConnection(XHR, url, options)
+module.exports = fetch => (url, options) => new HTTPConnection(fetch, url, options)
