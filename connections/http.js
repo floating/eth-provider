@@ -119,14 +119,6 @@ class HTTPConnection extends EventEmitter {
           headers: { 'Content-Type': 'application/json' },
           signal: controller.signal
         }
-        if (this.url.protocol === 'https:') {
-          const https = require('https')
-          const httpsAgent = new https.Agent({
-            rejectUnauthorized: false
-          })
-          opts.agent = httpsAgent
-
-        } 
         if (this.options.origin) {
           opts.headers.Origin = this.options.origin
         }
