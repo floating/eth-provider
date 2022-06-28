@@ -133,7 +133,7 @@ class HTTPConnection extends EventEmitter {
         timeout = setTimeout(() => {
           controller.abort()
           res(new Error('request timed out'))
-        }, 60000)
+        }, 60_000)
         const response = await fetch(this.url, opts)
         clearTimeout(timeout)
 
