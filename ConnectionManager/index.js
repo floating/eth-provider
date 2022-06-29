@@ -1,5 +1,14 @@
 const EventEmitter = require('events')
 
+function isValidUrl(string) {
+  try {
+    new URL(string)
+  } catch (err) {
+    return false
+  }
+  return true
+}
+
 const dev = process.env.NODE_ENV === 'development'
 
 class ConnectionManager extends EventEmitter {
@@ -17,14 +26,17 @@ class ConnectionManager extends EventEmitter {
   }
 
   connect (index = 0) {
+    const { protocol, location } = this.targets[index]
+    
     if (dev && index === 0) console.log(`\n\n\n\nA connection cycle started for provider with name: ${this.name}`)
 
     if (this.connection && this.connection.status === 'connected' && index >= this.connection.index) {
-      if (dev) console.log('Stopping connection cycle becasuse we\'re already connected to a higher priority provider')
+      if (dev) console.log('Stopping connection cycle because we\'re already connected to a higher priority provider')
     } else if (this.targets.length === 0) {
       if (dev) console.log('No valid targets supplied')
+    } else if (!isValidUrl(location)) {
+      if (dev) console.log(`Invalid URL: ${location}`)
     } else {
-      const { protocol, location } = this.targets[index]
       this.connection = this.connections[protocol](location, this.options)
 
       this.connection.on('error', err => {
