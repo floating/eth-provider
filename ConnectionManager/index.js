@@ -37,14 +37,16 @@ class ConnectionManager extends EventEmitter {
       if (dev) console.log('No valid targets supplied')
       return
     } 
+
     const { protocol, location } = this.targets[index]
     const locationUrl = getUrl(location)
+
     if (!locationUrl) {
       if (dev) console.log(`Invalid URL: ${location}`)
       return
     }
 
-    this.connection = this.connections[protocol](location, this.options)
+    this.connection = this.connections[protocol](locationUrl, this.options)
 
     this.connection.on('error', err => {
       if (!this.connected) return this.connectionError(index, err)
