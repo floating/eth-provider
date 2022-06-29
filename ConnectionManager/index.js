@@ -1,12 +1,13 @@
 const EventEmitter = require('events')
 
-function isValidUrl(string) {
+function getUrl(string) {
+  let url
   try {
-    new URL(string)
+    url = new URL(string)
   } catch (err) {
-    return false
+    return undefined
   }
-  return true
+  return url
 }
 
 const dev = process.env.NODE_ENV === 'development'
@@ -26,43 +27,48 @@ class ConnectionManager extends EventEmitter {
   }
 
   connect (index = 0) {
-    const { protocol, location } = this.targets[index]
-    
     if (dev && index === 0) console.log(`\n\n\n\nA connection cycle started for provider with name: ${this.name}`)
-
+    
     if (this.connection && this.connection.status === 'connected' && index >= this.connection.index) {
       if (dev) console.log('Stopping connection cycle because we\'re already connected to a higher priority provider')
-    } else if (this.targets.length === 0) {
+      return
+    } 
+    if (this.targets.length === 0) {
       if (dev) console.log('No valid targets supplied')
-    } else if (!isValidUrl(location)) {
+      return
+    } 
+    const { protocol, location } = this.targets[index]
+    const locationUrl = getUrl(location)
+    if (!locationUrl) {
       if (dev) console.log(`Invalid URL: ${location}`)
-    } else {
-      this.connection = this.connections[protocol](location, this.options)
-
-      this.connection.on('error', err => {
-        if (!this.connected) return this.connectionError(index, err)
-        this.onError(err)
-      })
-
-      this.connection.on('close', () => {
-        this.connected = false
-        this.emitClose()
-        if (!this.closing) this.refresh()
-      })
-
-      this.connection.on('connect', () => {
-        this.connection.target = this.targets[index]
-        this.connection.index = index
-        this.targets[index].status = this.connection.status
-        this.connected = true
-        this.inSetup = false
-        if (dev) console.log('Successfully connected to: ' + this.targets[index].location)
-        this.emit('connect')
-      })
-
-      this.connection.on('data', data => this.emit('data', data))
-      this.connection.on('payload', payload => this.emit('payload', payload))
+      return
     }
+
+    this.connection = this.connections[protocol](location, this.options)
+
+    this.connection.on('error', err => {
+      if (!this.connected) return this.connectionError(index, err)
+      this.onError(err)
+    })
+
+    this.connection.on('close', () => {
+      this.connected = false
+      this.emitClose()
+      if (!this.closing) this.refresh()
+    })
+
+    this.connection.on('connect', () => {
+      this.connection.target = this.targets[index]
+      this.connection.index = index
+      this.targets[index].status = this.connection.status
+      this.connected = true
+      this.inSetup = false
+      if (dev) console.log('Successfully connected to: ' + this.targets[index].location)
+      this.emit('connect')
+    })
+
+    this.connection.on('data', data => this.emit('data', data))
+    this.connection.on('payload', payload => this.emit('payload', payload))
   }
 
   onError (err) {
