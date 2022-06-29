@@ -14,7 +14,7 @@ class HTTPConnection extends EventEmitter {
     this.connected = false
     this.subscriptions = false
     this.status = 'loading'
-    this.url = new URL(url)
+    this.url = url
     this.pollId = uuid()
     setTimeout(() => this.create(), 0)
     this._emit = (...args) => !this.closed ? this.emit(...args) : null
@@ -95,6 +95,7 @@ class HTTPConnection extends EventEmitter {
 
     const controller = new AbortController()
     let responded = false
+
     const res = (err, result) => {
       if (!responded) {
         controller.abort()
