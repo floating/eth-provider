@@ -114,20 +114,25 @@ class HTTPConnection extends EventEmitter {
 
     (async () => {
       try {
+        
         const opts = {
           method: 'post',
           body: JSON.stringify(payload),
           headers: { 'Content-Type': 'application/json' },
           signal: controller.signal
         }
-        if (this.options.origin) {
+        
+        if (this.options && this.options.origin) {
           opts.headers.Origin = this.options.origin
         }
+
         timeout = setTimeout(() => {
           controller.abort()
           res(new Error('request timed out'))
         }, 60_000)
+
         const response = await fetch(this.url, opts)
+
         clearTimeout(timeout)
 
         try {
