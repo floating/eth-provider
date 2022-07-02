@@ -5,7 +5,8 @@
   "browser": "browser.js",
   "main": "node.js",
   "scripts": {
-    "test": "standard --fix && npm run test:web3:v0 && npm run test:web3:v1 && npm run test:endpoints && npm run test:eip1193 && npm run test:frame",
+    "test": "standard --fix && npm run test:unit && npm run test:web3:v0 && npm run test:web3:v1 && npm run test:endpoints && npm run test:eip1193 && npm run test:frame",
+    "test:unit": "jest --detectOpenHandles --runInBand .",
     "test:web3": "npm run test:web3:v0 && npm run test:web3:latest",
     "test:web3:v0": "npm install web3@0.20.7 --no-save && mocha test/web3-v0.x.js",
     "test:web3:v1": "npm install web3@1.2.8 --no-save && mocha test/web3-v1.x.js",
@@ -33,6 +34,7 @@
     "ws": "8.7.0"
   },
   "devDependencies": {
+    "jest": "^28.1.2",
     "mocha": "10.0.0",
     "standard": "17.0.0"
   }

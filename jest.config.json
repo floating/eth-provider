@@ -1,0 +1,6 @@
+{
+  "testMatch": ["<rootDir>/test/**/*.spec.js"],
+  "testPathIgnorePatterns": ["/node_modules/"],
+  "testTimeout": 100,
+  "clearMocks": true
+}
