@@ -3,11 +3,10 @@ const EventEmitter = require('events')
 function getUrl(string) {
   let url
   try {
-    url = new URL(string)
+    return new URL(string)
   } catch (err) {
     return undefined
   }
-  return url
 }
 
 const dev = process.env.NODE_ENV === 'development'
