@@ -1,5 +1,5 @@
 const EventEmitter = require('events')
-const EthereumProvider = require('ethereum-provider')
+const EthereumProvider = require('ethereum-provider').default
 const ConnectionManager = require('../ConnectionManager')
 
 const monitor = provider => {
