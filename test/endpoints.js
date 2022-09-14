@@ -5,11 +5,11 @@ const provider = require('../')
 
 describe('Test Endpoints', () => {
   describe('Mainnet (send)', () => {
-    it('Cloudflare Endpoint: https://cloudflare-eth.com', async () => {
-      const pro = provider(['https://cloudflare-eth.com'])
-      assert(await pro.send('net_version') === '1')
-      pro.close()
-    }).timeout(45 * 1000)
+    // it('Cloudflare Endpoint: https://cloudflare-eth.com', async () => {
+    //   const pro = provider(['https://cloudflare-eth.com'])
+    //   assert(await pro.send('net_version') === '1')
+    //   pro.close()
+    // }).timeout(45 * 1000)
 
     it('Infura HTTP Endpoint: https://mainnet.infura.io/v3/786ade30f36244469480aa5c2bf0743b', async () => {
       const pro = provider(['https://mainnet.infura.io/v3/786ade30f36244469480aa5c2bf0743b'])
@@ -31,11 +31,11 @@ describe('Test Endpoints', () => {
   })
 
   describe('Mainnet', () => {
-    it('Cloudflare Endpoint: https://cloudflare-eth.com', async () => {
-      const pro = provider(['https://cloudflare-eth.com'])
-      assert(await pro.request({ method: 'eth_chainId' }) === '0x1')
-      pro.close()
-    }).timeout(45 * 1000)
+    // it('Cloudflare Endpoint: https://cloudflare-eth.com', async () => {
+    //   const pro = provider(['https://cloudflare-eth.com'])
+    //   assert(await pro.request({ method: 'eth_chainId' }) === '0x1')
+    //   pro.close()
+    // }).timeout(45 * 1000)
 
     it('Infura HTTP Endpoint: https://mainnet.infura.io/v3/786ade30f36244469480aa5c2bf0743b', async () => {
       const pro = provider(['https://mainnet.infura.io/v3/786ade30f36244469480aa5c2bf0743b'])
@@ -252,25 +252,25 @@ describe('Test Endpoints', () => {
     }).timeout(45 * 1000)
   })
 
-  describe('xDai', () => {
-    it('POA HTTP Endpoint: https://dai.poa.network', async () => {
-      const pro = provider(['https://dai.poa.network'])
-      assert(await pro.request({ method: 'eth_chainId' }) === '0x64')
-      pro.close()
-    }).timeout(45 * 1000)
+  // describe('xDai', () => {
+  //   it('POA HTTP Endpoint: https://dai.poa.network', async () => {
+  //     const pro = provider(['https://dai.poa.network'])
+  //     assert(await pro.request({ method: 'eth_chainId' }) === '0x64')
+  //     pro.close()
+  //   }).timeout(45 * 1000)
 
-    it('xDai Chain HTTP Endpoint: https://rpc.xdaichain.com', async () => {
-      const pro = provider(['https://rpc.xdaichain.com'])
-      assert(await pro.request({ method: 'eth_chainId' }) === '0x64')
-      pro.close()
-    }).timeout(45 * 1000)
+  //   it('xDai Chain HTTP Endpoint: https://rpc.xdaichain.com', async () => {
+  //     const pro = provider(['https://rpc.xdaichain.com'])
+  //     assert(await pro.request({ method: 'eth_chainId' }) === '0x64')
+  //     pro.close()
+  //   }).timeout(45 * 1000)
 
-    it('Preset Endpoint: \'xDai\'', async () => {
-      const pro = provider(['xDai'])
-      assert(await pro.request({ method: 'eth_chainId' }) === '0x64')
-      pro.close()
-    }).timeout(45 * 1000)
-  })
+  //   it('Preset Endpoint: \'xDai\'', async () => {
+  //     const pro = provider(['xDai'])
+  //     assert(await pro.request({ method: 'eth_chainId' }) === '0x64')
+  //     pro.close()
+  //   }).timeout(45 * 1000)
+  // })
 
   describe('Polygon', () => {
     it('Preset Endpoint: \'infuraPolygon\'', async () => {
