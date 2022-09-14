@@ -17,7 +17,7 @@ module.exports = (options = {}) => {
     infuraArbitrum: [`wss://arbitrum-mainnet.infura.io/ws/v3/${options.infuraId}`, `https://arbitrum-mainnet.infura.io/v3/${options.infuraId}`],
     infuraOptimism: [`wss://optimism-mainnet.infura.io/ws/v3/${options.infuraId}`, `https://optimism-mainnet.infura.io/v3/${options.infuraId}`],
     idChain: ['wss://idchain.one/ws/'],
-    xDai: ['https://rpc.xdaichain.com', 'https://dai.poa.network'],
+    gnosis: ['https://rpc.gnosischain.com '],
     optimism: ['https://mainnet.optimism.io']
   }
 }
