@@ -27,18 +27,20 @@ class ConnectionManager extends EventEmitter {
       const { protocol, location } = this.targets[index]
       this.connection = this.connections[protocol](location, this.options)
 
-      this.connection.on('error', err => {
-        if (!this.connected) return this.connectionError(index, err)
-        this.onError(err)
-      })
+      const connectionErrorHandler = (err) => this.connectionError(index, err)
 
-      this.connection.on('close', () => {
-        this.connected = false
-        this.emitClose()
-        if (!this.closing) this.refresh()
-      })
+      this.connection.once('error', connectionErrorHandler)
 
       this.connection.on('connect', () => {
+        this.connection.off('error', connectionErrorHandler)
+        this.connection.once('error', (err) => this.onError(err))
+
+        this.connection.once('close', () => {
+          this.connected = false
+          this.emitClose()
+          if (!this.closing) this.refresh()
+        })
+
         this.connection.target = this.targets[index]
         this.connection.index = index
         this.targets[index].status = this.connection.status
