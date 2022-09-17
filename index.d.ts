@@ -8,4 +8,4 @@ type ProviderOpts = {
   interval: number
 }
 
-export default function provider (targets?: string | string[], opts?: Partial<ProviderOpts>): EthereumProvider
+export default function (targets?: string | string[], opts?: Partial<ProviderOpts>): EthereumProvider
