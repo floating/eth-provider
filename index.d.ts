@@ -1,3 +1,11 @@
-export { Eip1193Provider as EthereumProvider } from 'ethereum-provider'
+import type { EthereumProvider } from 'ethereum-provider'
 
-export default function provider (targets?: string | string[], opts?: ProviderOpts): Eip1193Provider
+type ProviderOpts = {
+  name: string
+  origin: string
+  infuraId: string
+  alchemyId: string
+  interval: number
+}
+
+export default function provider (targets?: string | string[], opts?: Partial<ProviderOpts>): EthereumProvider
