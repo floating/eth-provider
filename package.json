@@ -4,6 +4,7 @@
   "description": "A Universal Ethereum Provider",
   "browser": "browser.js",
   "main": "node.js",
+  "types": "./index.d.ts",
   "scripts": {
     "test": "standard --fix && npm run test:web3:v0 && npm run test:web3:v1 && npm run test:endpoints && npm run test:eip1193 && npm run test:frame",
     "test:web3": "npm run test:web3:v0 && npm run test:web3:latest",
@@ -25,7 +26,7 @@
   "license": "GPL-3.0",
   "repository": "github:floating/eth-provider",
   "dependencies": {
-    "ethereum-provider": "0.7.4",
+    "ethereum-provider": "0.7.6",
     "events": "3.3.0",
     "oboe": "2.1.5",
     "uuid": "9.0.0",
