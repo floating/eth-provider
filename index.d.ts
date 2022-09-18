@@ -1,4 +1,4 @@
-import type { EthereumProvider } from 'ethereum-provider'
+import type EthereumProvider from 'ethereum-provider'
 
 type ProviderOpts = {
   name: string
