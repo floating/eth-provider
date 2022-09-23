@@ -151,23 +151,11 @@ describe('Test Endpoints', () => {
   })
 
   describe('Görli', () => {
-    // it('Prylabs HTTP Endpoint: https://goerli.prylabs.net', async () => {
-    //   const pro = provider(['https://goerli.prylabs.net'])
-    //   assert(await pro.request({ method: 'eth_chainId' }) === '0x5')
-    //   pro.close()
-    // }).timeout(45 * 1000)
-
     it('Mudit HTTP Endpoint: https://rpc.goerli.mudit.blog', async () => {
       const pro = provider(['https://rpc.goerli.mudit.blog'])
       assert(await pro.request({ method: 'eth_chainId' }) === '0x5')
       pro.close()
     }).timeout(45 * 1000)
-
-    // it('Slockit HTTP Endpoint: https://rpc.slock.it/goerli', async () => {
-    //   const pro = provider(['https://rpc.slock.it/goerli'])
-    //   assert(await pro.request({ method: 'eth_chainId' }) === '0x5')
-    //   pro.close()
-    // }).timeout(45 * 1000)
 
     it('Infura HTTP Endpoint: https://goerli.infura.io/v3/786ade30f36244469480aa5c2bf0743b', async () => {
       const pro = provider(['https://goerli.infura.io/v3/786ade30f36244469480aa5c2bf0743b'])
@@ -244,14 +232,6 @@ describe('Test Endpoints', () => {
     }).timeout(45 * 1000)
   })
 
-  describe('IDChain', () => {
-    it('Preset Endpoint: \'idChain\'', async () => {
-      const pro = provider(['idChain'])
-      assert(await pro.request({ method: 'eth_chainId' }) === '0x4a')
-      pro.close()
-    }).timeout(45 * 1000)
-  })
-
   describe('Gnosis', () => {
     it('Gnosis RPC Endpoint: https://rpc.gnosischain.com ', async () => {
       const pro = provider(['https://rpc.gnosischain.com '])
@@ -291,6 +271,64 @@ describe('Test Endpoints', () => {
     it('Preset Endpoint: \'infuraOptimism\'', async () => {
       const pro = provider(['infuraOptimism'], { infuraId: '786ade30f36244469480aa5c2bf0743b' })
       assert(await pro.request({ method: 'eth_chainId' }) === '0xa')
+      pro.close()
+    }).timeout(45 * 1000)
+  })
+
+  describe('Rinkeby', () => {
+    it('Infura HTTP Endpoint: https://rinkeby.infura.io/v3/786ade30f36244469480aa5c2bf0743b', async () => {
+      const pro = provider(['https://rinkeby.infura.io/v3/786ade30f36244469480aa5c2bf0743b'])
+      assert(await pro.request({ method: 'eth_chainId' }) === '0x4')
+      pro.close()
+    }).timeout(45 * 1000)
+
+    it('Infura WS Endpoint: wss://rinkeby.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b', async () => {
+      const pro = provider(['wss://rinkeby.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b'])
+      assert(await pro.request({ method: 'eth_chainId' }) === '0x4')
+      pro.close()
+    }).timeout(45 * 1000)
+
+    it('Infura Preset Endpoints: \'infuraRinkeby\'', async () => {
+      const pro = provider('infuraRinkeby', { infuraId: '786ade30f36244469480aa5c2bf0743b' })
+      assert(await pro.request({ method: 'eth_chainId' }) === '0x4')
+      pro.close()
+    }).timeout(45 * 1000)
+
+    it('Alchemy HTTP Endpoint: https://eth-rinkeby.alchemyapi.io/v2/S0qILA0tYj3fRgZM9p6fUKx1uC5cDNwn', async () => {
+      const pro = provider(['https://eth-rinkeby.alchemyapi.io/v2/S0qILA0tYj3fRgZM9p6fUKx1uC5cDNwn'])
+      assert(await pro.request({ method: 'eth_chainId' }) === '0x4')
+      pro.close()
+    }).timeout(45 * 1000)
+
+    it('Alchemy WS Endpoint: wss://eth-rinkeby.ws.alchemyapi.io/v2/S0qILA0tYj3fRgZM9p6fUKx1uC5cDNwn', async () => {
+      const pro = provider(['wss://eth-rinkeby.ws.alchemyapi.io/v2/S0qILA0tYj3fRgZM9p6fUKx1uC5cDNwn'])
+      assert(await pro.request({ method: 'eth_chainId' }) === '0x4')
+      pro.close()
+    }).timeout(45 * 1000)
+
+    it('Alchemy Preset Endpoints: \'alchemyRinkeby\'', async () => {
+      const pro = provider('alchemyRinkeby', { alchemyId: 'S0qILA0tYj3fRgZM9p6fUKx1uC5cDNwn' })
+      assert(await pro.request({ method: 'eth_chainId' }) === '0x4')
+      pro.close()
+    }).timeout(45 * 1000)
+  })
+
+  describe('Sepolia', () => {
+    it('Infura HTTP Endpoint: https://sepolia.infura.io/v3/786ade30f36244469480aa5c2bf0743b', async () => {
+      const pro = provider(['https://sepolia.infura.io/v3/786ade30f36244469480aa5c2bf0743b'])
+      assert(await pro.request({ method: 'eth_chainId' }) === '0xaa36a7')
+      pro.close()
+    }).timeout(45 * 1000)
+
+    it('Infura WS Endpoint: wss://sepolia.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b', async () => {
+      const pro = provider(['wss://sepolia.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b'])
+      assert(await pro.request({ method: 'eth_chainId' }) === '0xaa36a7')
+      pro.close()
+    }).timeout(45 * 1000)
+
+    it('Infura Preset Endpoints: \'infuraSepolia\'', async () => {
+      const pro = provider('infuraSepolia', { infuraId: '786ade30f36244469480aa5c2bf0743b' })
+      assert(await pro.request({ method: 'eth_chainId' }) === '0xaa36a7')
       pro.close()
     }).timeout(45 * 1000)
   })
