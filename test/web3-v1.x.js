@@ -97,19 +97,6 @@ describe('HTTP Provider', () => {
   })
 })
 
-// describe('Kovan', () => {
-//   const p = provider('infuraKovan', { infuraId: '786ade30f36244469480aa5c2bf0743b' })
-//   const web3 = new Web3(p)
-//   it('net_version', done => {
-//     web3.eth.net.getId((err, netId) => {
-//       if (err) throw err
-//       assert(netId === 42)
-//       p.close()
-//       done()
-//     })
-//   }).timeout(45 * 1000)
-// })
-
 describe('Presets', () => {
   presets.forEach((name) => {
     it(`${name} - net_version`, done => {
