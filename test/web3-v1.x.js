@@ -3,6 +3,28 @@
 const assert = require('assert')
 const Web3 = require('web3')
 const provider = require('../')
+const getPresets = require('../presets')
+
+const presetOpts = { infuraId: '786ade30f36244469480aa5c2bf0743b', alchemyId: 'NBms1eV9i16RFHpFqQxod56OLdlucIq0' }
+const presets = Object.keys(getPresets(presetOpts)).filter((name) => !['injected', 'frame', 'direct'].includes(name))
+const netIdMap = {
+  infura: 1,
+  alchemy: 1,
+  infuraRopsten: 3,
+  alchemyRopsten: 3,
+  infuraRinkeby: 4,
+  alchemyRinkeby: 4,
+  infuraKovan: 42,
+  alchemyKovan: 42,
+  infuraGoerli: 5,
+  alchemyGoerli: 5,
+  infuraPolygon: 137,
+  infuraArbitrum: 42161,
+  infuraOptimism: 10,
+  infuraSepolia: 11155111,
+  gnosis: 100,
+  optimism: 10
+}
 
 describe('Test web3 is v1.x', () => {
   it('major version should be 1', () => {
@@ -74,50 +96,28 @@ describe('HTTP Provider', () => {
     }).timeout(45 * 1000)
   })
 })
-describe('Preset', () => {
-  describe('Mainnet', () => {
-    const p = provider('infura', { infuraId: '786ade30f36244469480aa5c2bf0743b' })
-    const web3 = new Web3(p)
-    it('net_version', done => {
+
+// describe('Kovan', () => {
+//   const p = provider('infuraKovan', { infuraId: '786ade30f36244469480aa5c2bf0743b' })
+//   const web3 = new Web3(p)
+//   it('net_version', done => {
+//     web3.eth.net.getId((err, netId) => {
+//       if (err) throw err
+//       assert(netId === 42)
+//       p.close()
+//       done()
+//     })
+//   }).timeout(45 * 1000)
+// })
+
+describe('Presets', () => {
+  presets.forEach((name) => {
+    it(`${name} - net_version`, done => {
+      const p = provider(name, presetOpts)
+      const web3 = new Web3(p)
       web3.eth.net.getId((err, netId) => {
         if (err) throw err
-        assert(netId === 1)
-        p.close()
-        done()
-      })
-    }).timeout(45 * 1000)
-  })
-  describe('Ropsten', () => {
-    const p = provider('infuraRopsten', { infuraId: '786ade30f36244469480aa5c2bf0743b' })
-    const web3 = new Web3(p)
-    it('net_version', done => {
-      web3.eth.net.getId((err, netId) => {
-        if (err) throw err
-        assert(netId === 3)
-        p.close()
-        done()
-      })
-    }).timeout(45 * 1000)
-  })
-  describe('Rinkeby', () => {
-    const p = provider('infuraRinkeby', { infuraId: '786ade30f36244469480aa5c2bf0743b' })
-    const web3 = new Web3(p)
-    it('net_version', done => {
-      web3.eth.net.getId((err, netId) => {
-        if (err) throw err
-        assert(netId === 4)
-        p.close()
-        done()
-      })
-    }).timeout(45 * 1000)
-  })
-  describe('Kovan', () => {
-    const p = provider('infuraKovan', { infuraId: '786ade30f36244469480aa5c2bf0743b' })
-    const web3 = new Web3(p)
-    it('net_version', done => {
-      web3.eth.net.getId((err, netId) => {
-        if (err) throw err
-        assert(netId === 42)
+        assert(netId === netIdMap[name])
         p.close()
         done()
       })
