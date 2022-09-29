@@ -11,12 +11,12 @@ module.exports = (options = {}) => {
     alchemyRinkeby: [`wss://eth-rinkeby.ws.alchemyapi.io/v2/${options.alchemyId}`, `https://eth-rinkeby.alchemyapi.io/v2/${options.alchemyId}`],
     infuraKovan: [`wss://kovan.infura.io/ws/v3/${options.infuraId}`, `https://kovan.infura.io/v3/${options.infuraId}`],
     alchemyKovan: [`wss://eth-kovan.ws.alchemyapi.io/v2/${options.alchemyId}`, `https://eth-kovan.alchemyapi.io/v2/${options.alchemyId}`],
-    infuraGoerli: [`wss://goerli.infura.io/ws/v3/${options.infuraId}`, `https://goerli.infura.io/ws/v3/${options.infuraId}`],
+    infuraGoerli: [`wss://goerli.infura.io/ws/v3/${options.infuraId}`, `https://goerli.infura.io/v3/${options.infuraId}`],
     alchemyGoerli: [`wss://eth-goerli.ws.alchemyapi.io/v2/${options.alchemyId}`, `https://eth-goerli.alchemyapi.io/v2/${options.alchemyId}`],
     infuraPolygon: [`wss://polygon-mainnet.infura.io/ws/v3/${options.infuraId}`, `https://polygon-mainnet.infura.io/v3/${options.infuraId}`],
     infuraArbitrum: [`wss://arbitrum-mainnet.infura.io/ws/v3/${options.infuraId}`, `https://arbitrum-mainnet.infura.io/v3/${options.infuraId}`],
     infuraOptimism: [`https://optimism-mainnet.infura.io/v3/${options.infuraId}`],
-    infuraSepolia: [`wss://sepolia.infura.io/ws/v3/${options.infuraId}`, `https://sepolia.infura.io/ws/v3/${options.infuraId}`],
+    infuraSepolia: [`wss://sepolia.infura.io/ws/v3/${options.infuraId}`, `https://sepolia.infura.io/v3/${options.infuraId}`],
     gnosis: ['https://rpc.gnosischain.com'],
     optimism: ['https://mainnet.optimism.io']
   }
