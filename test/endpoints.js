@@ -234,6 +234,12 @@ describe('All endpoints - requesting eth_chainId', () => {
   })
 
   describe('Optimism', () => {
+    it('Infura WS Endpoint: wss://optimism-mainnet.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b', async () => {
+      const pro = provider(['wss://optimism-mainnet.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b'])
+      assert(await pro.request({ method: 'eth_chainId' }) === '0xa')
+      pro.close()
+    }).timeout(45 * 1000)
+
     it('Infura HTTP Endpoint: https://optimism-mainnet.infura.io/v3/786ade30f36244469480aa5c2bf0743b', async () => {
       const pro = provider(['https://optimism-mainnet.infura.io/v3/786ade30f36244469480aa5c2bf0743b'])
       assert(await pro.request({ method: 'eth_chainId' }) === '0xa')
