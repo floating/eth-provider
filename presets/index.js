@@ -16,7 +16,7 @@ module.exports = (options = {}) => {
     infuraPolygon: [`wss://polygon-mainnet.infura.io/ws/v3/${options.infuraId}`, `https://polygon-mainnet.infura.io/v3/${options.infuraId}`],
     infuraArbitrum: [`wss://arbitrum-mainnet.infura.io/ws/v3/${options.infuraId}`, `https://arbitrum-mainnet.infura.io/v3/${options.infuraId}`],
     infuraOptimism: [`https://optimism-mainnet.infura.io/v3/${options.infuraId}`],
-    infuraSepolia: [`wss://sepolia.infura.io/ws/v3/${options.infuraId}`, `https://sepolia.infura.io/ws/v3/${options.infuraId}`],
+    infuraSepolia: [`wss://sepolia.infura.io/ws/v3/${options.infuraId}`, `https://sepolia.infura.io/v3/${options.infuraId}`],
     gnosis: ['https://rpc.gnosischain.com'],
     optimism: ['https://mainnet.optimism.io']
   }
