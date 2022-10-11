@@ -10,12 +10,6 @@ const mainnetPresets = ['infura', 'alchemy']
 const chainIdMap = {
   infura: '0x1',
   alchemy: '0x1',
-  infuraRopsten: '0x3',
-  alchemyRopsten: '0x3',
-  infuraRinkeby: '0x4',
-  alchemyRinkeby: '0x4',
-  infuraKovan: '0x2a',
-  alchemyKovan: '0x2a',
   infuraGoerli: '0x5',
   alchemyGoerli: '0x5',
   infuraPolygon: '0x89',
@@ -87,58 +81,6 @@ describe('All endpoints - requesting eth_chainId', () => {
     }).timeout(45 * 1000)
   })
 
-  describe('Ropsten', () => {
-    it('Infura HTTP Endpoint: https://ropsten.infura.io/v3/786ade30f36244469480aa5c2bf0743b', async () => {
-      const pro = provider(['https://ropsten.infura.io/v3/786ade30f36244469480aa5c2bf0743b'])
-      assert(await pro.request({ method: 'eth_chainId' }) === '0x3')
-      pro.close()
-    }).timeout(45 * 1000)
-
-    it('Infura WS Endpoint: wss://ropsten.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b', async () => {
-      const pro = provider(['wss://ropsten.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b'])
-      assert(await pro.request({ method: 'eth_chainId' }) === '0x3')
-      pro.close()
-    }).timeout(45 * 1000)
-
-    it('Alchemy HTTP Endpoint: https://eth-ropsten.alchemyapi.io/v2/tgVXaG0xTYT-FAUqBH8qpBZa-eF3rlgw', async () => {
-      const pro = provider(['https://eth-ropsten.alchemyapi.io/v2/tgVXaG0xTYT-FAUqBH8qpBZa-eF3rlgw'])
-      assert(await pro.request({ method: 'eth_chainId' }) === '0x3')
-      pro.close()
-    }).timeout(45 * 1000)
-
-    it('Alchemy WS Endpoint: wss://eth-ropsten.ws.alchemyapi.io/v2/tgVXaG0xTYT-FAUqBH8qpBZa-eF3rlgw', async () => {
-      const pro = provider(['wss://eth-ropsten.ws.alchemyapi.io/v2/tgVXaG0xTYT-FAUqBH8qpBZa-eF3rlgw'])
-      assert(await pro.request({ method: 'eth_chainId' }) === '0x3')
-      pro.close()
-    }).timeout(45 * 1000)
-  })
-
-  describe('Rinkeby', () => {
-    it('Infura HTTP Endpoint: https://rinkeby.infura.io/v3/786ade30f36244469480aa5c2bf0743b', async () => {
-      const pro = provider(['https://rinkeby.infura.io/v3/786ade30f36244469480aa5c2bf0743b'])
-      assert(await pro.request({ method: 'eth_chainId' }) === '0x4')
-      pro.close()
-    }).timeout(45 * 1000)
-
-    it('Infura WS Endpoint: wss://rinkeby.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b', async () => {
-      const pro = provider(['wss://rinkeby.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b'])
-      assert(await pro.request({ method: 'eth_chainId' }) === '0x4')
-      pro.close()
-    }).timeout(45 * 1000)
-
-    it('Alchemy HTTP Endpoint: https://eth-rinkeby.alchemyapi.io/v2/S0qILA0tYj3fRgZM9p6fUKx1uC5cDNwn', async () => {
-      const pro = provider(['https://eth-rinkeby.alchemyapi.io/v2/S0qILA0tYj3fRgZM9p6fUKx1uC5cDNwn'])
-      assert(await pro.request({ method: 'eth_chainId' }) === '0x4')
-      pro.close()
-    }).timeout(45 * 1000)
-
-    it('Alchemy WS Endpoint: wss://eth-rinkeby.ws.alchemyapi.io/v2/S0qILA0tYj3fRgZM9p6fUKx1uC5cDNwn', async () => {
-      const pro = provider(['wss://eth-rinkeby.ws.alchemyapi.io/v2/S0qILA0tYj3fRgZM9p6fUKx1uC5cDNwn'])
-      assert(await pro.request({ method: 'eth_chainId' }) === '0x4')
-      pro.close()
-    }).timeout(45 * 1000)
-  })
-
   describe('Görli', () => {
     it('Mudit HTTP Endpoint: https://rpc.goerli.mudit.blog', async () => {
       const pro = provider(['https://rpc.goerli.mudit.blog'])
@@ -167,32 +109,6 @@ describe('All endpoints - requesting eth_chainId', () => {
     it('Alchemy WS Endpoint: wss://eth-goerli.ws.alchemyapi.io/v2/U3oyFKY1jVpX2APDwMjbNOCIZlt8e6rg', async () => {
       const pro = provider(['wss://eth-goerli.ws.alchemyapi.io/v2/U3oyFKY1jVpX2APDwMjbNOCIZlt8e6rg'])
       assert(await pro.request({ method: 'eth_chainId' }) === '0x5')
-      pro.close()
-    }).timeout(45 * 1000)
-  })
-
-  describe('Kovan', () => {
-    it('Infura HTTP Endpoint: https://kovan.infura.io/v3/786ade30f36244469480aa5c2bf0743b', async () => {
-      const pro = provider(['https://kovan.infura.io/v3/786ade30f36244469480aa5c2bf0743b'])
-      assert(await pro.request({ method: 'eth_chainId' }) === '0x2a')
-      pro.close()
-    }).timeout(45 * 1000)
-
-    it('Infura WS Endpoint: wss://kovan.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b', async () => {
-      const pro = provider(['wss://kovan.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b'])
-      assert(await pro.request({ method: 'eth_chainId' }) === '0x2a')
-      pro.close()
-    }).timeout(45 * 1000)
-
-    it('Alchemy HTTP Endpoint: https://eth-kovan.alchemyapi.io/v2/95cngtka6KasmW5lrKUX1xAGn8tu-RPZ', async () => {
-      const pro = provider(['https://eth-kovan.alchemyapi.io/v2/95cngtka6KasmW5lrKUX1xAGn8tu-RPZ'])
-      assert(await pro.request({ method: 'eth_chainId' }) === '0x2a')
-      pro.close()
-    }).timeout(45 * 1000)
-
-    it('Alchemy WS Endpoint: wss://eth-kovan.ws.alchemyapi.io/v2/95cngtka6KasmW5lrKUX1xAGn8tu-RPZ', async () => {
-      const pro = provider(['wss://eth-kovan.ws.alchemyapi.io/v2/95cngtka6KasmW5lrKUX1xAGn8tu-RPZ'])
-      assert(await pro.request({ method: 'eth_chainId' }) === '0x2a')
       pro.close()
     }).timeout(45 * 1000)
   })
@@ -249,32 +165,6 @@ describe('All endpoints - requesting eth_chainId', () => {
     it('Optimism HTTP Endpoint: https://mainnet.optimism.io', async () => {
       const pro = provider(['https://mainnet.optimism.io'])
       assert(await pro.request({ method: 'eth_chainId' }) === '0xa')
-      pro.close()
-    }).timeout(45 * 1000)
-  })
-
-  describe('Rinkeby', () => {
-    it('Infura HTTP Endpoint: https://rinkeby.infura.io/v3/786ade30f36244469480aa5c2bf0743b', async () => {
-      const pro = provider(['https://rinkeby.infura.io/v3/786ade30f36244469480aa5c2bf0743b'])
-      assert(await pro.request({ method: 'eth_chainId' }) === '0x4')
-      pro.close()
-    }).timeout(45 * 1000)
-
-    it('Infura WS Endpoint: wss://rinkeby.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b', async () => {
-      const pro = provider(['wss://rinkeby.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b'])
-      assert(await pro.request({ method: 'eth_chainId' }) === '0x4')
-      pro.close()
-    }).timeout(45 * 1000)
-
-    it('Alchemy HTTP Endpoint: https://eth-rinkeby.alchemyapi.io/v2/S0qILA0tYj3fRgZM9p6fUKx1uC5cDNwn', async () => {
-      const pro = provider(['https://eth-rinkeby.alchemyapi.io/v2/S0qILA0tYj3fRgZM9p6fUKx1uC5cDNwn'])
-      assert(await pro.request({ method: 'eth_chainId' }) === '0x4')
-      pro.close()
-    }).timeout(45 * 1000)
-
-    it('Alchemy WS Endpoint: wss://eth-rinkeby.ws.alchemyapi.io/v2/S0qILA0tYj3fRgZM9p6fUKx1uC5cDNwn', async () => {
-      const pro = provider(['wss://eth-rinkeby.ws.alchemyapi.io/v2/S0qILA0tYj3fRgZM9p6fUKx1uC5cDNwn'])
-      assert(await pro.request({ method: 'eth_chainId' }) === '0x4')
       pro.close()
     }).timeout(45 * 1000)
   })

@@ -10,9 +10,9 @@ const home = require('os').homedir()
 
 let ipc = []
 if (process.platform === 'darwin') {
-  ipc = [`${home}/Library/Ethereum/geth.ipc`, `${home}/Library/Ethereum/rinkeby/geth.ipc`]
+  ipc = [`${home}/Library/Ethereum/geth.ipc`, `${home}/Library/Ethereum/sepolia/geth.ipc`]
 } else if (process.platform === 'freebsd' || process.platform === 'linux' || process.platform === 'sunos') {
-  ipc = [`${home}/.ethereum/geth.ipc`, `${home}/.ethereum/rinkeby/geth.ipc`]
+  ipc = [`${home}/.ethereum/geth.ipc`, `${home}/.ethereum/sepolia/geth.ipc`]
 } else if (process.platform === 'win32') {
   ipc = ['\\\\.\\pipe\\geth.ipc']
 }
