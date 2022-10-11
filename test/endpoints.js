@@ -10,12 +10,6 @@ const mainnetPresets = ['infura', 'alchemy']
 const chainIdMap = {
   infura: '0x1',
   alchemy: '0x1',
-  infuraRopsten: '0x3',
-  alchemyRopsten: '0x3',
-  infuraRinkeby: '0x4',
-  alchemyRinkeby: '0x4',
-  infuraKovan: '0x2a',
-  alchemyKovan: '0x2a',
   infuraGoerli: '0x5',
   alchemyGoerli: '0x5',
   infuraPolygon: '0x89',

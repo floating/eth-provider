@@ -10,12 +10,6 @@ const presets = Object.keys(getPresets(presetOpts)).filter((name) => !['injected
 const netIdMap = {
   infura: '1',
   alchemy: '1',
-  infuraRopsten: '3',
-  alchemyRopsten: '3',
-  infuraRinkeby: '4',
-  alchemyRinkeby: '4',
-  infuraKovan: '42',
-  alchemyKovan: '42',
   infuraGoerli: '5',
   alchemyGoerli: '5',
   infuraPolygon: '137',
@@ -33,7 +27,7 @@ describe('Test web3 is v0.x', () => {
 })
 
 describe('WebSocket Provider', () => {
-  const wsProvider = provider('wss://rinkeby.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b')
+  const wsProvider = provider('wss://sepolia.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b')
   const web3ws = new Web3(wsProvider)
   describe('Get accounts via WS', () => {
     it('should return array', done => {
@@ -53,7 +47,7 @@ describe('WebSocket Provider', () => {
   })
 })
 describe('HTTP Provider', () => {
-  const httpProvider = provider('https://rinkeby.infura.io/v3/786ade30f36244469480aa5c2bf0743b')
+  const httpProvider = provider('https://sepolia.infura.io/v3/786ade30f36244469480aa5c2bf0743b')
   const web3http = new Web3(httpProvider)
   // v0.x specific
   describe('Batch requests', () => {
