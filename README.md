@@ -32,14 +32,14 @@ const web3 = new Web3(provider())
 * You can override these defaults by passing in your own RPC targets
 ```js
 const provider = require('eth-provider')
-const web3 = new Web3(provider('wss://rinkeby.infura.io/ws/v3/${INFURA_ID}))
+const web3 = new Web3(provider('wss://sepolia.infura.io/ws/v3/${INFURA_ID}))
 ```
 * When passing in multiple RPC targets order them by priority
 * When eth-provider fails to connect to a target it will automatically attempt to connect to the next priority target
-* For example `['injected', 'wss://rinkeby.infura.io/ws/v3/${INFURA_ID}']` will first try to discover injected providers and if unsuccessful connect to the Infura endpoint
+* For example `['injected', 'wss://sepolia.infura.io/ws/v3/${INFURA_ID}']` will first try to discover injected providers and if unsuccessful connect to the Infura endpoint
 ```js
 const provider = require('eth-provider')
-const web3 = new Web3(provider(['injected', 'wss://rinkeby.infura.io/ws/v3/${INFURA_ID}']))
+const web3 = new Web3(provider(['injected', 'wss://sepolia.infura.io/ws/v3/${INFURA_ID}']))
 ```
 * In Node and Electron you'll have access to IPC endpoints created by Geth or Parity that cannot be accessed by the Browser. You can connect to these by using the `'direct'` preset, or by passing custom IPC paths
 ```js
