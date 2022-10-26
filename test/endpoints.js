@@ -122,12 +122,6 @@ describe('All endpoints - requesting eth_chainId', () => {
   })
 
   describe('Polygon', () => {
-    it('Infura WS Endpoint: wss://polygon-mainnet.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b', async () => {
-      const pro = provider(['wss://polygon-mainnet.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b'])
-      assert(await pro.request({ method: 'eth_chainId' }) === '0x89')
-      pro.close()
-    }).timeout(45 * 1000)
-
     it('Infura HTTP Endpoint: https://polygon-mainnet.infura.io/v3/786ade30f36244469480aa5c2bf0743b', async () => {
       const pro = provider(['https://polygon-mainnet.infura.io/v3/786ade30f36244469480aa5c2bf0743b'])
       assert(await pro.request({ method: 'eth_chainId' }) === '0x89')
@@ -136,12 +130,6 @@ describe('All endpoints - requesting eth_chainId', () => {
   })
 
   describe('Arbitrum', () => {
-    it('Infura WS Endpoint: wss://arbitrum-mainnet.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b', async () => {
-      const pro = provider(['wss://arbitrum-mainnet.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b'])
-      assert(await pro.request({ method: 'eth_chainId' }) === '0xa4b1')
-      pro.close()
-    }).timeout(45 * 1000)
-
     it('Infura HTTP Endpoint: https://arbitrum-mainnet.infura.io/v3/786ade30f36244469480aa5c2bf0743b', async () => {
       const pro = provider(['https://arbitrum-mainnet.infura.io/v3/786ade30f36244469480aa5c2bf0743b'])
       assert(await pro.request({ method: 'eth_chainId' }) === '0xa4b1')
@@ -150,12 +138,6 @@ describe('All endpoints - requesting eth_chainId', () => {
   })
 
   describe('Optimism', () => {
-    it('Infura WS Endpoint: wss://optimism-mainnet.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b', async () => {
-      const pro = provider(['wss://optimism-mainnet.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b'])
-      assert(await pro.request({ method: 'eth_chainId' }) === '0xa')
-      pro.close()
-    }).timeout(45 * 1000)
-
     it('Infura HTTP Endpoint: https://optimism-mainnet.infura.io/v3/786ade30f36244469480aa5c2bf0743b', async () => {
       const pro = provider(['https://optimism-mainnet.infura.io/v3/786ade30f36244469480aa5c2bf0743b'])
       assert(await pro.request({ method: 'eth_chainId' }) === '0xa')
