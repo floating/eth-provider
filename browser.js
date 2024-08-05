@@ -1,3 +1,5 @@
+/* globals window, WebSocket */
+
 const resolve = require('./resolve')
 const provider = require('./provider')
 const presets = require('./presets')
