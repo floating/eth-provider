@@ -1,10 +1,13 @@
+/* globals WebSocket */
+
 const resolve = require('./resolve')
 const provider = require('./provider')
 const presets = require('./presets')
 
 const injected = {
   ethereum: typeof window !== 'undefined' && typeof window.ethereum !== 'undefined' ? window.ethereum : null,
-  web3: typeof window !== 'undefined' && typeof window.web3 !== 'undefined' ? window.web3.currentProvider : null
+  web3:
+    typeof window !== 'undefined' && typeof window.web3 !== 'undefined' ? window.web3.currentProvider : null
 }
 
 const ws = () => {
@@ -19,7 +22,8 @@ const ws = () => {
   return null
 }
 
-const XHR = typeof window !== 'undefined' && typeof window.XMLHttpRequest !== 'undefined' ? window.XMLHttpRequest : null
+const XHR =
+  typeof window !== 'undefined' && typeof window.XMLHttpRequest !== 'undefined' ? window.XMLHttpRequest : null
 
 if (injected.ethereum) injected.ethereum.__isProvider = true
 
@@ -40,9 +44,17 @@ module.exports = (targets, options) => {
 
   targets = [].concat(targets)
 
-  targets.forEach(t => {
-    if (t.startsWith('alchemy') && !options.alchemyId) throw new Error('Alchemy was included as a connection target but no Alchemy project ID was passed in options e.g. { alchemyId: \'123abc\' }')
-    if (t.startsWith('infura') && !options.infuraId) throw new Error('Infura was included as a connection target but no Infura project ID was passed in options e.g. { infuraId: \'123abc\' }')
+  targets.forEach((t) => {
+    if (t.startsWith('alchemy') && !options.alchemyId) {
+      throw new Error(
+        "Alchemy was included as a connection target but no Alchemy project ID was passed in options e.g. { alchemyId: '123abc' }"
+      )
+    }
+    if (t.startsWith('infura') && !options.infuraId) {
+      throw new Error(
+        "Infura was included as a connection target but no Infura project ID was passed in options e.g. { infuraId: '123abc' }"
+      )
+    }
   })
 
   const sets = presets(options)

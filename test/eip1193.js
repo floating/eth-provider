@@ -2,7 +2,7 @@
 
 const assert = require('assert')
 const provider = require('../')
-const ethereum = provider(['frame'], { infuraId: '786ade30f36244469480aa5c2bf0743b', origin: 'EIP1193Tests' })
+const ethereum = provider(['frame'], { infuraId: '76cced0cada04535b47c5605d12989ea', origin: 'EIP1193Tests' })
 
 describe('EIP-1193 Tests', () => {
   it('should return a chainId', async () => {
@@ -28,7 +28,7 @@ describe('EIP-1193 Tests', () => {
     })
   }).timeout(45 * 1000)
 
-  it('wait for available account', done => {
+  it('wait for available account', (done) => {
     const accountCheck = async () => {
       try {
         const accounts = await ethereum.request({ method: 'eth_requestAccounts' })
@@ -36,7 +36,7 @@ describe('EIP-1193 Tests', () => {
       } catch (e) {
         if (e.code === 4001) {
           console.log('Waiting for an account to be available...')
-          const accountsChange = a => {
+          const accountsChange = (a) => {
             ethereum.off('accountsChanged', accountsChange)
             console.log('Account found!')
             if (a.length) return done()
@@ -58,9 +58,9 @@ describe('EIP-1193 Tests', () => {
     assert(accounts.length)
   }).timeout(45 * 1000)
 
-  it('should get accountsChanged event', done => {
+  it('should get accountsChanged event', (done) => {
     console.log('Change your Frame account')
-    const accountsChanged = accounts => {
+    const accountsChanged = (accounts) => {
       assert(Array.isArray(accounts))
       ethereum.off('accountsChanged', accountsChanged)
       done()
@@ -68,11 +68,11 @@ describe('EIP-1193 Tests', () => {
     ethereum.on('accountsChanged', accountsChanged)
   }).timeout(45 * 1000)
 
-  it('should subscribe to newBlockHeaders using EIP-1193 spec', done => {
+  it('should subscribe to newBlockHeaders using EIP-1193 spec', (done) => {
     const waitForNewHead = async () => {
       try {
         const subId = await ethereum.request({ method: 'eth_subscribe', params: ['newHeads'] })
-        const onMessage = message => {
+        const onMessage = (message) => {
           if (message.type === 'eth_subscription') {
             const { data } = message
             if (data.subscription === subId) {
@@ -95,17 +95,17 @@ describe('EIP-1193 Tests', () => {
     waitForNewHead()
   }).timeout(45 * 1000)
 
-  it('should pass on chainChange', done => {
-    ethereum.once('chainChanged', netId => {
+  it('should pass on chainChange', (done) => {
+    ethereum.once('chainChanged', (netId) => {
       assert(netId)
       done()
     })
     console.log('Please switch chains in Frame...')
   }).timeout(45 * 1000)
 
-  it('should pass on networkChange', done => {
+  it('should pass on networkChange', (done) => {
     setTimeout(() => {
-      ethereum.once('networkChanged', netId => {
+      ethereum.once('networkChanged', (netId) => {
         assert(netId)
         ethereum.close()
         done()
