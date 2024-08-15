@@ -46,9 +46,9 @@ class WebSocketConnection extends EventEmitter {
     const data = typeof message.data === 'string' ? message.data : ''
     parse(data, (err, payloads) => {
       if (err) return //
-      payloads.forEach(load => {
+      payloads.forEach((load) => {
         if (Array.isArray(load)) {
-          load.forEach(payload => this.emit('payload', payload))
+          load.forEach((payload) => this.emit('payload', payload))
         } else {
           this.emit('payload', load)
         }
@@ -103,7 +103,7 @@ class WebSocketConnection extends EventEmitter {
   send (payload) {
     try {
       if (this.socket && this.socket.readyState === this.socket.CONNECTING) {
-        setTimeout(_ => this.send(payload), 10)
+        setTimeout((_) => this.send(payload), 10)
       } else if (!this.socket || this.socket.readyState > 1) {
         this.connected = false
         this.error(payload, 'Not connected')
@@ -118,4 +118,4 @@ class WebSocketConnection extends EventEmitter {
   }
 }
 
-module.exports = WebSocket => (url, cb) => new WebSocketConnection(WebSocket, url, cb)
+module.exports = (WebSocket) => (url, cb) => new WebSocketConnection(WebSocket, url, cb)
